@@ -3,6 +3,13 @@ import requests
 from pyrich.api import set_finnhub
 
 
+def get_current_price(stock: dict) -> float:
+    if stock['country'] == 'USA':
+        price_now = get_from_us_market(stock['symbol'])
+    elif stock['country'] == 'KOR':
+        price_now = get_from_kor_market(stock['symbol'])
+    return price_now
+
 def get_from_us_market(symbol: str):
     # https://finnhub.io/docs/api/quote
     finnhub = set_finnhub()
