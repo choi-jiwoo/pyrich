@@ -9,3 +9,15 @@ def run():
     options = vars(args)
     new_record = Transaction(options)
 
+    if new_record.record['crypto']:
+        # record transaction of buying or selling cryptocurrency
+        pass
+
+    if new_record.record['type'] == 'dividend':
+        # record dividends received
+        pass
+    else:
+        quantity = new_record.record['quantity']
+        price = new_record.record['price']
+        new_record.record['total_amount'] = quantity * price
+
