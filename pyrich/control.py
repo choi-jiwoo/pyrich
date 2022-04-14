@@ -21,3 +21,5 @@ def run():
         price = new_record.record['price']
         new_record.record['total_amount'] = quantity * price
 
+    if new_record.record['web']:
+        os.system('streamlit run dashboard.py')
