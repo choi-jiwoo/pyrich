@@ -1,4 +1,6 @@
 import os
+from dotenv import load_dotenv
+from pyrich.database import PostgreSQL
 from pyrich import parse
 from pyrich.transaction import Transaction
 
@@ -8,6 +10,9 @@ def run():
     args = parser.parse_args()
     options = vars(args)
     new_record = Transaction(options)
+    load_dotenv()
+    database_url = os.environ.get('DATABASE_URL')
+    db = PostgreSQL(database_url)
 
     if new_record.record['crypto']:
         # record transaction of buying or selling cryptocurrency
