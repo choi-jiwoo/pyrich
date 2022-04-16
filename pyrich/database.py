@@ -27,6 +27,16 @@ class PostgreSQL:
         )
         self.cur = self.conn.cursor()
 
+    def show_table(self, table: str) -> None:
+        try:
+            query = f'SELECT * FROM {table};'
+            self.cur.execute(query)
+            result = self.cur.fetchall()
+            for item in result:
+                print(item)
+        except Exception as e:
+            print(e)
+
     def __del__(self) -> None:
         self.conn.commit()
         self.cur.close()
