@@ -18,14 +18,17 @@ class PostgreSQL:
         self.port = connection_info.port
 
     def _connect(self) -> None:
-        self.conn = psycopg2.connect(
-            dbname=self.dbname,
-            user=self.user,
-            password=self.password,
-            host=self.host,
-            port=self.port,
-        )
-        self.cur = self.conn.cursor()
+        try:
+            self.conn = psycopg2.connect(
+                dbname=self.dbname,
+                user=self.user,
+                password=self.password,
+                host=self.host,
+                port=self.port,
+            )
+            self.cur = self.conn.cursor()
+        except psycopg2.OperationalError as e:
+            raise
 
     def show_table(self, table: str) -> None:
         try:
