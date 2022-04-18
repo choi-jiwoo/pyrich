@@ -14,6 +14,7 @@ def set_args():
     )
     # record country
     parser.add_argument(
+        '-c',
         '--country',
         default='USA',
         type=str,
@@ -53,7 +54,6 @@ def set_args():
     )
     # check for cryptocurrency
     parser.add_argument(
-        '-c',
         '--crypto',
         action='store_true',
         help='Check if crypto.'
