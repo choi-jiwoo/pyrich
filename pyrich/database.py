@@ -30,10 +30,16 @@ class PostgreSQL:
         except psycopg2.OperationalError as e:
             raise
 
+    def run_query(self, query: str) -> None:
+        try:
+            self.cur.execute(query)
+        except Exception as e:
+            print(e)
+
     def show_table(self, table: str) -> None:
         try:
             query = f'SELECT * FROM {table};'
-            self.cur.execute(query)
+            self.run_query(query)
             result = self.cur.fetchall()
             for item in result:
                 print(item)
