@@ -58,6 +58,12 @@ def set_args():
         action='store_true',
         help='Check if crypto.'
     )
+    parser.add_argument(
+        '--delete',
+        type=str,
+        metavar='TABLE NAME',
+        help='Delete the last row of the table.'
+    )
     # open in streamlit app
     parser.add_argument(
         '-w',
