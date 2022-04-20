@@ -36,7 +36,7 @@ def set_args():
         type=str,
         choices=['buy', 'sell', 'dividend'],
         metavar='TRANSACTION TYPE',
-        help='Record transaction type.'
+        help='Choose among transaction type buy/sell/dividend.'
     )
     parser.add_argument(
         '-q',
