@@ -37,11 +37,19 @@ class PostgreSQL:
         except psycopg2.ProgrammingError:
             raise
 
+    def get_column_name(self, table: str) -> list:
+        try:
+            query = f'SELECT * FROM {table} LIMIT 0;'
+            self.run_query(query)
+            col_name = [desc[0] for desc in self.cur.description]
         except Exception as e:
             print(e)
+        finally:
+            return col_name
 
     def show_table(self, table: str) -> None:
         try:
+            col_name = self.get_column_name(table)
             query = f'SELECT * FROM {table};'
             self.run_query(query)
             result = self.cur.fetchall()
