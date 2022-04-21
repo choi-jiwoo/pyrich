@@ -1,4 +1,6 @@
 from collections.abc import Iterable
+import os
+import pandas as pd
 import psycopg2
 from urllib.parse import urlparse
 
@@ -36,6 +38,15 @@ class PostgreSQL:
             self.cur.execute(query, values)
         except psycopg2.ProgrammingError:
             raise
+
+    def copy_from_csv(self, table: str, filename: str) -> None:
+        path = f'./{filename}'
+        abs_path = os.path.abspath(path)
+        query = (f"COPY {table} "
+                 f"FROM '{abs_path}' "
+                  "DELIMITER ',' "
+                  "CSV HEADER;")
+        self.run_query(query)
 
     def get_column_name(self, table: str) -> list:
         try:
