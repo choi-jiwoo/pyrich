@@ -10,7 +10,7 @@ def set_args():
         type=str,
         default='1900-1-1',
         metavar='DATE',
-        help='Record date of the action.'
+        help='Date of the transaction made. Defaults to 1900-1-1'
     )
     # record country
     parser.add_argument(
@@ -19,7 +19,7 @@ def set_args():
         default='USA',
         type=str,
         metavar='COUNTRY CODE',
-        help='Country code of where stock is listed.'
+        help='Country code of where stock is listed. Defaults to USA'
     )
     # symbol to record
     parser.add_argument(
@@ -27,7 +27,7 @@ def set_args():
         '--symbol',
         type=str,
         metavar='SYMBOL',
-        help='Symbol to record.'
+        help='Symbol of a stock.'
     )
     # record transaction type
     parser.add_argument(
@@ -36,39 +36,39 @@ def set_args():
         type=str,
         choices=['buy', 'sell', 'dividend'],
         metavar='TRANSACTION TYPE',
-        help='Choose among transaction type buy/sell/dividend.'
+        help="Choose among transaction type 'buy', 'sell', 'dividend'."
     )
     parser.add_argument(
         '-q',
         '--quantity',
         type=int,
         metavar='QUANTITY',
-        help='Record transaction amounts.'
+        help='Transaction amounts.'
     )
     parser.add_argument(
         '-p',
         '--price',
         type=float,
         metavar='PRICE',
-        help='Record traded price.'
+        help='Traded price.'
     )
     # check for cryptocurrency
     parser.add_argument(
         '--crypto',
         action='store_true',
-        help='Check if crypto.'
+        help='Mark the stock as crypto. Defaults to False'
     )
     parser.add_argument(
         '--delete',
         type=str,
         metavar='TABLE NAME',
-        help='Delete the last row of the table.'
+        help='Choose which table to delete the last row. Defaults to None'
     )
     # open in streamlit app
     parser.add_argument(
         '-w',
         '--web',
         action='store_true',
-        help='Open dashboard in a web browser.'
+        help='Open dashboard in a web browser. Defaults to False'
     )
     return parser
