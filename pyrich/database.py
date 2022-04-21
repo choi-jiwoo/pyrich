@@ -28,7 +28,7 @@ class PostgreSQL:
                 port=self.port,
             )
             self.cur = self.conn.cursor()
-        except psycopg2.OperationalError as e:
+        except psycopg2.OperationalError:
             raise
 
     def run_query(self, query: str, values: Iterable = None) -> None:
