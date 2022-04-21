@@ -65,6 +65,13 @@ def set_args():
         metavar='TABLE NAME',
         help='Choose which table to delete the last row. Defaults to None'
     )
+    # display database table
+    parser.add_argument(
+        '--show',
+        type=str,
+        metavar='TABLE NAME',
+        help='Option for displaying database table.'
+    )
     # open in streamlit app
     parser.add_argument(
         '-w',
