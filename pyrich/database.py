@@ -1,3 +1,4 @@
+from collections.abc import Iterable
 import psycopg2
 from urllib.parse import urlparse
 
@@ -30,9 +31,12 @@ class PostgreSQL:
         except psycopg2.OperationalError as e:
             raise
 
-    def run_query(self, query: str) -> None:
+    def run_query(self, query: str, values: Iterable = None) -> None:
         try:
-            self.cur.execute(query)
+            self.cur.execute(query, values)
+        except psycopg2.ProgrammingError:
+            raise
+
         except Exception as e:
             print(e)
 
