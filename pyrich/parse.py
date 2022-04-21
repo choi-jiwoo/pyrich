@@ -58,6 +58,7 @@ def set_args():
         action='store_true',
         help='Mark the stock as crypto. Defaults to False'
     )
+    # delete last row of the table
     parser.add_argument(
         '--delete',
         type=str,
