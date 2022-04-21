@@ -53,10 +53,15 @@ class PostgreSQL:
             query = f'SELECT * FROM {table};'
             self.run_query(query)
             result = self.cur.fetchall()
+            rows = []
             for item in result:
-                print(item)
+                rows.append(item)
         except Exception as e:
             print(e)
+        finally:
+            table = pd.DataFrame(rows, columns=col_name)
+            print(table)
+
 
     def __del__(self) -> None:
         self.conn.commit()
