@@ -35,11 +35,15 @@ class PostgreSQL:
         except psycopg2.OperationalError:
             raise
 
-    def run_query(self, query: str, values: Iterable = None) -> None:
+    def run_query(self, query: str, values: Iterable=None,
+                  msg: bool=False) -> None:
         try:
             self.cur.execute(query, values)
         except psycopg2.ProgrammingError:
             raise
+        finally:
+            if msg:
+                print('Query ran successfully.')
 
     def _create_transaction_table(self) -> None:
         query = ('CREATE TABLE IF NOT EXISTS transaction'
@@ -69,7 +73,7 @@ class PostgreSQL:
                  f"FROM '{abs_path}' "
                   "DELIMITER ',' "
                   "CSV HEADER;")
-        self.run_query(query)
+        self.run_query(query, msg=True)
 
     def _get_column_name(self, table: str) -> list:
         try:
@@ -85,7 +89,7 @@ class PostgreSQL:
         try:
             col_name = self._get_column_name(table)
             query = f'SELECT * FROM {table};'
-            self.run_query(query)
+            self.run_query(query, msg=True)
             result = self.cur.fetchall()
             rows = []
             for item in result:
