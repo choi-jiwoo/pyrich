@@ -12,6 +12,7 @@ class PostgreSQL:
         self._parse_database_url()
         self._connect()
         self._create_transaction_table()
+        self._create_dividend_table()
 
     def _parse_database_url(self) -> None:
         connection_info = urlparse(self.database_url)
@@ -51,6 +52,14 @@ class PostgreSQL:
                  'price REAL NOT NULL,'
                  'crypto BOOLEAN NOT NULL,'
                  'total_amount REAL NOT NULL);')
+        self.run_query(query)
+
+    def _create_dividend_table(self) -> None:
+        query = ('CREATE TABLE IF NOT EXISTS dividend'
+                 '(id serial PRIMARY KEY,'
+                 'date DATE NOT NULL,'
+                 'symbol VARCHAR(15) NOT NULL,'
+                 'dividend REAL NOT NULL);')
         self.run_query(query)
 
     def copy_from_csv(self, table: str, filename: str) -> None:
