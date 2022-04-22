@@ -71,7 +71,7 @@ class PostgreSQL:
                   "CSV HEADER;")
         self.run_query(query)
 
-    def get_column_name(self, table: str) -> list:
+    def _get_column_name(self, table: str) -> list:
         try:
             query = f'SELECT * FROM {table} LIMIT 0;'
             self.run_query(query)
@@ -83,7 +83,7 @@ class PostgreSQL:
 
     def show_table(self, table: str) -> None:
         try:
-            col_name = self.get_column_name(table)
+            col_name = self._get_column_name(table)
             query = f'SELECT * FROM {table};'
             self.run_query(query)
             result = self.cur.fetchall()
