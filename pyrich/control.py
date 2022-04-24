@@ -6,10 +6,6 @@ from pyrich.transaction import Transaction
 
 
 def run():
-    parser = parse.set_args()
-    args = parser.parse_args()
-    options = vars(args)
-    new_record = Transaction(options)
     load_dotenv()
     database_url = os.environ.get('DATABASE_URL')
     db = PostgreSQL(database_url)
@@ -17,6 +13,12 @@ def run():
     if new_record.record['crypto']:
         # record transaction of buying or selling cryptocurrency
         pass
+    # Load arguments
+    parser = parse.set_args()
+    args = parser.parse_args()
+    options = vars(args)
+    # Record transaction 
+    new_record = Transaction(options)
 
     if new_record.record['type'] == 'dividend':
         # record dividends received
