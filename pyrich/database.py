@@ -100,6 +100,15 @@ class PostgreSQL:
             table = pd.DataFrame(rows, columns=col_name)
             print(table)
 
+    def insert(self, table: str, record: dict) -> None:
+        keys = list(record.keys())
+        values = list(record.values())
+        column = ', '.join(keys)
+        value_seq = ['%s' for i in range(len(values))]
+        placeholders = ', '.join(value_seq)
+        query = (f"INSERT INTO {table} ({column}) "
+                 f"VALUES ({placeholders});")
+        self.run_query(query, values, msg=True)
 
     def delete_rows(self, table: str, all_rows: bool=False) -> None:
         if all_rows:
