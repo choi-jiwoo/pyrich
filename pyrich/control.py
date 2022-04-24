@@ -6,6 +6,7 @@ from pyrich.transaction import Transaction
 
 
 def run():
+    # Set up database connection
     load_dotenv()
     database_url = os.environ.get('DATABASE_URL')
     db = PostgreSQL(database_url)
