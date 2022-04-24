@@ -101,6 +101,19 @@ class PostgreSQL:
             print(table)
 
 
+    def delete_rows(self, table: str, all_rows: bool=False) -> None:
+        if all_rows:
+            query = f'DELETE FROM {table};'
+            warning_msg = input('Deleting all rows in the table. Continue? (Y/n): ')
+        else:
+            query = f'DELETE FROM {table} WHERE id=(SELECT MAX(id) FROM {table});'
+            warning_msg = input('Deleting the last row. Continue? (Y/n): ')
+
+        if warning_msg.upper() == 'Y':
+            self.run_query(query, msg=True)
+        else:
+            print('Deleting stopped.')
+        
     def __del__(self) -> None:
         self.conn.commit()
         self.cur.close()
