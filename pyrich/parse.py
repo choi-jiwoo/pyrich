@@ -29,6 +29,12 @@ def set_args():
         metavar='SYMBOL',
         help='Symbol of a stock'
     )
+    # check for cryptocurrency
+    parser.add_argument(
+        '--crypto',
+        action='store_true',
+        help='Mark the stock as crypto. Defaults to False'
+    )
     # record transaction type
     parser.add_argument(
         '-t',
@@ -52,23 +58,16 @@ def set_args():
         metavar='PRICE',
         help='Traded price'
     )
-    # check for cryptocurrency
+    # display database table
     parser.add_argument(
-        '--crypto',
-        action='store_true',
-        help='Mark the stock as crypto. Defaults to False'
-              'in the root directory of the package')
-    )
-    # delete last row of the table
-    parser.add_argument(
-        '--delete',
+        '--show',
         type=str,
         metavar='TABLE NAME',
         help='Table name to display'
     )
-    # display database table
+    # delete last row of the table
     parser.add_argument(
-        '--show',
+        '--delete',
         type=str,
         metavar='TABLE NAME',
         help='Table name to delete the last row. Defaults to None'
