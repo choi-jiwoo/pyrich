@@ -1,3 +1,4 @@
+from copy import deepcopy
 from pyrich.error import EmptySymbolError
 
 
@@ -29,3 +30,12 @@ class Transaction:
         dividend_record['dividend'] = dividend_record.pop('price')
         return dividend_record
 
+    def record_transactions(self) -> dict:
+        transaction_record = deepcopy(self.record)
+        keys_to_del = ['csv', 'show', 'delete', 'deleteall', 'web']
+        for key in keys_to_del:
+            del transaction_record[key]
+        quantity = transaction_record['quantity']
+        price = transaction_record['price']
+        transaction_record['total_amount'] = quantity * price
+        return transaction_record
