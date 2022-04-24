@@ -58,6 +58,14 @@ def set_args():
         metavar='PRICE',
         help='Traded price'
     )
+    # copy transaction data from csv file
+    parser.add_argument(
+        '--csv',
+        type=str,
+        metavar='CSV FILENAME',
+        help=('Csv filename to copy data from. The file should be located'
+              'in the root directory of the package')
+    )
     # display database table
     parser.add_argument(
         '--show',
