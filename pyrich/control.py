@@ -10,13 +10,11 @@ def run():
     database_url = os.environ.get('DATABASE_URL')
     db = PostgreSQL(database_url)
 
-    if new_record.record['crypto']:
-        # record transaction of buying or selling cryptocurrency
-        pass
     # Load arguments
     parser = parse.set_args()
     args = parser.parse_args()
     options = vars(args)
+
     # Record transaction 
     new_record = Transaction(options)
 
