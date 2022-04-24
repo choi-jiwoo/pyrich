@@ -51,10 +51,10 @@ class PostgreSQL:
                  'date DATE NOT NULL,'
                  'country VARCHAR(5) NOT NULL,'
                  'symbol VARCHAR(15) NOT NULL,'
+                 'crypto BOOLEAN NOT NULL,'
                  'type VARCHAR(5) NOT NULL,'
                  'quantity REAL NOT NULL,'
                  'price REAL NOT NULL,'
-                 'crypto BOOLEAN NOT NULL,'
                  'total_amount REAL NOT NULL);')
         self.run_query(query)
 
