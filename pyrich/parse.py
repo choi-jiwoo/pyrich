@@ -80,6 +80,13 @@ def set_args():
         metavar='TABLE NAME',
         help='Table name to delete the last row. Defaults to None'
     )
+    # delete all rows in the table
+    parser.add_argument(
+        '--deleteall',
+        type=str,
+        metavar='TABLE NAME',
+        help='Table name to delete all rows. Defaults to None'
+    )
     # open in streamlit app
     parser.add_argument(
         '-w',
