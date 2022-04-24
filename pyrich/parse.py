@@ -27,7 +27,7 @@ def set_args():
         '--symbol',
         type=str,
         metavar='SYMBOL',
-        help='Symbol of a stock.'
+        help='Symbol of a stock'
     )
     # record transaction type
     parser.add_argument(
@@ -36,41 +36,42 @@ def set_args():
         type=str,
         choices=['buy', 'sell', 'dividend'],
         metavar='TRANSACTION TYPE',
-        help="Choose among transaction type 'buy', 'sell', 'dividend'."
+        help="Choose among transaction type 'buy', 'sell', 'dividend'"
     )
     parser.add_argument(
         '-q',
         '--quantity',
         type=int,
         metavar='QUANTITY',
-        help='Transaction amounts.'
+        help='Transaction amounts'
     )
     parser.add_argument(
         '-p',
         '--price',
         type=float,
         metavar='PRICE',
-        help='Traded price.'
+        help='Traded price'
     )
     # check for cryptocurrency
     parser.add_argument(
         '--crypto',
         action='store_true',
         help='Mark the stock as crypto. Defaults to False'
+              'in the root directory of the package')
     )
     # delete last row of the table
     parser.add_argument(
         '--delete',
         type=str,
         metavar='TABLE NAME',
-        help='Choose which table to delete the last row. Defaults to None'
+        help='Table name to display'
     )
     # display database table
     parser.add_argument(
         '--show',
         type=str,
         metavar='TABLE NAME',
-        help='Option for displaying database table.'
+        help='Table name to delete the last row. Defaults to None'
     )
     # open in streamlit app
     parser.add_argument(
