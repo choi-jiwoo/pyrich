@@ -22,6 +22,12 @@ def run():
         db.show_table(table_name)
         return
 
+    # Handling delete option
+    if options['delete']:
+        table_name = options['delete']
+        db.delete_rows(table_name)
+        return
+
     # Open a portfolio dashboards
     if options['web']:
         os.system('streamlit run dashboard.py')
