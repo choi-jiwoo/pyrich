@@ -99,7 +99,7 @@ class PostgreSQL:
             print(e)
         finally:
             table = pd.DataFrame(rows, columns=col_name)
-            print(table)
+            return table
 
     def insert(self, table: str, record: dict) -> None:
         keys = list(record.keys())
