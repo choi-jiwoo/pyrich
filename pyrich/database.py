@@ -39,6 +39,7 @@ class PostgreSQL:
                   msg: bool=False) -> None:
         try:
             self.cur.execute(query, values)
+            self.conn.commit()
         except psycopg2.ProgrammingError:
             raise
         finally:
@@ -124,7 +125,6 @@ class PostgreSQL:
             print('Deleting stopped.')
         
     def __del__(self) -> None:
-        self.conn.commit()
         self.cur.close()
         self.conn.close()
 
