@@ -63,7 +63,7 @@ def set_args():
         '--csv',
         type=str,
         metavar='CSV FILENAME',
-        help=('Csv filename to copy data from. The file should be located'
+        help=('Csv filename to copy data from. The file should be located '
               'in the root directory of the package')
     )
     # display database table
