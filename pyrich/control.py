@@ -16,6 +16,12 @@ def run():
     args = parser.parse_args()
     options = vars(args)
 
+    # Disaply database table
+    if options['show']:
+        table_name = options['show']
+        db.show_table(table_name)
+        return
+
     # Open a portfolio dashboards
     if options['web']:
         os.system('streamlit run dashboard.py')
