@@ -66,8 +66,8 @@ class PostgreSQL:
                  'dividend REAL NOT NULL);')
         self.run_query(query)
 
-    def copy_from_csv(self, table: str, filename: str) -> None:
-        path = f'./{filename}'
+    def copy_from_csv(self, table: str) -> None:
+        path = f'./{table}.csv'
         abs_path = os.path.abspath(path)
         query = (f"COPY {table} "
                  f"FROM '{abs_path}' "
