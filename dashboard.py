@@ -4,6 +4,9 @@ from pyrich.database import PostgreSQL
 db = PostgreSQL()
 st.title('Streamlit Application')
 
+with st.sidebar:
+    st.title('Sidebar')
+
 # Record history
 st.header('Transaction History')
 transaction_history = db.show_table('transaction')
