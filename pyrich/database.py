@@ -1,4 +1,5 @@
 from collections.abc import Iterable
+from dotenv import load_dotenv
 import os
 import pandas as pd
 import psycopg2
@@ -7,15 +8,17 @@ from urllib.parse import urlparse
 
 class PostgreSQL:
 
-    def __init__(self, database_url: str) -> None:
-        self.database_url = database_url
+    load_dotenv()
+    DATABASE_URL = os.environ.get('DATABASE_URL')
+
+    def __init__(self) -> None:
         self._parse_database_url()
         self._connect()
         self._create_transaction_table()
         self._create_dividend_table()
 
     def _parse_database_url(self) -> None:
-        connection_info = urlparse(self.database_url)
+        connection_info = urlparse(PostgreSQL.DATABASE_URL)
         self.dbname = connection_info.path.lstrip('/')
         self.user = connection_info.username
         self.password = connection_info.password

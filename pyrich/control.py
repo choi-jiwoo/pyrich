@@ -1,5 +1,4 @@
 import os
-from dotenv import load_dotenv
 from pyrich.database import PostgreSQL
 from pyrich import parse
 from pyrich.transaction import Transaction
@@ -7,9 +6,7 @@ from pyrich.transaction import Transaction
 
 def run():
     # Set up database connection
-    load_dotenv()
-    database_url = os.environ.get('DATABASE_URL')
-    db = PostgreSQL(database_url)
+    db = PostgreSQL()
 
     # Load arguments
     parser = parse.set_args()
