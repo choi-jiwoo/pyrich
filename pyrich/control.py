@@ -28,6 +28,11 @@ def run():
         db.delete_rows(table_name)
         return
 
+    if options['deleteall']:
+        table_name = options['deleteall']
+        db.delete_rows(table_name, all_rows=True)
+        return
+
     # Open a portfolio dashboards
     if options['web']:
         os.system('streamlit run dashboard.py')
