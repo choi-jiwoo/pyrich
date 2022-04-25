@@ -20,8 +20,9 @@ def run():
     new_record = Transaction(options)
 
     if new_record.record['type'] == 'dividend':
-        # record dividends received
-        pass
+        keys = ['date', 'symbol', 'price']
+        record = new_record.record_dividends(keys)
+        db.insert('dividend', record)
     else:
         quantity = new_record.record['quantity']
         price = new_record.record['price']
