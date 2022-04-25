@@ -24,9 +24,8 @@ def run():
         record = new_record.record_dividends(keys)
         db.insert('dividend', record)
     else:
-        quantity = new_record.record['quantity']
-        price = new_record.record['price']
-        new_record.record['total_amount'] = quantity * price
+        record = new_record.record_transactions()
+        db.insert('transaction', record)
 
     if new_record.record['web']:
         os.system('streamlit run dashboard.py')
