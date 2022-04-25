@@ -5,6 +5,11 @@ from pyrich.transaction import Transaction
 
 
 def run():
+    # Open a portfolio dashboards
+    if options['web']:
+        os.system('streamlit run dashboard.py')
+        return
+
     # Set up database connection
     db = PostgreSQL()
 
@@ -37,11 +42,6 @@ def run():
         db.delete_rows(table_name, all_rows=True)
         return
 
-    # Open a portfolio dashboards
-    if options['web']:
-        os.system('streamlit run dashboard.py')
-        return
-
     # Record transaction 
     new_record = Transaction(options)
 
@@ -52,4 +52,3 @@ def run():
     else:
         record = new_record.record_transactions()
         db.insert('transaction', record)
-
