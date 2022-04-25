@@ -16,6 +16,11 @@ def run():
     args = parser.parse_args()
     options = vars(args)
 
+    # Open a portfolio dashboards
+    if options['web']:
+        os.system('streamlit run dashboard.py')
+        return
+
     # Record transaction 
     new_record = Transaction(options)
 
@@ -27,5 +32,3 @@ def run():
         record = new_record.record_transactions()
         db.insert('transaction', record)
 
-    if new_record.record['web']:
-        os.system('streamlit run dashboard.py')
