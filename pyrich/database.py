@@ -89,7 +89,7 @@ class PostgreSQL:
         try:
             col_name = self._get_column_name(table)
             query = f'SELECT * FROM {table};'
-            self.run_query(query, msg=True)
+            self.run_query(query, msg=False)
             result = self.cur.fetchall()
             rows = []
             for item in result:
