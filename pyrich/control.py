@@ -16,6 +16,12 @@ def run():
     args = parser.parse_args()
     options = vars(args)
 
+    # Copy record from csv file
+    if options['csv']:
+        table_name = options['csv']
+        db.copy_from_csv(table_name)
+        return
+
     # Disaply database table
     if options['show']:
         table_name = options['show']
