@@ -5,6 +5,11 @@ from pyrich.transaction import Transaction
 
 
 def run():
+    # Load arguments
+    parser = parse.set_args()
+    args = parser.parse_args()
+    options = vars(args)
+
     # Open a portfolio dashboards
     if options['web']:
         os.system('streamlit run dashboard.py')
@@ -12,11 +17,6 @@ def run():
 
     # Set up database connection
     db = PostgreSQL()
-
-    # Load arguments
-    parser = parse.set_args()
-    args = parser.parse_args()
-    options = vars(args)
 
     # Copy record from csv file
     if options['csv']:
