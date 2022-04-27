@@ -22,7 +22,7 @@ with st.sidebar:
     )
 
 if selected == 'Dashboard':
-    st.header('Dashboard')    
+    st.header('Dashboard')
 elif selected == 'Portfolio':
     st.header('Portfolio')
 elif selected == 'My Asset':
@@ -31,7 +31,6 @@ elif selected == 'Transaction History':
     st.header('Transaction History')
     transaction_history = portfolio.record
     st.dataframe(transaction_history)
-
     st.header('Dividend History')
     dividend_history = portfolio.transaction_history('dividend')
     st.dataframe(dividend_history)
