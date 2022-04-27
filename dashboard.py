@@ -27,6 +27,8 @@ if selected == 'Dashboard':
     st.header('Dashboard')
 elif selected == 'Portfolio':
     st.header('Portfolio')
+    summary_table = portfolio.summary()
+    st.table(summary_table)
 elif selected == 'My Asset':
     st.header('My Asset')
 elif selected == 'Transaction History':
