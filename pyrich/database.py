@@ -132,4 +132,4 @@ class PostgreSQL:
         self.conn.close()
 
     def __repr__(self) -> str:
-        return f"PostgreSQL(database_url='{self.database_url}')"
+        return f"PostgreSQL(database_url='{PostgreSQL.DATABASE_URL}')"
