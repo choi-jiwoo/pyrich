@@ -1,16 +1,12 @@
 import pandas as pd
-from pyrich.database import PostgreSQL
+from pyrich.record import Record
 
 
-class Portfolio:
+class Portfolio(Record):
 
-    def __init__(self, name: str) -> None:
+    def __init__(self, name: str, table: str) -> None:
+        super().__init__(table)
         self.name = name
-        self.db = PostgreSQL()
-
-    def transaction_history(self, table_name: str) -> pd.DataFrame:
-        record = self.db.show_table(table_name)
-        return record
 
     def __repr__(self) -> str:
-        return f"Portfolio(name='{self.name}')"
+        return f"Portfolio(name='{self.name}', table='{self.table}')"
