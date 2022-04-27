@@ -3,7 +3,7 @@ from streamlit_option_menu import option_menu
 from pyrich.portfolio import Portfolio
 
 
-portfolio = Portfolio('Choi Ji Woo')
+portfolio = Portfolio('Choi Ji Woo', 'transaction')
 st.title(f'Hello {portfolio.name} 👋🏼')
 
 with st.sidebar:
@@ -29,7 +29,7 @@ elif selected == 'My Asset':
     st.header('My Asset')
 elif selected == 'Transaction History':
     st.header('Transaction History')
-    transaction_history = portfolio.transaction_history('transaction')
+    transaction_history = portfolio.record
     st.dataframe(transaction_history)
 
     st.header('Dividend History')
