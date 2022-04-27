@@ -1,6 +1,7 @@
 import streamlit as st
 from streamlit_option_menu import option_menu
 from pyrich.portfolio import Portfolio
+from pyrich.dividend import Dividend
 
 
 portfolio = Portfolio('Choi Ji Woo', 'transaction')
@@ -15,8 +16,9 @@ with st.sidebar:
             'Portfolio',
             'My Asset',
             'Transaction History',
+            'Dividend History',
             ], 
-        icons=['house', 'stack', 'stack', 'stack'],
+        icons=['house', 'stack', 'stack', 'stack', 'stack'],
         menu_icon='list',
         default_index=0
     )
@@ -31,6 +33,8 @@ elif selected == 'Transaction History':
     st.header('Transaction History')
     transaction_history = portfolio.record
     st.dataframe(transaction_history)
+elif selected == 'Dividend History':
     st.header('Dividend History')
-    dividend_history = portfolio.transaction_history('dividend')
+    dividend = Dividend('dividend')
+    dividend_history = dividend.record
     st.dataframe(dividend_history)
