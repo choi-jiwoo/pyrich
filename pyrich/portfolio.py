@@ -41,8 +41,8 @@ class Portfolio(Record):
         total_amount = earnings['buy']
 
         data = {'quantity': quantity, 'total_amount': total_amount}
-        summary = pd.DataFrame(data)
-        return summary
+        portfolio = pd.DataFrame(data)
+        return portfolio
 
     def __repr__(self) -> str:
         return f"Portfolio(name='{self.name}', table='{self.table}')"
