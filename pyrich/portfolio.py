@@ -1,3 +1,4 @@
+from collections import deque
 import pandas as pd
 import numpy as np
 from pyrich.record import Record
@@ -42,7 +43,42 @@ class Portfolio(Record):
 
         data = {'quantity': quantity, 'total_amount': total_amount}
         portfolio = pd.DataFrame(data)
+        portfolio_average_price = self._get_portfolio_average_price(portfolio)
+        portfolio = portfolio.join(portfolio_average_price)
         return portfolio
+    
+    def _get_average_price_paid(self, symbol: str) -> float:
+        symbol_transaction = self.record[self.record['symbol']==symbol]
+        symbol_transaction = symbol_transaction[['type', 'quantity', 'price']]
+        transactions = deque()
+        for i in symbol_transaction.values:
+            transaction_type = i[0]
+            quantity = i[1]
+            price = i[2]
+            while quantity > 0:
+                if transaction_type == 'buy':
+                    transactions.append(price)
+                else:
+                    transactions.popleft()
+                quantity -= 1
+        transactions = np.array(transactions)
+        if transactions.size > 0:
+            average_price_paid = transactions.mean()
+        else:
+            average_price_paid = 0
+        return average_price_paid
+
+    def _get_portfolio_average_price(self, portfolio: pd.DataFrame) -> pd.Series:
+        average_price_paid = {
+            symbol: self._get_average_price_paid(symbol)
+            for symbol
+            in portfolio.index
+        }
+        average_price_paid = pd.Series(
+            average_price_paid,
+            name='average_price_paid'
+        )
+        return average_price_paid
 
     def __repr__(self) -> str:
         return f"Portfolio(name='{self.name}', table='{self.table}')"
