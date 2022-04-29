@@ -62,11 +62,12 @@ class Portfolio(Record):
                     transactions.popleft()
                 quantity -= 1
         transactions = np.array(transactions)
-        if transactions.size > 0:
+        try:
             average_price_paid = transactions.mean()
-        else:
+        except Exception:
             average_price_paid = 0
-        return average_price_paid
+        finally:
+            return average_price_paid
 
     def _get_portfolio_average_price(self, portfolio: pd.DataFrame) -> pd.Series:
         average_price_paid = {
