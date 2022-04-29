@@ -14,6 +14,7 @@ class PostgreSQL:
     def __init__(self) -> None:
         self._parse_database_url()
         self._connect()
+        self._create_cash_table()
         self._create_transaction_table()
         self._create_dividend_table()
 
@@ -55,6 +56,28 @@ class PostgreSQL:
         row_count = self.cur.fetchone()[0]
         is_empty = True if row_count == 0 else False
         return is_empty
+
+    def _create_cash_table(self) -> None:
+        cash_table = 'cash'
+        query = ('CREATE TABLE IF NOT EXISTS cash'
+                 '(id serial PRIMARY KEY,'
+                 'amount REAL NOT NULL,'
+                 'currency VARCHAR(5) NOT NULL);')
+        self.run_query(query)
+        default_cash = {
+            'default_krw_amount': {
+                'amount': 0,
+                'currency': 'KRW',
+            },
+            'default_usd_amount': {
+                'amount': 0,
+                'currency': 'USD',
+            }
+        }
+        is_empty = self._check_empty_table(cash_table)
+        if is_empty:
+            for item in default_cash.values():
+                self.insert(cash_table, item, msg=False)
 
     def _create_transaction_table(self) -> None:
         query = ('CREATE TABLE IF NOT EXISTS transaction'
