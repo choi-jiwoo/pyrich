@@ -27,7 +27,7 @@ def run():
     # Disaply database table
     if options['show']:
         table_name = options['show']
-        table = db.show_table(table_name)
+        table = db.show_table(table_name, msg=False)
         print(table)
         return
 

@@ -70,14 +70,14 @@ class PostgreSQL:
                  'dividend REAL NOT NULL);')
         self.run_query(query)
 
-    def copy_from_csv(self, table: str) -> None:
+    def copy_from_csv(self, table: str, msg: bool=True) -> None:
         path = f'./{table}.csv'
         abs_path = os.path.abspath(path)
         query = (f"COPY {table} "
                  f"FROM '{abs_path}' "
                   "DELIMITER ',' "
                   "CSV HEADER;")
-        self.run_query(query, msg=True)
+        self.run_query(query, msg=msg)
 
     def _get_column_name(self, table: str) -> list:
         try:
@@ -89,11 +89,11 @@ class PostgreSQL:
         finally:
             return col_name
 
-    def show_table(self, table: str) -> None:
+    def show_table(self, table: str, msg: bool=True) -> None:
         try:
             col_name = self._get_column_name(table)
             query = f'SELECT * FROM {table};'
-            self.run_query(query, msg=False)
+            self.run_query(query, msg=msg)
             result = self.cur.fetchall()
             rows = []
             for item in result:
@@ -104,7 +104,7 @@ class PostgreSQL:
             table = pd.DataFrame(rows, columns=col_name)
             return table
 
-    def insert(self, table: str, record: dict) -> None:
+    def insert(self, table: str, record: dict, msg: bool=True) -> None:
         keys = list(record.keys())
         values = list(record.values())
         column = ', '.join(keys)
@@ -112,7 +112,7 @@ class PostgreSQL:
         placeholders = ', '.join(value_seq)
         query = (f"INSERT INTO {table} ({column}) "
                  f"VALUES ({placeholders});")
-        self.run_query(query, values, msg=True)
+        self.run_query(query, values, msg=msg)
 
     def delete_rows(self, table: str, all_rows: bool=False) -> None:
         if all_rows:
@@ -123,7 +123,7 @@ class PostgreSQL:
             warning_msg = input('Deleting the last row. Continue? (Y/n): ')
 
         if warning_msg.upper() == 'Y':
-            self.run_query(query, msg=True)
+            self.run_query(query, msg=msg)
         else:
             print('Deleting stopped.')
         
