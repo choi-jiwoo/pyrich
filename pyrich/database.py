@@ -49,6 +49,13 @@ class PostgreSQL:
             if msg:
                 print('Query ran successfully.')
 
+    def _check_empty_table(self, table: str) -> bool:
+        query = f'SELECT COUNT(*) FROM {table}'
+        self.run_query(query)
+        row_count = self.cur.fetchone()[0]
+        is_empty = True if row_count == 0 else False
+        return is_empty
+
     def _create_transaction_table(self) -> None:
         query = ('CREATE TABLE IF NOT EXISTS transaction'
                  '(id serial PRIMARY KEY,'
