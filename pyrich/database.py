@@ -119,7 +119,7 @@ class PostgreSQL:
         finally:
             return col_name
 
-    def show_table(self, table: str, msg: bool=True) -> None:
+    def show_table(self, table: str, msg: bool=False) -> None:
         try:
             col_name = self._get_column_name(table)
             query = f'SELECT * FROM {table};'
