@@ -4,6 +4,7 @@ import os
 import pandas as pd
 import psycopg2
 from urllib.parse import urlparse
+from pyrich.error import ArrayLengthDoesNotMatchError
 
 
 class PostgreSQL:
@@ -143,6 +144,22 @@ class PostgreSQL:
         query = (f"INSERT INTO {table} ({column}) "
                  f"VALUES ({placeholders});")
         self.run_query(query, values, msg=msg)
+
+    def update(self, table: str, column: list, value: list, _id: int, msg: bool=True) -> None:
+        col_len = len(column)
+        val_len = len(value)
+        if col_len != val_len:
+            msg = 'column length does not match value length.'
+            raise ArrayLengthDoesNotMatchError(msg)
+
+        set_clause_holder = []
+        for i in column:
+            item = f'{i}=%s'
+            set_clause_holder.append(item)
+        set_clause = ', '.join(set_clause_holder)
+        query = f'UPDATE {table} SET {set_clause} WHERE id=%s;'
+        value.append(_id)
+        self.run_query(query, value, msg=msg)
 
     def delete_rows(self, table: str, all_rows: bool=False) -> None:
         if all_rows:
