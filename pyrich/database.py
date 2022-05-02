@@ -123,7 +123,7 @@ class PostgreSQL:
     def show_table(self, table: str, msg: bool=False) -> None:
         try:
             col_name = self._get_column_name(table)
-            query = f'SELECT * FROM {table};'
+            query = f'SELECT * FROM {table} ORDER BY id;'
             self.run_query(query, msg=msg)
             result = self.cur.fetchall()
             rows = []
