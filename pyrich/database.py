@@ -160,7 +160,7 @@ class PostgreSQL:
         value.append(_id)
         self.run_query(query, value, msg=msg)
 
-    def delete_rows(self, table: str, all_rows: bool=False) -> None:
+    def delete_rows(self, table: str, all_rows: bool=False, msg: bool=True) -> None:
         if all_rows:
             query = f'DELETE FROM {table};'
             warning_msg = input('Deleting all rows in the table. Continue? (Y/n): ')
