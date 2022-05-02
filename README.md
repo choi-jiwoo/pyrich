@@ -1,2 +1,3 @@
 # pyrich
-My own portfolio management service
+
+My own simple stock portfolio management service.
