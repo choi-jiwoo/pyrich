@@ -39,11 +39,11 @@ elif selected == 'My Asset':
         st.dataframe(current_cash)
     with col2:
         with st.form('Current Cash', clear_on_submit=True):
-            cash_amout = st.text_input('Current Cash', placeholder=0)
+            cash_amount = st.text_input('Current Cash', placeholder=0)
             currency = st.radio('Currency', ['KRW', 'USD'])
             submitted = st.form_submit_button('Submit')
             if submitted:
-                cash.update_current_cash('amount', cash_amout, currency)
+                cash.update_current_cash('amount', cash_amount, currency)
                 st.experimental_rerun()
 
 elif selected == 'Transaction History':
