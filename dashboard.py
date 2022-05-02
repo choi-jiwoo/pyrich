@@ -2,6 +2,7 @@ import streamlit as st
 from streamlit_option_menu import option_menu
 from pyrich.portfolio import Portfolio
 from pyrich.dividend import Dividend
+from pyrich.cash import Cash
 
 
 portfolio = Portfolio('Choi Ji Woo', 'transaction')
@@ -31,6 +32,20 @@ elif selected == 'Portfolio':
     st.table(portfolio_table)
 elif selected == 'My Asset':
     st.header('My Asset')
+    col1, col2 = st.columns(2)
+    cash = Cash('cash')
+    current_cash = cash.record
+    with col1:
+        st.dataframe(current_cash)
+    with col2:
+        with st.form('Current Cash', clear_on_submit=True):
+            cash_amout = st.text_input('Current Cash', placeholder=0)
+            currency = st.radio('Currency', ['KRW', 'USD'])
+            submitted = st.form_submit_button('Submit')
+            if submitted:
+                cash.update_current_cash('amount', cash_amout, currency)
+                st.experimental_rerun()
+
 elif selected == 'Transaction History':
     st.header('Transaction History')
     transaction_history = portfolio.record
