@@ -45,11 +45,10 @@ class PostgreSQL:
         try:
             self.cur.execute(query, values)
             self.conn.commit()
-        except psycopg2.ProgrammingError:
-            raise
-        finally:
             if msg:
                 print('Query ran successfully.')
+        except psycopg2.ProgrammingError:
+            raise
 
     def _check_empty_table(self, table: str) -> bool:
         query = f'SELECT COUNT(*) FROM {table}'
