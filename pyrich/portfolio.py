@@ -14,7 +14,7 @@ class Portfolio(Record):
         record_pivot_table = pd.pivot_table(
             self.record,
             values=column,
-            index='symbol',
+            index=['country', 'symbol'],
             columns='type',
             aggfunc=np.sum
         )
