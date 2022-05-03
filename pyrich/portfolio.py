@@ -32,21 +32,6 @@ class Portfolio(Record):
         earnings['amount'] = earnings['sell'] - earnings['buy']
         return earnings
     
-    def summary(self) -> pd.DataFrame:
-        quantity = self._get_current_stock()
-        quantity = quantity[quantity['amount'] > 0]
-        quantity = quantity['amount']
-
-        earnings = self._get_earnings()
-        earnings = earnings[earnings['amount'].isna()]
-        total_amount = earnings['buy']
-
-        data = {'quantity': quantity, 'total_amount': total_amount}
-        portfolio = pd.DataFrame(data)
-        portfolio_average_price = self._get_portfolio_average_price(portfolio)
-        portfolio = portfolio.join(portfolio_average_price)
-        return portfolio
-    
     def _get_average_price_paid(self, symbol: str) -> float:
         symbol_transaction = self.record[self.record['symbol']==symbol]
         symbol_transaction = symbol_transaction[['type', 'quantity', 'price']]
@@ -80,6 +65,22 @@ class Portfolio(Record):
             name='average_price_paid'
         )
         return average_price_paid
+
+    def summary(self) -> pd.DataFrame:
+        quantity = self._get_current_stock()
+        quantity = quantity[quantity['amount'] > 0]
+        quantity = quantity['amount']
+
+        earnings = self._get_earnings()
+        earnings = earnings[earnings['amount'].isna()]
+        total_amount = earnings['buy']
+
+        data = {'quantity': quantity, 'total_amount': total_amount}
+        portfolio = pd.DataFrame(data)
+        portfolio.reset_index('country', inplace=True)
+        portfolio_average_price = self._get_portfolio_average_price(portfolio)
+        portfolio = portfolio.join(portfolio_average_price)
+        return portfolio
 
     def __repr__(self) -> str:
         return f"Portfolio(name='{self.name}', table='{self.table}')"
