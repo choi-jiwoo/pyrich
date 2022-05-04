@@ -1,4 +1,5 @@
 from bs4 import BeautifulSoup as bs
+import pandas as pd
 import requests
 from pyrich.api import set_finnhub
 
@@ -36,3 +37,10 @@ def scrape_from_naver_finance(symbol: str):
     today = soup.select_one('#chart_area > div.rate_info > div')
     tags = today.find_all('span', class_='blind')
     return tags
+
+def get_usd_to_krw():
+    url = 'https://finance.naver.com/marketindex/exchangeDetail.naver?marketindexCd=FX_USDKRW'
+    tables = pd.read_html(url)
+    currency_table = tables[0]
+    current_usd_to_krw = currency_table.iloc[0, 0]
+    return current_usd_to_krw
