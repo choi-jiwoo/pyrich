@@ -8,6 +8,7 @@ from pyrich.cash import Cash
 portfolio = Portfolio('Choi Ji Woo', 'transaction')
 st.title(f'Hello {portfolio.name} 👋🏼')
 
+portfolio_table = portfolio.summary()
 with st.sidebar:
     # https://icons.getbootstrap.com/
     selected = option_menu(
@@ -28,7 +29,6 @@ if selected == 'Dashboard':
     st.header('Dashboard')
 elif selected == 'Portfolio':
     st.header('Portfolio')
-    portfolio_table = portfolio.summary()
     st.table(portfolio_table)
 elif selected == 'My Asset':
     st.header('My Asset')
