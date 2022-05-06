@@ -82,5 +82,11 @@ class Portfolio(Record):
         portfolio = portfolio.join(portfolio_average_price)
         return portfolio
 
+    def get_stock_by_country(self, portfolio: pd.DataFrame) -> pd.DataFrame:
+        country_group = portfolio[['country', 'total_amount']]
+        country_group = country_group.groupby('country')
+        stock_by_country = country_group.agg(np.sum)
+        return stock_by_country
+
     def __repr__(self) -> str:
         return f"Portfolio(name='{self.name}', table='{self.table}')"
