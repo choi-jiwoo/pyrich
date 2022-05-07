@@ -5,10 +5,13 @@ from pyrich.dividend import Dividend
 from pyrich.cash import Cash
 
 
+# Loading main page
 portfolio = Portfolio('Choi Ji Woo', 'transaction')
 st.title(f'Hello {portfolio.name} 👋🏼')
 
+# Loding portfolio data
 portfolio_table = portfolio.summary()
+# Sidebar component
 with st.sidebar:
     # https://icons.getbootstrap.com/
     selected = option_menu(
