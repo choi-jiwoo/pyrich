@@ -102,7 +102,6 @@ class Portfolio(Record):
         stock_by_country = country_group.agg(
             {
                 'total_amount': np.sum,
-                # 'currency': np.unique
                 'currency': lambda x: np.unique(x)[0]
             }
         )
