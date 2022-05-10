@@ -39,7 +39,7 @@ elif selected == 'My Asset':
     cash = Cash('cash')
     current_cash = cash.record
     with col1:
-        st.dataframe(current_cash)
+        st.table(current_cash)
     with col2:
         with st.form('Current Cash', clear_on_submit=True):
             cash_amount = st.text_input('Current Cash', placeholder=0)
