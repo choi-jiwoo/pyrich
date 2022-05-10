@@ -66,6 +66,19 @@ class Portfolio(Record):
         )
         return average_price_paid
 
+    def _map_currency(self, portfolio: pd.DataFrame) -> pd.DataFrame:
+        currency_mapping = {
+            'CRYPTO': 'KRW',
+            'KOR': 'KRW',
+            'USA': 'USD',
+        }
+        portfolio['currency'] = [
+            currency_mapping[country]
+            for country
+            in portfolio['country']
+        ]
+        return portfolio
+
     def summary(self) -> pd.DataFrame:
         quantity = self._get_current_stock()
         quantity = quantity[quantity['amount'] > 0]
@@ -80,12 +93,19 @@ class Portfolio(Record):
         portfolio.reset_index('country', inplace=True)
         portfolio_average_price = self._get_portfolio_average_price(portfolio)
         portfolio = portfolio.join(portfolio_average_price)
+        portfolio = self._map_currency(portfolio)
         return portfolio
 
     def get_stock_by_country(self, portfolio: pd.DataFrame) -> pd.DataFrame:
-        country_group = portfolio[['country', 'total_amount']]
+        country_group = portfolio[['country', 'total_amount', 'currency']]
         country_group = country_group.groupby('country')
-        stock_by_country = country_group.agg(np.sum)
+        stock_by_country = country_group.agg(
+            {
+                'total_amount': np.sum,
+                # 'currency': np.unique
+                'currency': lambda x: np.unique(x)[0]
+            }
+        )
         return stock_by_country
 
     def __repr__(self) -> str:
