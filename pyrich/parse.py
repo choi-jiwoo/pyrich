@@ -29,12 +29,6 @@ def set_args():
         metavar='SYMBOL',
         help='Symbol of a stock'
     )
-    # check for cryptocurrency
-    parser.add_argument(
-        '--crypto',
-        action='store_true',
-        help='Mark the stock as crypto. Defaults to False'
-    )
     # record transaction type
     parser.add_argument(
         '-t',
