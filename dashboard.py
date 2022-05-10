@@ -37,9 +37,9 @@ elif selected == 'My Asset':
     st.header('My Asset')
     col1, col2 = st.columns(2)
     cash = Cash('cash')
-    current_cash = cash.record
+    cash_table = cash.record
     with col1:
-        st.table(current_cash)
+        st.table(cash_table)
     with col2:
         with st.form('Current Cash', clear_on_submit=True):
             cash_amount = st.text_input('Current Cash', placeholder=0)
