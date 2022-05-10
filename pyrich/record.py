@@ -1,4 +1,5 @@
 import pandas as pd
+from functools import cached_property
 from pyrich.database import PostgreSQL
 
 
@@ -8,7 +9,7 @@ class Record:
         self.table = table
         self.db = PostgreSQL()
 
-    @property
+    @cached_property
     def record(self) -> pd.DataFrame:
         return self.db.show_table(self.table)
 
