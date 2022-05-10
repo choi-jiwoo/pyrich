@@ -15,6 +15,11 @@ def get_current_price(stock: dict) -> float:
         price_now = get_from_us_market(stock['symbol'])
     elif stock['country'] == 'KOR':
         price_now = get_from_kor_market(stock['symbol'])
+    elif stock['country'] == 'CRYPTO':
+        crypto_symbol = f"BINANCE:{stock['symbol']}USDT"
+        price_now = get_from_us_market(crypto_symbol)
+    else:
+        raise SearchError('Company name not found.')
     return price_now
 
 def get_from_us_market(symbol: str):
