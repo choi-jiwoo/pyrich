@@ -47,7 +47,6 @@ def search_kor_company_symbol(company_name: str) -> tuple:
         res.raise_for_status()
 
 def search_us_company_symbol(company_name: str) -> tuple:
-    company_name = 'snowflake'
     url = 'https://efts.sec.gov/LATEST/search-index'
     form_data = f'{{"keysTyped": "{company_name}","narrow": true}}'
     res = requests.post(url, data=form_data)
