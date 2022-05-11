@@ -25,8 +25,9 @@ def get_current_price(stock: dict) -> float:
 def get_from_us_market(symbol: str):
     # https://finnhub.io/docs/api/quote
     finnhub = set_finnhub()
-    price_now = finnhub.quote(symbol)
-    return price_now
+    quote = finnhub.quote(symbol)
+    current_price = quote['c']
+    return current_price
 
 def search_kor_company_symbol(company_name: str) -> tuple:
     url = 'https://kind.krx.co.kr/common/searchcorpname.do'
