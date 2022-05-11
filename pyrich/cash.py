@@ -1,3 +1,4 @@
+import numpy as np
 import pandas as pd
 from pyrich.record import Record
 
@@ -19,6 +20,14 @@ class Cash(Record):
             }
             _id = currency_id[currency]
             self.db.update('cash', [column], [value], _id, msg=False)
+
+    def get_total_cash_in_krw(self) -> float:
+        cash_table = self.record.drop(columns='id')
+        current_cash = cash_table.set_index('currency')
+        current_cash.loc['USD'] *= self.forex_usd_to_won
+        current_cash.rename(columns={'amount': 'total_cash'}, inplace=True)
+        total_cash_in_krw = np.sum(current_cash)
+        return total_cash_in_krw
 
     def __repr__(self) -> str:
         return f"Cash(table='{self.table}')"
