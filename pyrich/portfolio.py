@@ -107,5 +107,13 @@ class Portfolio(Record):
         )
         return stock_by_country
 
+    def get_total_stock_value_in_krw(self, stock_by_country: pd.DataFrame) -> pd.DataFrame:
+        us_stock_value_in_krw = stock_by_country.loc['USA', 'total_amount'] * self.forex_usd_to_won
+        stock_value_in_krw = stock_by_country.drop('USA')
+        stock_value_in_krw = stock_value_in_krw.agg({'total_amount': np.sum})
+        total_stock_value_in_krw = stock_value_in_krw + us_stock_value_in_krw
+        total_stock_value_in_krw.rename({'total_amount': 'total_stock_value'}, inplace=True)
+        return total_stock_value_in_krw
+
     def __repr__(self) -> str:
         return f"Portfolio(name='{self.name}', table='{self.table}')"
