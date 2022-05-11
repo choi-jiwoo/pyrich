@@ -93,9 +93,9 @@ def get_from_kor_market(symbol: str):
         item = tag.get_text()
         item = item.replace(',', '')
         data.append(float(item))
-    label = ['c', 'd', 'dp']  # c: current price, d: change, dp: percent change
-    price_now = {k: v for k, v in zip(label, data)}
-    return price_now
+    current_price_and_pct_change = ['c', 'dp']  # c: current price, dp: percent change
+    price_data = {k: v for k, v in zip(label, data)}
+    return price_data
 
 def get_usd_to_krw():
     url = 'https://finance.naver.com/marketindex/exchangeDetail.naver?marketindexCd=FX_USDKRW'
