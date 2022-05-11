@@ -26,8 +26,13 @@ def get_from_us_market(symbol: str):
     # https://finnhub.io/docs/api/quote
     finnhub = set_finnhub()
     quote = finnhub.quote(symbol)
-    current_price = quote['c']
-    return current_price
+    current_price_and_pct_change = ['c', 'dp']
+    price_data = {
+        k: quote[k]
+        for k
+        in current_price_and_pct_change
+    }
+    return price_data
 
 def search_kor_company_symbol(company_name: str) -> tuple:
     url = 'https://kind.krx.co.kr/common/searchcorpname.do'
