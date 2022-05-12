@@ -100,9 +100,13 @@ def get_from_kor_market(symbol: str):
     for tag in info:
         item = tag.get_text()
         item = item.replace(',', '')
-        data.append(float(item))
+        data.append(item)
+    sign = data[3]
+    quote = [float(data[i]) for i in range(0, len(data), 4)]
+    if sign == '-':
+        quote[1] *= -1
     current_price_and_pct_change = ['c', 'dp']  # c: current price, dp: percent change
-    price_data = {k: v for k, v in zip(label, data)}
+    price_data = {k: v for k, v in zip(label, quote)}
     return price_data
 
 def get_usd_to_krw():
