@@ -4,10 +4,10 @@ import requests
 from pyrich.api import set_finnhub
 from pyrich.error import SearchError
 
+
 HEADERS = {
     'User-Agent': 'Mozilla',
     'X-Requested-With': 'XMLHttpRequest',
-    'Content-Type': 'application/x-www-form-urlencoded'
 }
 
 def get_current_price(stock: dict) -> float:
@@ -35,19 +35,20 @@ def get_from_us_market(symbol: str):
     return price_data
 
 def search_kor_company_symbol(company_name: str) -> tuple:
-    url = 'https://kind.krx.co.kr/common/searchcorpname.do'
-    data = {
-        'method': 'searchCorpNameJson',
-        'searchCodeType': 'char',
-        'searchCorpName': company_name,
+    url = 'http://data.krx.co.kr/comm/util/SearchEngine/isuCore.cmd'
+    params = {
+        'isAutoCom': True,
+        'solrIsuType': 'STK',
+        'solrKeyword': company_name,
+        'rows': '20',
+        'start': '0',
     }
-    res = requests.post(url, headers=HEADERS, data=data)
+    res = requests.post(url, headers=HEADERS, params=params)
     try:
         res_data = res.json()
-        first_search_res = res_data[0]
-        official_comp_name = first_search_res['repisusrtkornm']
-        comp_symbol = first_search_res['repisusrtcd2']
-        return official_comp_name, comp_symbol
+        first_search_res = res_data['result'][0]
+        symbol = first_search_res['isu_srt_cd'][0]
+        return symbol
     except Exception:
         res.raise_for_status()
 
