@@ -88,7 +88,7 @@ class PostgreSQL:
                  'type VARCHAR(5) NOT NULL,'
                  'quantity REAL NOT NULL,'
                  'price REAL NOT NULL,'
-                 'total_amount REAL NOT NULL);')
+                 'total_price_paid REAL NOT NULL);')
         self.run_query(query)
 
     def _create_dividend_table(self) -> None:

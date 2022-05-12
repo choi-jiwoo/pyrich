@@ -28,7 +28,7 @@ class Portfolio(Record):
         return stock
 
     def _get_earnings(self) -> pd.DataFrame:
-        earnings = self._get_pivot_table('total_amount')
+        earnings = self._get_pivot_table('total_price_paid')
         earnings['amount'] = earnings['sell'] - earnings['buy']
         return earnings
     
@@ -86,9 +86,9 @@ class Portfolio(Record):
 
         earnings = self._get_earnings()
         earnings = earnings[earnings['amount'].isna()]
-        total_amount = earnings['buy']
+        total_price_paid = earnings['buy']
 
-        data = {'quantity': quantity, 'total_amount': total_amount}
+        data = {'quantity': quantity, 'total_price_paid': total_price_paid}
         portfolio = pd.DataFrame(data)
         portfolio.reset_index('country', inplace=True)
         portfolio_average_price = self._get_portfolio_average_price(portfolio)
@@ -97,22 +97,22 @@ class Portfolio(Record):
         return portfolio
 
     def get_stock_by_country(self, portfolio: pd.DataFrame) -> pd.DataFrame:
-        country_group = portfolio[['country', 'total_amount', 'currency']]
+        country_group = portfolio[['country', 'total_price_paid', 'currency']]
         country_group = country_group.groupby('country')
         stock_by_country = country_group.agg(
             {
-                'total_amount': np.sum,
+                'total_price_paid': np.sum,
                 'currency': lambda x: np.unique(x)[0]
             }
         )
         return stock_by_country
 
     def get_total_stock_value_in_krw(self, stock_by_country: pd.DataFrame) -> pd.DataFrame:
-        us_stock_value_in_krw = stock_by_country.loc['USA', 'total_amount'] * self.forex_usd_to_won
+        us_stock_value_in_krw = stock_by_country.loc['USA', 'total_price_paid'] * self.forex_usd_to_won
         stock_value_in_krw = stock_by_country.drop('USA')
-        stock_value_in_krw = stock_value_in_krw.agg({'total_amount': np.sum})
+        stock_value_in_krw = stock_value_in_krw.agg({'total_price_paid': np.sum})
         total_stock_value_in_krw = stock_value_in_krw + us_stock_value_in_krw
-        total_stock_value_in_krw.rename({'total_amount': 'total_stock_value'}, inplace=True)
+        total_stock_value_in_krw.rename({'total_price_paid': 'total_stock_value'}, inplace=True)
         return total_stock_value_in_krw
 
     def __repr__(self) -> str:

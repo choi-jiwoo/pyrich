@@ -37,5 +37,5 @@ class Transaction:
             del transaction_record[key]
         quantity = transaction_record['quantity']
         price = transaction_record['price']
-        transaction_record['total_amount'] = quantity * price
+        transaction_record['total_price_paid'] = quantity * price
         return transaction_record

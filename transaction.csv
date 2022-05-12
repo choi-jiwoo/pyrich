@@ -1,2 +1,2 @@
-﻿id,date,country,symbol,crypto,type,quantity,price,total_amount
-1,2022.4.19,USA,AAPL,FALSE,buy,1,123,123
+﻿id,date,country,symbol,type,quantity,price,total_price_paid
+1,2020.4.9,USA,SKYY,buy,1,57,57
