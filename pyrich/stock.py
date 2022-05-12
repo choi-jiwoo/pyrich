@@ -10,17 +10,18 @@ HEADERS = {
     'X-Requested-With': 'XMLHttpRequest',
 }
 
-def get_current_price(stock: dict) -> float:
-    if stock['country'] == 'USA':
-        price_now = get_from_us_market(stock['symbol'])
-    elif stock['country'] == 'KOR':
-        price_now = get_from_kor_market(stock['symbol'])
-    elif stock['country'] == 'CRYPTO':
-        crypto_symbol = f"BINANCE:{stock['symbol']}USDT"
-        price_now = get_from_us_market(crypto_symbol)
+def get_current_price(symbol: str, country: str) -> dict:
+    if country == 'USA':
+        price_data = get_from_us_market(symbol)
+    elif country == 'KOR':
+        kor_symbol = search_kor_company_symbol(symbol)
+        price_data = get_from_kor_market(kor_symbol)
+    elif country == 'CRYPTO':
+        crypto_symbol = f"BINANCE:{stock}USDT"
+        price_data = get_from_us_market(crypto_symbol)
     else:
         raise SearchError('Company name not found.')
-    return price_now
+    return price_data
 
 def get_from_us_market(symbol: str):
     # https://finnhub.io/docs/api/quote
