@@ -85,12 +85,14 @@ def get_symbol(company_name: str, country: str='USA') -> tuple:
 def scrape_from_naver_finance(symbol: str):
     url = f'https://finance.naver.com/item/main.nhn?code={symbol}'
     res = requests.get(url)
-    res.raise_for_status()
-    html = res.text
-    soup = bs(html, 'html.parser')
-    today = soup.select_one('#chart_area > div.rate_info > div')
-    tags = today.find_all('span', class_='blind')
-    return tags
+    try:
+        html = res.text
+        soup = bs(html, 'html.parser')
+        today = soup.select_one('#chart_area > div.rate_info > div')
+        tags = today.find_all('span', class_=['blind', 'ico'])
+        return tags
+    except Exception:
+        res.raise_for_status()
 
 def get_from_kor_market(symbol: str):
     info = scrape_from_naver_finance(symbol)
