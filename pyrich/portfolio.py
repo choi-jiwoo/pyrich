@@ -79,7 +79,7 @@ class Portfolio(Record):
         ]
         return portfolio
 
-    def summary(self) -> pd.DataFrame:
+    def current_portfolio(self) -> pd.DataFrame:
         quantity = self._get_current_stock()
         quantity = quantity[quantity['amount'] > 0]
         quantity = quantity['amount']

@@ -10,7 +10,8 @@ portfolio = Portfolio('Choi Ji Woo', 'transaction')
 st.title(f'Hello {portfolio.name} 👋🏼')
 
 # Loding portfolio data
-portfolio_table = portfolio.summary()
+portfolio_table = portfolio.current_portfolio()
+
 # Sidebar component
 with st.sidebar:
     # https://icons.getbootstrap.com/
