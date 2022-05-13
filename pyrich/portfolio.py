@@ -2,6 +2,7 @@ from collections import deque
 import pandas as pd
 import numpy as np
 from pyrich.record import Record
+from pyrich import stock
 
 
 class Portfolio(Record):
@@ -78,6 +79,22 @@ class Portfolio(Record):
             in portfolio['country']
         ]
         return portfolio
+
+    def _get_stock_quote(self, portfolio: pd.DataFrame) -> pd.DataFrame:
+        portfolio_stock_price = []
+
+        for symbol in portfolio.index:
+            country = portfolio.loc[symbol, 'country']
+            current_stock_data = stock.get_current_price(symbol, country)
+            portfolio_stock_price.append(current_stock_data)
+
+        day_change = pd.DataFrame(portfolio_stock_price)
+        day_change['dp'] = day_change['dp'].apply(round, args=(2,))
+        col_name = ['current_price', 'day_change(%)']
+        day_change.columns = col_name
+        day_change.index = portfolio.index
+        current_portfolio = portfolio.join(day_change)
+        return current_portfolio
 
     def current_portfolio(self) -> pd.DataFrame:
         quantity = self._get_current_stock()
