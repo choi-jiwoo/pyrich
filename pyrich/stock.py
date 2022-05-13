@@ -23,7 +23,7 @@ def get_current_price(symbol: str, country: str) -> dict:
         raise SearchError('Company name not found.')
     return price_data
 
-def get_from_us_market(symbol: str):
+def get_from_us_market(symbol: str) -> dict:
     # https://finnhub.io/docs/api/quote
     finnhub = set_finnhub()
     quote = finnhub.quote(symbol)
@@ -83,7 +83,7 @@ def get_symbol(company_name: str, country: str='USA') -> tuple:
         raise SearchError('Company name not found.')
     return comp
 
-def scrape_from_naver_finance(symbol: str):
+def scrape_from_naver_finance(symbol: str) -> list:
     url = f'https://finance.naver.com/item/main.nhn?code={symbol}'
     res = requests.get(url, headers=HEADERS)
     try:
@@ -95,7 +95,7 @@ def scrape_from_naver_finance(symbol: str):
     except Exception:
         res.raise_for_status()
 
-def get_from_kor_market(symbol: str):
+def get_from_kor_market(symbol: str) -> dict:
     info = scrape_from_naver_finance(symbol)
     data = []
     for tag in info:
