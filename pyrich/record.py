@@ -1,7 +1,7 @@
 import pandas as pd
 from functools import cached_property
 from pyrich.database import PostgreSQL
-from pyrich import stock
+from pyrich import forex
 
 
 class Record:
@@ -16,7 +16,7 @@ class Record:
 
     @property
     def forex_usd_to_won(self) -> float:
-        return stock.get_usd_to_krw()
+        return forex.get_usd_to_krw()
 
     def __repr__(self) -> str:
         return f"Record(table='{self.table}')"
