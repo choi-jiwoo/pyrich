@@ -107,5 +107,5 @@ def get_from_kor_market(symbol: str) -> dict:
     if sign == '-':
         quote[1] *= -1
     current_price_and_pct_change = ['c', 'dp']  # c: current price, dp: percent change
-    price_data = {k: v for k, v in zip(label, quote)}
+    price_data = {k: v for k, v in zip(current_price_and_pct_change, quote)}
     return price_data
