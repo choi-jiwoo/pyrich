@@ -85,7 +85,7 @@ def get_symbol(company_name: str, country: str='USA') -> tuple:
 
 def scrape_from_naver_finance(symbol: str):
     url = f'https://finance.naver.com/item/main.nhn?code={symbol}'
-    res = requests.get(url)
+    res = requests.get(url, headers=HEADERS)
     try:
         html = res.text
         soup = bs(html, 'html.parser')
