@@ -19,8 +19,7 @@ def get_current_price(symbol: str, country: str) -> dict:
         kor_symbol = search_kor_company_symbol(symbol)
         price_data = get_from_kor_market(kor_symbol)
     elif country == 'CRYPTO':
-        crypto_symbol = f"BINANCE:{stock}USDT"
-        price_data = get_from_us_market(crypto_symbol)
+        price_data = get_crypto_price(symbol)
     else:
         raise SearchError('Company name not found.')
     return price_data
@@ -36,6 +35,26 @@ def get_from_us_market(symbol: str) -> dict:
         in current_price_and_pct_change
     }
     return price_data
+
+def get_crypto_price(symbol: str) -> dict:
+    url = 'https://crix-api-cdn.upbit.com/v1/crix/trades/ticks'
+    params = {
+        'code': f'CRIX.UPBIT.KRW-{symbol}',
+        'count': 1,
+    }
+    res = requests.get(url, headers=HEADERS, params=params)
+    try:
+        res_data = res.json()
+        first_res = res_data[0]
+        current_price = first_res['tradePrice']
+        close_price = first_res['prevClosingPrice']
+        pct_change = (current_price - close_price) / close_price
+        data = [current_price, pct_change]
+        current_price_and_pct_change = ['c', 'dp']
+        price_data = {k: v for k, v in zip(current_price_and_pct_change, data)}
+        return price_data
+    except Exception as e:
+        print(e)
 
 def search_kor_company_symbol(company_name: str) -> tuple:
     url = 'http://data.krx.co.kr/comm/util/SearchEngine/isuCore.cmd'
