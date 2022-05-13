@@ -1,4 +1,5 @@
 from bs4 import BeautifulSoup as bs
+from functools import lru_cache
 import pandas as pd
 import requests
 from pyrich.api import set_finnhub
@@ -10,6 +11,7 @@ HEADERS = {
     'X-Requested-With': 'XMLHttpRequest',
 }
 
+@lru_cache
 def get_current_price(symbol: str, country: str) -> dict:
     if country == 'USA':
         price_data = get_from_us_market(symbol)
