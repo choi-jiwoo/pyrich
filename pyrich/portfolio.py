@@ -30,7 +30,6 @@ class Portfolio(Record):
 
     def _get_earnings(self) -> pd.DataFrame:
         earnings = self._get_pivot_table('total_price_paid')
-        earnings['amount'] = earnings['sell'] - earnings['buy']
         return earnings
     
     def _get_average_price_paid(self, symbol: str) -> float:
@@ -111,20 +110,41 @@ class Portfolio(Record):
 
     def current_portfolio(self) -> pd.DataFrame:
         quantity = self._get_current_stock()
-        quantity = quantity[quantity['amount'] > 0]
-        quantity = quantity['amount']
-
         earnings = self._get_earnings()
-        earnings = earnings[earnings['amount'].isna()]
-        total_price_paid = earnings['buy']
-
-        data = {'quantity': quantity, 'total_price_paid': total_price_paid}
-        portfolio = pd.DataFrame(data)
+        transaction_summary = earnings.join(quantity['quantity'])
+        
+        currently_owned_stock = transaction_summary[transaction_summary['quantity'] > 0]
+        currently_owned_stock = currently_owned_stock.fillna(0)
+        currently_owned_stock['invested_amount'] = currently_owned_stock['buy'] - currently_owned_stock['sell']
+        currently_owned_stock.drop(['buy', 'sell'], axis=1, inplace=True)
+        
+        portfolio = pd.DataFrame(currently_owned_stock)
         portfolio.reset_index('country', inplace=True)
         portfolio_average_price = self._get_portfolio_average_price(portfolio)
         portfolio = portfolio.join(portfolio_average_price)
         portfolio = self._map_currency(portfolio)
-        return portfolio
+
+        current_portfolio = self._get_stock_quote(portfolio)
+        current_stock_value = self._get_current_stock_value(current_portfolio)
+        current_portfolio['current_value'] = current_stock_value
+        total_gain, pct_gain = self._get_gain(current_portfolio)
+        current_portfolio['total_gain'] = total_gain
+        current_portfolio['pct_gain(%)'] = pct_gain
+
+        col_order = [
+            'country',
+            'quantity',
+            'current_price',
+            'day_change(%)',
+            'average_price_paid',
+            'pct_gain(%)',
+            'current_value',
+            'invested_amount',
+            'total_gain',
+            'currency',
+        ]
+        current_portfolio = current_portfolio[col_order]
+        return current_portfolio
 
     def get_stock_by_country(self, portfolio: pd.DataFrame) -> pd.DataFrame:
         country_group = portfolio[['country', 'invested_amount', 'currency']]
