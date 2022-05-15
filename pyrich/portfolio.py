@@ -146,24 +146,24 @@ class Portfolio(Record):
         current_portfolio = current_portfolio[col_order]
         return current_portfolio
 
-    def get_stock_by_country(self, portfolio: pd.DataFrame) -> pd.DataFrame:
+    def get_investment_by_country(self, portfolio: pd.DataFrame) -> pd.DataFrame:
         country_group = portfolio[['country', 'invested_amount', 'currency']]
         country_group = country_group.groupby('country')
-        stock_by_country = country_group.agg(
+        investment_by_country = country_group.agg(
             {
                 'invested_amount': np.sum,
                 'currency': lambda x: np.unique(x)[0]
             }
         )
-        return stock_by_country
+        return investment_by_country
 
-    def get_total_stock_value_in_krw(self, stock_by_country: pd.DataFrame) -> pd.DataFrame:
-        us_stock_value_in_krw = stock_by_country.loc['USA', 'invested_amount'] * self.forex_usd_to_won
-        stock_value_in_krw = stock_by_country.drop('USA')
-        stock_value_in_krw = stock_value_in_krw.agg({'invested_amount': np.sum})
-        total_stock_value_in_krw = stock_value_in_krw + us_stock_value_in_krw
-        total_stock_value_in_krw.rename({'invested_amount': 'total_stock_value'}, inplace=True)
-        return total_stock_value_in_krw
+    def get_total_investment_value_in_krw(self, investment_by_country: pd.DataFrame) -> pd.DataFrame:
+        us_investment_value_in_krw = investment_by_country.loc['USA', 'invested_amount'] * self.forex_usd_to_won
+        investment_value_in_krw = investment_by_country.drop('USA')
+        investment_value_in_krw = investment_value_in_krw.agg({'invested_amount': np.sum})
+        total_investment_value_in_krw = investment_value_in_krw + us_investment_value_in_krw
+        total_investment_value_in_krw.rename({'invested_amount': 'total_investment'}, inplace=True)
+        return total_investment_value_in_krw
 
     def __repr__(self) -> str:
         return f"Portfolio(name='{self.name}', table='{self.table}')"
