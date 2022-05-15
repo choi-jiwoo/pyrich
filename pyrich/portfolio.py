@@ -96,6 +96,14 @@ class Portfolio(Record):
         current_portfolio = portfolio.join(day_change)
         return current_portfolio
 
+    def _get_gain(self, current_portfolio: pd.DataFrame) -> tuple:
+        price_data = current_portfolio[['current_value', 'invested_amount']]
+        total_gain = price_data.agg(lambda x: x[0]-x[1], axis=1)
+        pct_gain = price_data.agg(lambda x: (x[0]-x[1])/x[1], axis=1)
+        pct_gain *= 100
+        pct_gain = round(pct_gain, 2)
+        return total_gain, pct_gain
+
     def current_portfolio(self) -> pd.DataFrame:
         quantity = self._get_current_stock()
         quantity = quantity[quantity['amount'] > 0]
