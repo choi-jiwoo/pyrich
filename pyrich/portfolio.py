@@ -157,13 +157,5 @@ class Portfolio(Record):
         )
         return investment_by_country
 
-    def get_total_investment_value_in_krw(self, investment_by_country: pd.DataFrame) -> pd.DataFrame:
-        us_investment_value_in_krw = investment_by_country.loc['USA', 'invested_amount'] * self.forex_usd_to_won
-        investment_value_in_krw = investment_by_country.drop('USA')
-        investment_value_in_krw = investment_value_in_krw.agg({'invested_amount': np.sum})
-        total_investment_value_in_krw = investment_value_in_krw + us_investment_value_in_krw
-        total_investment_value_in_krw.rename({'invested_amount': 'total_investment'}, inplace=True)
-        return total_investment_value_in_krw
-
     def __repr__(self) -> str:
         return f"Portfolio(name='{self.name}', table='{self.table}')"
