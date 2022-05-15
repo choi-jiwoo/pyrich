@@ -104,6 +104,11 @@ class Portfolio(Record):
         pct_gain = round(pct_gain, 2)
         return total_gain, pct_gain
 
+    def _get_current_stock_value(self, current_portfolio: pd.DataFrame) -> pd.Series:
+        investment = current_portfolio[['quantity', 'current_price']]
+        current_stock_value = investment.agg(np.prod, axis=1)
+        return current_stock_value
+
     def current_portfolio(self) -> pd.DataFrame:
         quantity = self._get_current_stock()
         quantity = quantity[quantity['amount'] > 0]
