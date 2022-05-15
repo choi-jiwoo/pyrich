@@ -25,7 +25,7 @@ class Portfolio(Record):
 
     def _get_current_stock(self) -> pd.DataFrame:
         stock = self._get_pivot_table('quantity', remove_na=True)
-        stock['amount'] = stock['buy'] - stock['sell']
+        stock['quantity'] = stock['buy'] - stock['sell']
         return stock
 
     def _get_earnings(self) -> pd.DataFrame:
