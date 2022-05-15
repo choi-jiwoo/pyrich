@@ -127,22 +127,22 @@ class Portfolio(Record):
         return portfolio
 
     def get_stock_by_country(self, portfolio: pd.DataFrame) -> pd.DataFrame:
-        country_group = portfolio[['country', 'total_price_paid', 'currency']]
+        country_group = portfolio[['country', 'invested_amount', 'currency']]
         country_group = country_group.groupby('country')
         stock_by_country = country_group.agg(
             {
-                'total_price_paid': np.sum,
+                'invested_amount': np.sum,
                 'currency': lambda x: np.unique(x)[0]
             }
         )
         return stock_by_country
 
     def get_total_stock_value_in_krw(self, stock_by_country: pd.DataFrame) -> pd.DataFrame:
-        us_stock_value_in_krw = stock_by_country.loc['USA', 'total_price_paid'] * self.forex_usd_to_won
+        us_stock_value_in_krw = stock_by_country.loc['USA', 'invested_amount'] * self.forex_usd_to_won
         stock_value_in_krw = stock_by_country.drop('USA')
-        stock_value_in_krw = stock_value_in_krw.agg({'total_price_paid': np.sum})
+        stock_value_in_krw = stock_value_in_krw.agg({'invested_amount': np.sum})
         total_stock_value_in_krw = stock_value_in_krw + us_stock_value_in_krw
-        total_stock_value_in_krw.rename({'total_price_paid': 'total_stock_value'}, inplace=True)
+        total_stock_value_in_krw.rename({'invested_amount': 'total_stock_value'}, inplace=True)
         return total_stock_value_in_krw
 
     def __repr__(self) -> str:
