@@ -157,5 +157,17 @@ class Portfolio(Record):
         )
         return investment_by_country
 
+    def get_current_portfolio_value(self, current_portfolio: pd.DataFrame) -> pd.Series:
+        portfolio_copy = current_portfolio.copy(deep=True)
+        currency_group = portfolio_copy.groupby('currency')
+        usd_group_stock = currency_group.groups['USD']
+        cols_in_usd = ['current_price', 'average_price_paid', 'current_value', 'invested_amount', 'total_gain']
+        portfolio_copy.loc[usd_group_stock, cols_in_usd] *= self.forex_usd_to_won
+        portfolio_copy.loc[:, 'currency'] = 'KRW'
+        portfolio_value = portfolio_copy.agg({'current_value': np.sum, 'invested_amount': np.sum})
+        portfolio_value['portfolio_gain'] = portfolio_value.agg(lambda x: np.subtract(x[0], x[1]))
+        portfolio_value = portfolio_value.apply('{:,.2f}'.format)
+        return portfolio_value
+        
     def __repr__(self) -> str:
         return f"Portfolio(name='{self.name}', table='{self.table}')"
