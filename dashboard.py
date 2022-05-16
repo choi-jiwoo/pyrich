@@ -11,6 +11,7 @@ st.title(f'Hello {portfolio.name} 👋🏼')
 
 # Loding portfolio data
 portfolio_table = portfolio.current_portfolio()
+portfolio_value = portfolio.get_current_portfolio_value(portfolio_table)
 
 # Sidebar component
 with st.sidebar:
@@ -33,6 +34,22 @@ if selected == 'Dashboard':
     st.header('Dashboard')
 elif selected == 'Portfolio':
     st.header('Portfolio')
+    st.subheader('Portfolio Value')
+
+    sign = portfolio_value['portfolio_gain'][0]
+    if sign == '-':
+        color = '#a50e0e' # red
+    else:
+        color = '#137333' # green
+    current_value_text = ("<span style='font-weight: bold; font-size: 42px;'>"
+                          f"{portfolio_value['current_value']}원"
+                          "</span>"
+                          f"<span style='color: {color};'>"
+                          f"({portfolio_value['portfolio_gain']})"
+                          "</span>")
+    st.markdown(current_value_text, unsafe_allow_html=True)
+
+    st.subheader('Current portfolio')
     st.table(portfolio_table)
 elif selected == 'My Asset':
     st.header('My Asset')
