@@ -2,6 +2,7 @@ import os
 from pyrich.database import PostgreSQL
 from pyrich import parse
 from pyrich.transaction import Transaction
+from pyrich.error import CurrencyError
 
 
 def run():
@@ -41,6 +42,24 @@ def run():
         table_name = options['deleteall']
         db.delete_rows(table_name, all_rows=True)
         return
+
+    # Update current cash
+    if options['cash']:
+        cash_record = options['cash']
+        currency_id = {
+            'KRW': 1,
+            'USD': 2,
+        }
+        amount = cash_record[0]
+        currency = cash_record[1]
+        try:
+            _id = currency_id[currency]
+            cols_to_update = ['amount']
+            db.update('cash', cols_to_update, [amount], _id)
+        except KeyError:
+            raise CurrencyError('Currency should be either USD or KRW.')
+        else:
+            return
 
     # Record transaction 
     new_record = Transaction(options)
