@@ -146,15 +146,18 @@ class Portfolio(Record):
         current_portfolio = current_portfolio[col_order]
         return current_portfolio
 
-        country_group = portfolio[['country', 'invested_amount', 'currency']]
-        country_group = country_group.groupby('country')
-        investment_by_country = country_group.agg(
-            {
-                'invested_amount': np.sum,
-                'currency': lambda x: np.unique(x)[0]
-            }
-        )
     def get_investment_by_country(self, current_portfolio: pd.DataFrame) -> pd.DataFrame:
+        investment_table = current_portfolio[['country', 'invested_amount', 'current_value', 'total_gain']]
+        country_group = investment_table.groupby('country')
+        investment_by_country = country_group.agg(np.sum)
+
+        currency_mapping = {
+            'CRYPTO': 'KRW',
+            'KOR': 'KRW',
+            'USA': 'USD',
+        }
+        currency = [currency_mapping[i] for i in investment_by_country.index]
+        investment_by_country['currency'] = currency
         return investment_by_country
 
     def get_current_portfolio_value(self, current_portfolio: pd.DataFrame) -> pd.Series:
