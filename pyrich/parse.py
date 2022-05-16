@@ -81,6 +81,12 @@ def set_args():
         metavar='TABLE NAME',
         help='Table name to delete all rows. Defaults to None'
     )
+    parser.add_argument(
+        '--cash',
+        metavar='CURRENT CASH',
+        nargs=2,
+        help='Update current cash'
+    )
     # open in streamlit app
     parser.add_argument(
         '-w',
