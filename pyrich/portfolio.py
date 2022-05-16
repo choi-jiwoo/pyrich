@@ -146,7 +146,6 @@ class Portfolio(Record):
         current_portfolio = current_portfolio[col_order]
         return current_portfolio
 
-    def get_investment_by_country(self, portfolio: pd.DataFrame) -> pd.DataFrame:
         country_group = portfolio[['country', 'invested_amount', 'currency']]
         country_group = country_group.groupby('country')
         investment_by_country = country_group.agg(
@@ -155,6 +154,7 @@ class Portfolio(Record):
                 'currency': lambda x: np.unique(x)[0]
             }
         )
+    def get_investment_by_country(self, current_portfolio: pd.DataFrame) -> pd.DataFrame:
         return investment_by_country
 
     def get_current_portfolio_value(self, current_portfolio: pd.DataFrame) -> pd.Series:
