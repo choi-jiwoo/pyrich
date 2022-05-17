@@ -83,7 +83,7 @@ def set_args():
     )
     parser.add_argument(
         '--cash',
-        metavar='CURRENT CASH',
+        metavar=('CURRENT CASH', 'CURRENCY'),
         nargs=2,
         help='Update current cash'
     )
