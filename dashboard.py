@@ -44,10 +44,11 @@ elif selected == 'Portfolio':
         color = '#137333' # green
 
     current_value_text = ("<span style='font-weight: bold; font-size: 42px;'>"
-                          f"{portfolio_value['current_value']}원"
+                          f"{portfolio_value['current_value']:,.2f}원"
                           "</span>"
                           f"<span style='color: {color};'>"
-                          f"({portfolio_value['portfolio_gain']})"
+                          f"&nbsp;{portfolio_value['portfolio_gain']:,.2f}원"
+                          f"&nbsp;({current_yield:,.2%})"
                           "</span>")
     st.markdown(current_value_text, unsafe_allow_html=True)
 
