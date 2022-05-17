@@ -32,8 +32,8 @@ class Transaction:
 
     def record_transactions(self) -> dict:
         transaction_record = deepcopy(self.record)
-        keys_to_del = ['csv', 'show', 'delete', 'deleteall', 'web']
         for key in keys_to_del:
+        keys_to_del = ['csv', 'show', 'delete', 'deleteall', 'cash', 'web']
             del transaction_record[key]
         quantity = transaction_record['quantity']
         price = transaction_record['price']
