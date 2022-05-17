@@ -73,9 +73,23 @@ elif selected == 'My Asset':
 elif selected == 'Transaction History':
     st.header('Transaction History')
     transaction_history = portfolio.record
+    export_to_csv = transaction_history.to_csv(index=False).encode('utf-8-sig')
+    st.download_button(
+        'export to csv',
+        export_to_csv,
+        'transaction_history.csv',
+        'text/csv',
+    )
     st.dataframe(transaction_history)
 elif selected == 'Dividend History':
     st.header('Dividend History')
     dividend = Dividend('dividend')
     dividend_history = dividend.record
+    export_to_csv = dividend_history.to_csv(index=False).encode('utf-8-sig')
+    st.download_button(
+        'export to csv',
+        export_to_csv,
+        'dividend_history.csv',
+        'text/csv',
+    )
     st.dataframe(dividend_history)
