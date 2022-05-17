@@ -96,7 +96,8 @@ class PostgreSQL:
                  '(id serial PRIMARY KEY,'
                  'date DATE NOT NULL,'
                  'symbol VARCHAR(15) NOT NULL,'
-                 'dividend REAL NOT NULL);')
+                 'dividend REAL NOT NULL,'
+                 'currency VARCHAR(3) NOT NULL);')
         self.run_query(query)
 
     def copy_from_csv(self, table: str, msg: bool=True) -> None:
