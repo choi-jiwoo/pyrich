@@ -169,7 +169,6 @@ class Portfolio(Record):
         portfolio_copy.loc[:, 'currency'] = 'KRW'
         portfolio_value = portfolio_copy.agg({'current_value': np.sum, 'invested_amount': np.sum})
         portfolio_value['portfolio_gain'] = portfolio_value.agg(lambda x: np.subtract(x[0], x[1]))
-        portfolio_value = portfolio_value.apply('{:,.2f}'.format)
         return portfolio_value
         
     def __repr__(self) -> str:
