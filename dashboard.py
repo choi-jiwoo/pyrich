@@ -36,11 +36,13 @@ elif selected == 'Portfolio':
     st.header('Portfolio')
     st.subheader('Portfolio Value')
 
-    sign = portfolio_value['portfolio_gain'][0]
-    if sign == '-':
+    current_yield = portfolio_value['portfolio_gain'] / portfolio_value['invested_amount']
+    color = '#fff'
+    if current_yield < 0:
         color = '#a50e0e' # red
-    else:
+    elif current_yield > 0:
         color = '#137333' # green
+
     current_value_text = ("<span style='font-weight: bold; font-size: 42px;'>"
                           f"{portfolio_value['current_value']}원"
                           "</span>"
