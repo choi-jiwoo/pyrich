@@ -31,10 +31,9 @@ class Transaction:
         return dividend_record
 
     def record_transactions(self) -> dict:
+        transaction_cols = ['date', 'country', 'symbol', 'type', 'quantity', 'price']
         transaction_record = deepcopy(self.record)
-        for key in keys_to_del:
-        keys_to_del = ['csv', 'show', 'delete', 'deleteall', 'cash', 'web']
-            del transaction_record[key]
+        transaction_record = {key: transaction_record[key] for key in transaction_cols}
         quantity = transaction_record['quantity']
         price = transaction_record['price']
         transaction_record['total_price_paid'] = quantity * price
