@@ -69,7 +69,7 @@ def set_args():
     )
     # delete last row of the table
     parser.add_argument(
-        '--delete',
+        '--deletelast',
         type=str,
         metavar='TABLE NAME',
         help='Table name to delete the last row. Defaults to None'
