@@ -85,6 +85,18 @@ elif selected == 'Dividends':
     st.header('Dividends')
     dividend = Dividend('dividend')
     dividend_history = dividend.record
+
+    st.subheader('Total Dividends Received')
+    total_dividends = dividend.get_total_dividends()
+    total_dividends = {'Value in KRW': [total_dividends]}
+    total_dividends_table = pd.DataFrame(total_dividends, index=['total_dividends'])
+    st.table(total_dividends_table)
+
+    st.subheader('Total Dividends Received by Stock')
+    dividends_by_stock = dividend.get_dividends_received_by_stock()
+    st.table(dividends_by_stock)
+
+    st.subheader('Dividends History')
     export_to_csv = dividend_history.to_csv(index=False).encode('utf-8-sig')
     st.download_button(
         'export to csv',
