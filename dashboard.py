@@ -1,3 +1,5 @@
+import numpy as np
+import pandas as pd
 import streamlit as st
 from streamlit_option_menu import option_menu
 from pyrich.portfolio import Portfolio
@@ -56,10 +58,27 @@ elif selected == 'Portfolio':
     st.table(portfolio_table)
 elif selected == 'My Asset':
     st.header('My Asset')
-    col1, col2 = st.columns(2)
+
+    # cash
     cash = Cash('cash')
     cash_table = cash.record
+    total_cash = cash.get_total_cash_in_krw()
+
+    # stock
+    investment_by_country = portfolio.get_investment_by_country(portfolio_table)
+    total_stock_value = pd.Series(portfolio_value['current_value'], index=['total_stock_value'], dtype=float)
+
+    # total asset
+    asset_table = pd.concat([total_cash, total_stock_value])
+    total_asset = asset_table.agg({'total_asset': np.sum})
+    total_asset_table = pd.concat([asset_table, total_asset]).to_frame(name='Values in KRW')
+    st.table(total_asset_table)   
+
+    st.header('Asset Details')
+    col1, col2 = st.columns(2)
     with col1:
+        st.subheader('Cash')
+        cash_table.drop(columns='id', inplace=True)
         st.table(cash_table)
     with col2:
         with st.form('Current Cash', clear_on_submit=True):
@@ -70,6 +89,8 @@ elif selected == 'My Asset':
                 cash.update_current_cash('amount', cash_amount, currency)
                 st.experimental_rerun()
 
+        st.subheader('Investment')
+        st.table(investment_by_country)
 elif selected == 'Transaction History':
     st.header('Transaction History')
     transaction_history = portfolio.record
