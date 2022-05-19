@@ -8,6 +8,11 @@ class Dividend(Record):
     def __init__(self, table: str) -> None:
         super().__init__(table)
 
+    def get_dividends_received_by_stock(self) -> pd.DataFrame:
+        stock_group = self.record.groupby('symbol')
+        dividends_by_stock = stock_group.agg({'dividend': np.sum, 'currency': lambda x: x.unique().item()})
+        return dividends_by_stock
+
     def _get_dividends_by_currency(self, dividends: pd.DataFrame, currency: str='USD') -> pd.Series:
         dividends_table = dividends.get_group(currency)
         dividends_by_currency = dividends_table.agg({'dividend': np.sum})
