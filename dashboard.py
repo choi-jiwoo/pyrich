@@ -55,7 +55,9 @@ elif selected == 'Portfolio':
     st.markdown(current_value_text, unsafe_allow_html=True)
 
     st.subheader('Current portfolio')
-    st.table(portfolio_table)
+    value_subset = ['day_change(%)', 'pct_gain(%)', 'total_gain']
+    styled_portfolio_table = portfolio_table.style.applymap(Portfolio.style_change, subset=value_subset)
+    st.table(styled_portfolio_table)
 elif selected == 'My Asset':
     st.header('My Asset')
 
@@ -90,7 +92,8 @@ elif selected == 'My Asset':
                 st.experimental_rerun()
 
         st.subheader('Investment')
-        st.table(investment_by_country)
+        styled_investment_by_country = investment_by_country.style.applymap(Portfolio.style_change, subset='total_gain')
+        st.table(styled_investment_by_country)
 elif selected == 'Transaction History':
     st.header('Transaction History')
     transaction_history = portfolio.record
