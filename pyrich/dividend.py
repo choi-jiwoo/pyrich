@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 from pyrich.record import Record
 
 
@@ -6,6 +7,24 @@ class Dividend(Record):
 
     def __init__(self, table: str) -> None:
         super().__init__(table)
+
+    def _get_dividends_by_currency(self, dividends: pd.DataFrame, currency: str='USD') -> pd.Series:
+        dividends_table = dividends.get_group(currency)
+        dividends_by_currency = dividends_table.agg({'dividend': np.sum})
+        if currency == 'USD':
+            dividends_by_currency *= self.forex_usd_to_won
+        return dividends_by_currency
+
+    def get_total_dividends(self) -> pd.Series:
+        currency_group = self.record.groupby('currency')
+        existing_currency = currency_group.groups.keys()
+        total_dividends = [
+            self._get_dividends_by_currency(currency_group, currency)
+            for currency
+            in list(existing_currency)
+        ]
+        total_dividends = np.sum(total_dividends)
+        return total_dividends
 
     def __repr__(self) -> str:
         return f"Dividend(table='{self.table}')"
