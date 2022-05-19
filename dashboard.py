@@ -72,7 +72,7 @@ elif selected == 'My Asset':
     asset_table = pd.concat([total_cash, total_stock_value])
     total_asset = asset_table.agg({'total_asset': np.sum})
     total_asset_table = pd.concat([asset_table, total_asset]).to_frame(name='Values in KRW')
-    st.table(total_asset_table)   
+    st.table(total_asset_table)
 
     st.header('Asset Details')
     col1, col2 = st.columns(2)
