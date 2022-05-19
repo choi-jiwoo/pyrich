@@ -22,8 +22,8 @@ with st.sidebar:
             'Dashboard',
             'Portfolio',
             'My Asset',
+            'Dividends',
             'Transaction History',
-            'Dividend History',
             ], 
         icons=['house', 'stack', 'stack', 'stack', 'stack'],
         menu_icon='list',
@@ -81,8 +81,8 @@ elif selected == 'Transaction History':
         'text/csv',
     )
     st.dataframe(transaction_history)
-elif selected == 'Dividend History':
-    st.header('Dividend History')
+elif selected == 'Dividends':
+    st.header('Dividends')
     dividend = Dividend('dividend')
     dividend_history = dividend.record
     export_to_csv = dividend_history.to_csv(index=False).encode('utf-8-sig')
