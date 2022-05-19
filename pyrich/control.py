@@ -33,8 +33,8 @@ def run():
         return
 
     # Handling delete option
-    if options['delete']:
-        table_name = options['delete']
+    if options['deletelast']:
+        table_name = options['deletelast']
         db.delete_rows(table_name)
         return
 
