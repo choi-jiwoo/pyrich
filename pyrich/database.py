@@ -138,22 +138,15 @@ class PostgreSQL:
         finally:
             table = pd.DataFrame(rows, columns=col_name)
             return table
-    
-    def _get_max_id(self, table: str) -> int:
-        query = f"SELECT setval('{table}_id_seq', max(id)) FROM {table};"
-        self.run_query(query)
-        res = self.cur.fetchone()
-        return res[0]
 
     def insert(self, table: str, record: dict, msg: bool=True) -> None:
-        next_to_last_id = self._get_max_id(table) + 1
         keys = list(record.keys())
         values = list(record.values())
         column = ', '.join(keys)
         value_seq = ['%s' for i in range(len(values))]
         placeholders = ', '.join(value_seq)
-        query = (f"INSERT INTO {table} (id, {column}) "
-                 f"VALUES ({next_to_last_id}, {placeholders});")
+        query = (f"INSERT INTO {table} ({column}) "
+                 f"VALUES ({placeholders});")
         self.run_query(query, values, msg=msg)
 
     def update(self, table: str, column: list, value: list, _id: int, msg: bool=True) -> None:
