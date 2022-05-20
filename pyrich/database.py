@@ -1,4 +1,5 @@
 from collections.abc import Iterable
+import csv
 from dotenv import load_dotenv
 import os
 import pandas as pd
@@ -103,11 +104,15 @@ class PostgreSQL:
     def copy_from_csv(self, table: str, msg: bool=True) -> None:
         path = f'./{table}.csv'
         abs_path = os.path.abspath(path)
-        query = (f"COPY {table} "
-                 f"FROM '{abs_path}' "
-                  "DELIMITER ',' "
-                  "CSV HEADER;")
-        self.run_query(query, msg=msg)
+        with open(abs_path, 'r', encoding='utf-8-sig') as f:
+            header = csv.reader(f)
+            header = next(header)
+            self.cur.copy_from(
+                f,
+                table,
+                sep=',',
+                columns=header,
+            )
 
     def _get_column_name(self, table: str) -> list:
         try:
@@ -182,6 +187,7 @@ class PostgreSQL:
         
     def __del__(self) -> None:
         self.cur.close()
+        self.conn.commit()
         self.conn.close()
 
     def __repr__(self) -> str:
