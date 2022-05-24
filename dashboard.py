@@ -7,6 +7,9 @@ from pyrich.dividend import Dividend
 from pyrich.cash import Cash
 
 
+pd.set_option('styler.format.precision', 2)
+pd.set_option('styler.format.thousands', ',')
+
 # Loading main page
 portfolio = Portfolio('Choi Ji Woo', 'transaction')
 st.title(f'Hello {portfolio.name} 👋🏼')
