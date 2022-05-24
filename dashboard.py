@@ -86,14 +86,6 @@ elif selected == 'My Asset':
         cash_table.drop(columns='id', inplace=True)
         st.table(cash_table)
     with col2:
-        with st.form('Current Cash', clear_on_submit=True):
-            cash_amount = st.text_input('Current Cash', placeholder=0)
-            currency = st.radio('Currency', ['KRW', 'USD'])
-            submitted = st.form_submit_button('Submit')
-            if submitted:
-                cash.update_current_cash('amount', cash_amount, currency)
-                st.experimental_rerun()
-
         st.subheader('Investment')
         styled_investment_by_country = investment_by_country.style.applymap(Portfolio.style_change, subset='total_gain')
         st.table(styled_investment_by_country)
