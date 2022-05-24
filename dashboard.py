@@ -89,18 +89,6 @@ elif selected == 'My Asset':
         st.subheader('Investment')
         styled_investment_by_country = investment_by_country.style.applymap(Portfolio.style_change, subset='total_gain')
         st.table(styled_investment_by_country)
-elif selected == 'Transaction History':
-    st.header('Transaction History')
-    transaction_history = portfolio.record
-    transaction_history.drop('id', axis=1, inplace=True)
-    export_to_csv = transaction_history.to_csv(index=False).encode('utf-8-sig')
-    st.download_button(
-        'export to csv',
-        export_to_csv,
-        'transaction_history.csv',
-        'text/csv',
-    )
-    st.dataframe(transaction_history)
 elif selected == 'Dividends':
     st.header('Dividends')
     dividend = Dividend('dividend')
@@ -126,3 +114,15 @@ elif selected == 'Dividends':
         'text/csv',
     )
     st.dataframe(dividend_history)
+elif selected == 'Transaction History':
+    st.header('Transaction History')
+    transaction_history = portfolio.record
+    transaction_history.drop('id', axis=1, inplace=True)
+    export_to_csv = transaction_history.to_csv(index=False).encode('utf-8-sig')
+    st.download_button(
+        'export to csv',
+        export_to_csv,
+        'transaction_history.csv',
+        'text/csv',
+    )
+    st.dataframe(transaction_history)
