@@ -2,6 +2,8 @@ import numpy as np
 import pandas as pd
 import streamlit as st
 from streamlit_option_menu import option_menu
+from pyrich.style import style_table
+from pyrich.style import style_change
 from pyrich.portfolio import Portfolio
 from pyrich.dividend import Dividend
 from pyrich.cash import Cash
@@ -59,7 +61,7 @@ elif selected == 'Portfolio':
 
     st.subheader('Current portfolio')
     value_subset = ['day_change(%)', 'pct_gain(%)', 'total_gain']
-    styled_portfolio_table = portfolio_table.style.applymap(Portfolio.style_change, subset=value_subset)
+    styled_portfolio_table = style_table(portfolio_table, style_change, value_subset)
     st.table(styled_portfolio_table)
 elif selected == 'My Asset':
     st.header('My Asset')
@@ -87,7 +89,7 @@ elif selected == 'My Asset':
         st.table(cash_table)
     with col2:
         st.subheader('Investment')
-        styled_investment_by_country = investment_by_country.style.applymap(Portfolio.style_change, subset='total_gain')
+        styled_investment_by_country = style_table(investment_by_country, style_change, ['total_gain'])
         st.table(styled_investment_by_country)
 elif selected == 'Dividends':
     st.header('Dividends')
