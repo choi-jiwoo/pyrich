@@ -141,4 +141,4 @@ elif selected == 'Transaction History':
         'transaction_history.csv',
         'text/csv',
     )
-    st.dataframe(transaction_history)
+    st.table(styled_transaction_history)
