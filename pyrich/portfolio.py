@@ -167,5 +167,20 @@ class Portfolio(Record):
         portfolio_value = portfolio_copy.agg({'current_value': np.sum, 'invested_amount': np.sum})
         portfolio_value['portfolio_gain'] = portfolio_value.agg(lambda x: np.subtract(x[0], x[1]))
         return portfolio_value
+
+    def get_realized_gain(self) -> pd.DataFrame:
+        quantity = self._get_current_stock()
+        past_owned = quantity[quantity['quantity'] == 0]
+        past_owned = past_owned.reset_index('country').index
+        earnings = self._get_earnings()
+        earnings = earnings.reset_index('country').loc[past_owned]
+        earnings['realized_gain'] = earnings['sell'] - earnings['buy']
+        earnings['currency'] = [
+            Portfolio.currency_mapping[country]
+            for country
+            in earnings['country']
+        ]
+        return earnings
+
     def __repr__(self) -> str:
         return f"Portfolio(name='{self.name}', table='{self.table}')"
