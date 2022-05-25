@@ -7,6 +7,12 @@ from pyrich import stock
 
 class Portfolio(Record):
 
+    currency_mapping = {
+        'CRYPTO': 'KRW',
+        'KOR': 'KRW',
+        'USA': 'USD',
+    }
+
     def __init__(self, name: str, table: str) -> None:
         super().__init__(table)
         self.name = name
@@ -66,18 +72,6 @@ class Portfolio(Record):
         )
         return average_price_paid
 
-    def _map_currency(self, portfolio: pd.DataFrame) -> pd.DataFrame:
-        currency_mapping = {
-            'CRYPTO': 'KRW',
-            'KOR': 'KRW',
-            'USA': 'USD',
-        }
-        portfolio['currency'] = [
-            currency_mapping[country]
-            for country
-            in portfolio['country']
-        ]
-        return portfolio
 
     def _get_stock_quote(self, portfolio: pd.DataFrame) -> pd.DataFrame:
         portfolio_stock_price = []
@@ -122,7 +116,12 @@ class Portfolio(Record):
         portfolio.reset_index('country', inplace=True)
         portfolio_average_price = self._get_portfolio_average_price(portfolio)
         portfolio = portfolio.join(portfolio_average_price)
-        portfolio = self._map_currency(portfolio)
+        # portfolio = self._map_currency(portfolio)
+        portfolio['currency'] = [
+            Portfolio.currency_mapping[country]
+            for country
+            in portfolio['country']
+        ]
 
         current_portfolio = self._get_stock_quote(portfolio)
         current_stock_value = self._get_current_stock_value(current_portfolio)
@@ -151,12 +150,7 @@ class Portfolio(Record):
         country_group = investment_table.groupby('country')
         investment_by_country = country_group.agg(np.sum)
 
-        currency_mapping = {
-            'CRYPTO': 'KRW',
-            'KOR': 'KRW',
-            'USA': 'USD',
-        }
-        currency = [currency_mapping[i] for i in investment_by_country.index]
+        currency = [Portfolio.currency_mapping[i] for i in investment_by_country.index]
         investment_by_country['currency'] = currency
         return investment_by_country
 
@@ -170,6 +164,5 @@ class Portfolio(Record):
         portfolio_value = portfolio_copy.agg({'current_value': np.sum, 'invested_amount': np.sum})
         portfolio_value['portfolio_gain'] = portfolio_value.agg(lambda x: np.subtract(x[0], x[1]))
         return portfolio_value
-        
     def __repr__(self) -> str:
         return f"Portfolio(name='{self.name}', table='{self.table}')"
