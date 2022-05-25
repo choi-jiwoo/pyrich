@@ -1,4 +1,5 @@
 from collections import deque
+from functools import lru_cache
 import pandas as pd
 import numpy as np
 from pyrich.record import Record
@@ -29,11 +30,13 @@ class Portfolio(Record):
             record_pivot_table.fillna(0, inplace=True)
         return record_pivot_table
 
+    @lru_cache
     def _get_current_stock(self) -> pd.DataFrame:
         stock = self._get_pivot_table('quantity', remove_na=True)
         stock['quantity'] = stock['buy'] - stock['sell']
         return stock
 
+    @lru_cache
     def _get_earnings(self) -> pd.DataFrame:
         earnings = self._get_pivot_table('total_price_paid')
         return earnings
