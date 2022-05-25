@@ -1,6 +1,10 @@
 import pandas as pd
 
 
+def style_table(table: pd.DataFrame, style: str, subset: list) -> pd.DataFrame:
+    styled_table = table.style.applymap(style, subset=subset)
+    return styled_table
+
 def style_change(value: float) -> str:
     color = {
         'neg': '#a50e0e',
