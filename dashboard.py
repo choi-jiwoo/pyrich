@@ -29,10 +29,11 @@ with st.sidebar:
             'Dashboard',
             'Portfolio',
             'My Asset',
+            'Investment History',
             'Dividends History',
             'Transaction History',
             ], 
-        icons=['house', 'stack', 'stack', 'stack', 'stack'],
+        icons=['house', 'stack', 'stack', 'stack', 'stack', 'stack'],  # change icon later
         menu_icon='list',
         default_index=0
     )
@@ -116,6 +117,8 @@ elif selected == 'Dividends History':
         'text/csv',
     )
     st.dataframe(dividend_history)
+elif selected == 'Investment History':
+    st.header('Investment History')
 elif selected == 'Transaction History':
     st.header('Transaction History')
     transaction_history = portfolio.record
