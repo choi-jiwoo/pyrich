@@ -131,6 +131,13 @@ elif selected == 'Investment History':
     st.table(styled_realized_gain_by_country)
 elif selected == 'Transaction History':
     st.header('Transaction History')
+
+    st.subheader('Total Transaction Amount')
+    total_traded_amount = portfolio.get_total_traded_amount()
+    styled_total_traded_amount = style_table(total_traded_amount, style.style_neg_value , ['Values in KRW'])
+    st.table(styled_total_traded_amount)
+
+    st.subheader('Transaction History')
     transaction_history = portfolio.record
     transaction_history.drop('id', axis=1, inplace=True)
     styled_transaction_history = style_table(transaction_history, style.style_trade_type, ['type'])

@@ -181,5 +181,14 @@ class Portfolio(Record):
         ]
         return trades
 
+    def get_total_traded_amount(self) -> pd.DataFrame:
+        trades = self._get_trades()
+        trades_sum = trades.groupby('country').agg(np.sum)
+        trades_sum.loc['USA'] *= self.forex_usd_to_won
+        trades_sum = trades_sum.sum()
+        trades_sum['net'] = trades_sum['sell'] - trades_sum['buy']
+        trades_sum = trades_sum.to_frame(name='Values in KRW')
+        return trades_sum
+
     def __repr__(self) -> str:
         return f"Portfolio(name='{self.name}', table='{self.table}')"
