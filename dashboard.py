@@ -29,7 +29,7 @@ with st.sidebar:
             'Dashboard',
             'Portfolio',
             'My Asset',
-            'Dividends',
+            'Dividends History',
             'Transaction History',
             ], 
         icons=['house', 'stack', 'stack', 'stack', 'stack'],
@@ -91,8 +91,8 @@ elif selected == 'My Asset':
         st.subheader('Investment')
         styled_investment_by_country = style_table(investment_by_country, style_change, ['total_gain'])
         st.table(styled_investment_by_country)
-elif selected == 'Dividends':
-    st.header('Dividends')
+elif selected == 'Dividends History':
+    st.header('Dividends History')
     dividend = Dividend('dividend')
     dividend_history = dividend.record
     dividend_history.drop('id', axis=1, inplace=True)
