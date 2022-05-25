@@ -119,7 +119,6 @@ class Portfolio(Record):
         portfolio.reset_index('country', inplace=True)
         portfolio_average_price = self._get_portfolio_average_price(portfolio)
         portfolio = portfolio.join(portfolio_average_price)
-        # portfolio = self._map_currency(portfolio)
         portfolio['currency'] = [
             Portfolio.currency_mapping[country]
             for country
