@@ -74,35 +74,7 @@ def search_kor_company_symbol(company_name: str) -> tuple:
     except Exception:
         res.raise_for_status()
 
-def search_us_company_symbol(company_name: str) -> tuple:
-    url = 'https://efts.sec.gov/LATEST/search-index'
-    form_data = f'{{"keysTyped": "{company_name}","narrow": true}}'
-    res = requests.post(url, data=form_data)
-    try:
-        res_data = res.json()
-        search_result = res_data['hits']['hits']
-        top_result = search_result[0]
-        stock_info = top_result['_source']
-        official_company_name = stock_info['entity']
-        official_company_name = re.sub(
-            r'\s\(\w*\)',
-            '',
-            official_company_name,
-            flags=re.IGNORECASE
-        )
-        comp_symbol = stock_info['tickers']
-        return official_company_name, comp_symbol
-    except Exception:
-        res.raise_for_status()
 
-def get_symbol(company_name: str, country: str='USA') -> tuple:
-    if country == 'USA':
-        comp = search_us_company_symbol(company_name)
-    elif country == 'KOR':
-        comp = search_kor_company_symbol(company_name)
-    else:
-        raise SearchError('Company name not found.')
-    return comp
 
 def scrape_from_naver_finance(symbol: str) -> list:
     url = f'https://finance.naver.com/item/main.nhn?code={symbol}'
