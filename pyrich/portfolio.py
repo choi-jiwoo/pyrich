@@ -37,9 +37,9 @@ class Portfolio(Record):
         return stock
 
     @lru_cache
-    def _get_earnings(self) -> pd.DataFrame:
-        earnings = self._get_pivot_table('total_price_paid')
-        return earnings
+    def _get_trades(self) -> pd.DataFrame:
+        trades = self._get_pivot_table('total_price_paid')
+        return trades
     
     def _get_average_price_paid(self, symbol: str) -> float:
         symbol_transaction = self.record[self.record['symbol']==symbol]
@@ -107,8 +107,8 @@ class Portfolio(Record):
 
     def current_portfolio(self) -> pd.DataFrame:
         quantity = self._get_current_stock()
-        earnings = self._get_earnings()
-        transaction_summary = earnings.join(quantity['quantity'])
+        trades = self._get_trades()
+        transaction_summary = trades.join(quantity['quantity'])
         
         currently_owned_stock = transaction_summary[transaction_summary['quantity'] > 0]
         currently_owned_stock = currently_owned_stock.fillna(0)
@@ -172,15 +172,15 @@ class Portfolio(Record):
         quantity = self._get_current_stock()
         past_owned = quantity[quantity['quantity'] == 0]
         past_owned = past_owned.reset_index('country').index
-        earnings = self._get_earnings()
-        earnings = earnings.reset_index('country').loc[past_owned]
-        earnings['realized_gain'] = earnings['sell'] - earnings['buy']
-        earnings['currency'] = [
+        trades = self._get_trades()
+        trades = trades.reset_index('country').loc[past_owned]
+        trades['realized_gain'] = trades['sell'] - trades['buy']
+        trades['currency'] = [
             Portfolio.currency_mapping[country]
             for country
-            in earnings['country']
+            in trades['country']
         ]
-        return earnings
+        return trades
 
     def __repr__(self) -> str:
         return f"Portfolio(name='{self.name}', table='{self.table}')"
