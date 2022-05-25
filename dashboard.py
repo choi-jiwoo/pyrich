@@ -119,6 +119,16 @@ elif selected == 'Dividends History':
     st.dataframe(dividend_history)
 elif selected == 'Investment History':
     st.header('Investment History')
+    realized_gain = portfolio.get_realized_gain()
+
+    st.subheader('Realized Gain by Stock')
+    styled_realized_gain = style_table(realized_gain, style_change, ['realized_gain'])
+    st.table(styled_realized_gain)
+
+    st.subheader('Realized Gain by Country')
+    realized_gain_by_country = realized_gain.groupby('country').agg(np.sum)
+    styled_realized_gain_by_country = style_table(realized_gain_by_country, style_change, ['realized_gain'])
+    st.table(styled_realized_gain_by_country)
 elif selected == 'Transaction History':
     st.header('Transaction History')
     transaction_history = portfolio.record
