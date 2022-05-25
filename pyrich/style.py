@@ -19,3 +19,14 @@ def style_change(value: float) -> str:
     elif value < 0:
         style = f"color:{color['neg']};"
     return style
+
+def style_trade_type(_type: str) -> str:
+    color = {
+        'buy': GREEN,
+        'sell': RED,
+    } 
+    if _type == 'buy':
+        style = f"color:{color['buy']};"
+    elif _type == 'sell':
+        style = f"color:{color['sell']};"
+    return style
