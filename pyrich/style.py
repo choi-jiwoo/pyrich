@@ -8,6 +8,9 @@ def style_table(table: pd.DataFrame, style: str, subset: list) -> pd.DataFrame:
     styled_table = table.style.applymap(style, subset=subset)
     return styled_table
 
+def style_neg_value(value: float) -> str:
+    return f'color:{RED};' if value < 0 else None
+
 def style_change(value: float) -> str:
     color = {
         'neg': RED,
