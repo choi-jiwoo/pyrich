@@ -126,7 +126,9 @@ elif selected == 'Investment History':
     st.table(styled_realized_gain)
 
     st.subheader('Realized Gain by Country')
-    realized_gain_by_country = realized_gain.groupby('country').agg(np.sum)
+    col_order = ['buy', 'sell', 'realized_gain', 'currency']
+    realized_gain_by_country = realized_gain.groupby(['country', 'currency']).agg(np.sum).reset_index('currency')
+    realized_gain_by_country = realized_gain_by_country[col_order]
     styled_realized_gain_by_country = style_table(realized_gain_by_country, style.style_change, ['realized_gain'])
     st.table(styled_realized_gain_by_country)
 elif selected == 'Transaction History':
