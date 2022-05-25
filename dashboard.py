@@ -133,6 +133,7 @@ elif selected == 'Transaction History':
     st.header('Transaction History')
     transaction_history = portfolio.record
     transaction_history.drop('id', axis=1, inplace=True)
+    styled_transaction_history = style_table(transaction_history, style.style_trade_type, ['type'])
     export_to_csv = transaction_history.to_csv(index=False).encode('utf-8-sig')
     st.download_button(
         'export to csv',
