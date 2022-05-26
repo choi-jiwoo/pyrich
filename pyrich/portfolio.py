@@ -135,8 +135,8 @@ class Portfolio(Record):
         col_order = [
             'country',
             'quantity',
-            'current_price',
             'day_change(%)',
+            'current_price',
             'average_price_paid',
             'pct_gain(%)',
             'current_value',
