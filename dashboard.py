@@ -39,9 +39,7 @@ with st.sidebar:
     )
 
 if selected == 'Dashboard':
-    st.header('Dashboard')
-elif selected == 'Portfolio':
-    st.header('Portfolio')
+    st.header(f'Hello {portfolio.name} 👋🏼')
     st.subheader('Portfolio Value')
 
     current_yield = portfolio_value['portfolio_gain'] / portfolio_value['invested_amount']
@@ -54,12 +52,14 @@ elif selected == 'Portfolio':
     current_value_text = ("<span style='font-weight: bold; font-size: 42px;'>"
                           f"{portfolio_value['current_value']:,.2f}원"
                           "</span>"
+                          "<br>"
                           f"<span style='color: {color};'>"
                           f"&nbsp;{portfolio_value['portfolio_gain']:,.2f}원"
                           f"&nbsp;({current_yield:,.2%})"
                           "</span>")
     st.markdown(current_value_text, unsafe_allow_html=True)
-
+elif selected == 'Portfolio':
+    st.header('Portfolio')
     st.subheader('Current portfolio')
     value_subset = ['day_change(%)', 'pct_gain(%)', 'total_gain']
     styled_portfolio_table = style_table(portfolio_table, style.style_change, value_subset)
