@@ -70,6 +70,7 @@ elif selected == 'My Asset':
     # cash
     cash = Cash('cash')
     cash_table = cash.record
+    cash_table = cash_table.set_index('currency')
     total_cash = cash.get_total_cash_in_krw()
 
     # stock
