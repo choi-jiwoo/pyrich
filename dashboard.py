@@ -80,6 +80,7 @@ elif selected == 'My Asset':
     asset_table = pd.concat([total_cash, total_stock_value])
     total_asset = asset_table.agg({'total_asset': np.sum})
     total_asset_table = pd.concat([asset_table, total_asset]).to_frame(name='Values in KRW')
+    total_asset_table.index = [idx.upper() for idx in total_asset_table.index]
     st.table(total_asset_table)
 
     st.header('Asset Details')
@@ -114,8 +115,9 @@ elif selected == 'Dividends History':
 
     st.subheader('Total Dividends Received')
     total_dividends = dividend.get_total_dividends()
-    total_dividends = {'Value in KRW': [total_dividends]}
+    total_dividends = {'Values in KRW': [total_dividends]}
     total_dividends_table = pd.DataFrame(total_dividends, index=['total_dividends'])
+    total_dividends_table.index = [idx.upper() for idx in total_dividends_table.index]
     st.table(total_dividends_table)
 
     st.subheader('Total Dividends Received by Stock')
@@ -136,6 +138,7 @@ elif selected == 'Transaction History':
 
     st.subheader('Total Transaction Amount')
     total_traded_amount = portfolio.get_total_traded_amount()
+    total_traded_amount.index = [idx.upper() for idx in total_traded_amount.index]
     styled_total_traded_amount = style_table(total_traded_amount, style.style_neg_value , ['Values in KRW'])
     st.table(styled_total_traded_amount)
 
