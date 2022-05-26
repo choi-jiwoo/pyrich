@@ -92,6 +92,20 @@ elif selected == 'My Asset':
         st.subheader('Investment')
         styled_investment_by_country = style_table(investment_by_country, style.style_change, ['total_gain'])
         st.table(styled_investment_by_country)
+elif selected == 'Investment History':
+    st.header('Investment History')
+    realized_gain = portfolio.get_realized_gain()
+
+    st.subheader('Realized Gain by Stock')
+    styled_realized_gain = style_table(realized_gain, style.style_change, ['realized_gain'])
+    st.table(styled_realized_gain)
+
+    st.subheader('Realized Gain by Country')
+    col_order = ['buy', 'sell', 'realized_gain', 'currency']
+    realized_gain_by_country = realized_gain.groupby(['country', 'currency']).agg(np.sum).reset_index('currency')
+    realized_gain_by_country = realized_gain_by_country[col_order]
+    styled_realized_gain_by_country = style_table(realized_gain_by_country, style.style_change, ['realized_gain'])
+    st.table(styled_realized_gain_by_country)
 elif selected == 'Dividends History':
     st.header('Dividends History')
     dividend = Dividend('dividend')
@@ -117,20 +131,6 @@ elif selected == 'Dividends History':
         'text/csv',
     )
     st.dataframe(dividend_history)
-elif selected == 'Investment History':
-    st.header('Investment History')
-    realized_gain = portfolio.get_realized_gain()
-
-    st.subheader('Realized Gain by Stock')
-    styled_realized_gain = style_table(realized_gain, style.style_change, ['realized_gain'])
-    st.table(styled_realized_gain)
-
-    st.subheader('Realized Gain by Country')
-    col_order = ['buy', 'sell', 'realized_gain', 'currency']
-    realized_gain_by_country = realized_gain.groupby(['country', 'currency']).agg(np.sum).reset_index('currency')
-    realized_gain_by_country = realized_gain_by_country[col_order]
-    styled_realized_gain_by_country = style_table(realized_gain_by_country, style.style_change, ['realized_gain'])
-    st.table(styled_realized_gain_by_country)
 elif selected == 'Transaction History':
     st.header('Transaction History')
 
