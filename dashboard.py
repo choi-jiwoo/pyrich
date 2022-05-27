@@ -65,6 +65,11 @@ if selected == 'Dashboard':
     st.markdown(current_value_text, unsafe_allow_html=True)
 elif selected == 'Portfolio':
     st.header('Portfolio')
+
+    portfolio_w_cash = portfolio.get_portfolio_w_cash(portfolio_table, total_cash.item()).to_frame(name='Values in KRW')
+    portfolio_chart = draw_pie(portfolio_w_cash, values=portfolio_w_cash['Values in KRW'], names=portfolio_w_cash.index, title='Portfolio Item')
+    st.write(portfolio_chart)
+
     st.subheader('Current portfolio')
     value_subset = ['day_change(%)', 'pct_gain(%)', 'total_gain']
     styled_portfolio_table = style_table(portfolio_table, style.style_change, value_subset)
