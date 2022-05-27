@@ -190,5 +190,18 @@ class Portfolio(Record):
         trades_sum = trades_sum.to_frame(name='Values in KRW')
         return trades_sum
 
+    def get_portfolio_w_cash(self, current_portfolio: pd.DataFrame, cash: float) -> pd.DataFrame:
+        portfolio_component = current_portfolio[['current_value', 'currency']]
+        cash = pd.Series(cash, index=['CASH'])
+        try:
+            us_stock = portfolio_component.groupby('currency').get_group('USD')
+            stock_list = us_stock['current_value']
+            stock_list *= self.forex_usd_to_won
+        except KeyError:
+            stock_list = portfolio_component['current_value']
+        finally:
+            portfolio_w_cash = pd.concat([stock_list, cash])
+            return portfolio_w_cash
+
     def __repr__(self) -> str:
         return f"Portfolio(name='{self.name}', table='{self.table}')"
