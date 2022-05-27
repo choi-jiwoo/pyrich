@@ -69,6 +69,17 @@ elif selected == 'Portfolio':
     value_subset = ['day_change(%)', 'pct_gain(%)', 'total_gain']
     styled_portfolio_table = style_table(portfolio_table, style.style_change, value_subset)
     st.table(styled_portfolio_table)
+
+    col1, col2 = st.columns(2)
+    with col1:
+        st.subheader('Cash')
+        cash_table = cash_table.set_index('currency')
+        cash_table.drop(columns='id', inplace=True)
+        st.table(cash_table)
+    with col2:
+        st.subheader('Investment')
+        styled_investment_by_country = style_table(investment_by_country, style.style_change, ['total_gain'])
+        st.table(styled_investment_by_country)
 elif selected == 'My Asset':
     st.header('My Asset')
 
@@ -81,17 +92,6 @@ elif selected == 'My Asset':
     total_asset_table = pd.concat([asset_table, total_asset]).to_frame(name='Values in KRW')
     total_asset_table.index = [idx.upper() for idx in total_asset_table.index]
     st.table(total_asset_table)
-
-    st.header('Asset Details')
-    col1, col2 = st.columns(2)
-    with col1:
-        st.subheader('Cash')
-        cash_table.drop(columns='id', inplace=True)
-        st.table(cash_table)
-    with col2:
-        st.subheader('Investment')
-        styled_investment_by_country = style_table(investment_by_country, style.style_change, ['total_gain'])
-        st.table(styled_investment_by_country)
 elif selected == 'Investment History':
     st.header('Investment History')
     realized_gain = portfolio.get_realized_gain()
