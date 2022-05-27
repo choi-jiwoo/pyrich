@@ -20,6 +20,10 @@ st.title(f'Hello {portfolio.name} 👋🏼')
 # Loding portfolio data
 portfolio_table = portfolio.current_portfolio()
 portfolio_value = portfolio.get_current_portfolio_value(portfolio_table)
+investment_by_country = portfolio.get_investment_by_country(portfolio_table)
+cash = Cash('cash')
+cash_table = cash.record
+total_cash = cash.get_total_cash_in_krw()
 
 # Sidebar component
 with st.sidebar:
@@ -68,14 +72,7 @@ elif selected == 'Portfolio':
 elif selected == 'My Asset':
     st.header('My Asset')
 
-    # cash
-    cash = Cash('cash')
-    cash_table = cash.record
-    cash_table = cash_table.set_index('currency')
-    total_cash = cash.get_total_cash_in_krw()
-
     # stock
-    investment_by_country = portfolio.get_investment_by_country(portfolio_table)
     total_stock_value = pd.Series(portfolio_value['current_value'], index=['total_stock_value'], dtype=float)
 
     # total asset
