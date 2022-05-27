@@ -45,7 +45,6 @@ with st.sidebar:
 
 if selected == 'Dashboard':
     st.header(f'Hello {portfolio.name} 👋🏼')
-    st.subheader('Portfolio Value')
 
     current_yield = portfolio_value['portfolio_gain'] / portfolio_value['invested_amount']
     color = '#fff'
@@ -53,16 +52,29 @@ if selected == 'Dashboard':
         color = '#a50e0e' # red
     elif current_yield > 0:
         color = '#137333' # green
+    
+    cur_asset = st.container()
+    cur_asset.subheader('Current Asset Value')
+    cur_asset_value = portfolio_value['current_value'] + total_cash.item()
+    cur_asset_text = ("<span style='font-weight: bold; font-size: 36px;'>"
+                      f"{cur_asset_value:,.2f}원</span>")
+    cur_asset.markdown(cur_asset_text, unsafe_allow_html=True)
 
-    current_value_text = ("<span style='font-weight: bold; font-size: 42px;'>"
-                          f"{portfolio_value['current_value']:,.2f}원"
-                          "</span>"
-                          "<br>"
-                          f"<span style='color: {color};'>"
-                          f"&nbsp;{portfolio_value['portfolio_gain']:,.2f}원"
-                          f"&nbsp;({current_yield:,.2%})"
-                          "</span>")
-    st.markdown(current_value_text, unsafe_allow_html=True)
+    cur_investment, cur_cash = st.columns(2)
+    cur_investment.subheader('Current Stock Value')
+    cur_investment_text = ("<span style='font-weight: bold; font-size: 36px;'>"
+                           f"{portfolio_value['current_value']:,.2f}원</span>"
+                           f"<span style='color: {color};'>"
+                           "<br>"
+                           f"&nbsp;{portfolio_value['portfolio_gain']:,.2f}원"
+                           f"&nbsp;({current_yield:,.2%})"
+                           "</span>")
+    cur_investment.markdown(cur_investment_text, unsafe_allow_html=True)
+
+    cur_cash.subheader('Current Cash')
+    cur_cash_text = ("<span style='font-weight: bold; font-size: 36px;'>"
+                     f"{total_cash.item():,.2f}원</span>")
+    cur_cash.markdown(cur_cash_text, unsafe_allow_html=True)
 elif selected == 'Portfolio':
     st.header('Portfolio')
 
