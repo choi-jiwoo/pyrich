@@ -7,6 +7,7 @@ from pyrich.style import style_table
 from pyrich.portfolio import Portfolio
 from pyrich.dividend import Dividend
 from pyrich.cash import Cash
+from pyrich.visualization import draw_pie
 
 
 pd.set_option('styler.format.precision', 2)
