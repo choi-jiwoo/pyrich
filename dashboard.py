@@ -4,6 +4,7 @@ import streamlit as st
 from streamlit_option_menu import option_menu
 from pyrich import style
 from pyrich.style import style_table
+from pyrich.table import sort_table
 from pyrich.portfolio import Portfolio
 from pyrich.dividend import Dividend
 from pyrich.cash import Cash
@@ -84,6 +85,7 @@ elif selected == 'Portfolio':
 
     st.subheader('Current portfolio')
     value_subset = ['day_change(%)', 'pct_gain(%)', 'total_gain']
+    portfolio_table = sort_table(portfolio_table, by='pct_gain(%)', ascending=False)
     styled_portfolio_table = style_table(portfolio_table, style.style_change, value_subset)
     st.table(styled_portfolio_table)
 
@@ -95,6 +97,7 @@ elif selected == 'Portfolio':
         st.table(cash_table)
     with col2:
         st.subheader('Investment')
+        investment_by_country = sort_table(investment_by_country, by='total_gain', ascending=False)
         styled_investment_by_country = style_table(investment_by_country, style.style_change, ['total_gain'])
         st.table(styled_investment_by_country)
 elif selected == 'My Asset':
@@ -115,6 +118,7 @@ elif selected == 'My Asset':
 elif selected == 'Investment History':
     st.header('Investment History')
     realized_gain = portfolio.get_realized_gain()
+    realized_gain = sort_table(realized_gain, by='realized_gain', ascending=False)
 
     st.subheader('Realized Gain by Stock')
     styled_realized_gain = style_table(realized_gain, style.style_change, ['realized_gain'])
@@ -124,6 +128,7 @@ elif selected == 'Investment History':
     col_order = ['buy', 'sell', 'realized_gain', 'currency']
     realized_gain_by_country = realized_gain.groupby(['country', 'currency']).agg(np.sum).reset_index('currency')
     realized_gain_by_country = realized_gain_by_country[col_order]
+    realized_gain_by_country = sort_table(realized_gain_by_country, by='realized_gain', ascending=False)
     styled_realized_gain_by_country = style_table(realized_gain_by_country, style.style_change, ['realized_gain'])
     st.table(styled_realized_gain_by_country)
 elif selected == 'Dividends History':
