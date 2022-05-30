@@ -26,6 +26,9 @@ cash = Cash('cash')
 cash_table = cash.record
 total_cash = cash.get_total_cash_in_krw()
 
+# Update current asset in the database
+portfolio.record_current_asset(portfolio_value['current_value'])
+
 # Sidebar component
 with st.sidebar:
     # https://icons.getbootstrap.com/
