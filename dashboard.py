@@ -26,9 +26,6 @@ cash = Cash('cash')
 cash_table = cash.record
 total_cash = cash.get_total_cash_in_krw()
 
-# Update current asset in the database
-portfolio.record_current_asset(portfolio_value['current_value'])
-
 # Sidebar component
 with st.sidebar:
     # https://icons.getbootstrap.com/
@@ -60,6 +57,10 @@ if selected == 'Dashboard':
     cur_asset = st.container()
     cur_asset.subheader('Current Asset Value')
     cur_asset_value = portfolio_value['current_value'] + total_cash.item()
+
+    # Update current asset in the database
+    portfolio.record_current_asset(cur_asset_value)
+
     cur_asset_text = ("<span style='font-weight: bold; font-size: 36px;'>"
                       f"{cur_asset_value:,.2f}원</span>")
     cur_asset.markdown(cur_asset_text, unsafe_allow_html=True)
