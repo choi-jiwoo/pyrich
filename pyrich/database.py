@@ -16,6 +16,7 @@ class PostgreSQL:
     def __init__(self) -> None:
         self._parse_database_url()
         self._connect()
+        self._create_current_asset_table()
         self._create_cash_table()
         self._create_transaction_table()
         self._create_dividend_table()
@@ -57,6 +58,13 @@ class PostgreSQL:
         row_count = self.cur.fetchone()[0]
         is_empty = True if row_count == 0 else False
         return is_empty
+
+    def _create_current_asset_table(self) -> None:
+        query = ('CREATE TABLE IF NOT EXISTS current_asset'
+                 '(id serial PRIMARY KEY,'
+                 'date DATE NOT NULL,'
+                 'amount REAL NOT NULL);')
+        self.run_query(query)
 
     def _create_cash_table(self) -> None:
         cash_table = 'cash'
