@@ -6,3 +6,8 @@ from typing import Iterable
 def draw_pie(data: pd.DataFrame, **kwargs):
     fig = px.pie(data, **kwargs)
     return fig
+
+def draw_treemap(data: pd.DataFrame, treemap_name: str, section: tuple, **kwargs):
+    fig = px.treemap(data, path=[px.Constant(treemap_name), *section], **kwargs)
+    fig.update_layout(margin = dict(t=50, l=0, r=0, b=50))
+    return fig
