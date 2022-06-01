@@ -19,6 +19,7 @@ def draw_line(data: pd.DataFrame, **kwargs):
 
 def draw_pie(data: pd.DataFrame, **kwargs):
     fig = px.pie(data, **kwargs)
+    fig.update_layout(margin=dict(t=10, l=0, r=0, b=10))
     return fig
 
 def draw_treemap(data: pd.DataFrame, treemap_name: str, section: tuple, **kwargs):
