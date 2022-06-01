@@ -24,5 +24,15 @@ def draw_pie(data: pd.DataFrame, **kwargs):
 
 def draw_treemap(data: pd.DataFrame, treemap_name: str, section: tuple, **kwargs):
     fig = px.treemap(data, path=[px.Constant(treemap_name), *section], **kwargs)
-    fig.update_layout(margin = dict(t=50, l=0, r=0, b=50))
+    fig.update_traces(dict(
+        texttemplate='%{label}<br>%{customdata}%',
+        hovertemplate=None,
+        textposition='middle center',
+        insidetextfont=dict(family=('Trebuchet MS', 'Arial'), size=20),
+    ))
+    fig.update_layout(
+        margin=dict(t=40, l=0, r=0, b=40),
+        coloraxis=dict(showscale=False),
+    )
+    print(fig)
     return fig
