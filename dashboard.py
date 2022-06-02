@@ -130,7 +130,7 @@ elif selected == 'Portfolio':
     value_subset = ['day_change(%)', 'pct_gain(%)', 'total_gain']
     portfolio_table = sort_table(portfolio_table, by='pct_gain(%)', ascending=False)
     styled_portfolio_table = style_table(portfolio_table, style.style_change, value_subset)
-    st.table(styled_portfolio_table)
+    st.dataframe(styled_portfolio_table)
 
     col1, col2 = st.columns(2)
     with col1:
@@ -220,4 +220,4 @@ elif selected == 'Transaction History':
         'transaction_history.csv',
         'text/csv',
     )
-    st.table(styled_transaction_history)
+    st.dataframe(styled_transaction_history)
