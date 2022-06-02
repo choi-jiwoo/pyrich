@@ -34,5 +34,4 @@ def draw_treemap(data: pd.DataFrame, treemap_name: str, section: tuple, **kwargs
         margin=dict(t=40, l=0, r=0, b=40),
         coloraxis=dict(showscale=False),
     )
-    print(fig)
     return fig

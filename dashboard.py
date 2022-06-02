@@ -115,7 +115,7 @@ elif selected == 'My Asset':
     total_asset = asset_table.agg({'total_asset': np.sum})
     total_asset_table = pd.concat([asset_table, total_asset]).to_frame(name='Values in KRW')
     total_asset_table.index = [idx.upper() for idx in total_asset_table.index]
-    
+
     asset_chart = draw_pie(asset_table, values=asset_table.array, names=asset_table.index, title='Asset Ratio')
     st.write(asset_chart)
     st.table(total_asset_table)
