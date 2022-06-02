@@ -5,6 +5,7 @@ from streamlit_option_menu import option_menu
 from pyrich import style
 from pyrich.style import style_table
 from pyrich.table import sort_table
+from pyrich.asset import Asset
 from pyrich.portfolio import Portfolio
 from pyrich.dividend import Dividend
 from pyrich.cash import Cash
@@ -25,6 +26,8 @@ investment_by_country = portfolio.get_investment_by_country(portfolio_table)
 cash = Cash('cash')
 cash_table = cash.record
 total_cash = cash.get_total_cash_in_krw()
+asset = Asset('current_asset')
+current_asset = asset.record
 
 # Sidebar component
 with st.sidebar:
