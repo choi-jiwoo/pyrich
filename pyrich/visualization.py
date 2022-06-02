@@ -31,6 +31,7 @@ def draw_treemap(data: pd.DataFrame, treemap_name: str, section: tuple, **kwargs
         insidetextfont=dict(family=('Trebuchet MS', 'Arial'), size=20),
     ))
     fig.update_layout(
+        margin=dict(t=0, l=40, r=40, b=100),
         coloraxis=dict(showscale=False),
     )
     return fig
