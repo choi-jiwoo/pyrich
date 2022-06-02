@@ -135,6 +135,12 @@ elif selected == 'Portfolio':
 
     investment_section = st.container()
     investment_section.subheader('Investment')
+    investment_chart = draw_pie(
+        investment_by_country,
+        values=investment_by_country['current_value'],
+        names=investment_by_country.index,
+    )
+    investment_section.write(investment_chart)
     investment_by_country = sort_table(investment_by_country, by='total_gain', ascending=False)
     styled_investment_by_country = style_table(investment_by_country, style.style_change, ['total_gain'])
     investment_section.dataframe(styled_investment_by_country)
@@ -143,6 +149,12 @@ elif selected == 'Portfolio':
     cash_section.subheader('Cash')
     cash_table = cash_table.set_index('currency')
     cash_table.drop(columns='id', inplace=True)
+    cash_chart = draw_pie(
+        cash_table,
+        values=cash_table['amount'],
+        names=cash_table.index,
+    )
+    cash_section.write(cash_chart)
     cash_section.dataframe(cash_table)
 elif selected == 'My Asset':
     st.header('My Asset')
