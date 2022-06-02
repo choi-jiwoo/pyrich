@@ -50,6 +50,7 @@ with st.sidebar:
 
 if selected == 'Dashboard':
     st.header(f'Hello {portfolio.name} 👋🏼')
+    st.subheader('Financial Summary')
 
     current_yield = portfolio_value['portfolio_gain'] / portfolio_value['invested_amount']
     color = '#fff'
