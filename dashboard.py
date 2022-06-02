@@ -118,31 +118,32 @@ if selected == 'Dashboard':
 elif selected == 'Portfolio':
     st.header('Portfolio')
 
+    portfolio_section = st.container()
     portfolio_w_cash = portfolio.get_portfolio_w_cash(portfolio_table, total_cash.item()).to_frame(name='Values in KRW')
     portfolio_chart = draw_pie(
         portfolio_w_cash,
         values=portfolio_w_cash['Values in KRW'],
         names=portfolio_w_cash.index,
     )
-    st.write(portfolio_chart)
+    portfolio_section.write(portfolio_chart)
 
-    st.subheader('Current portfolio')
+    portfolio_section.subheader('Current portfolio')
     value_subset = ['day_change(%)', 'pct_gain(%)', 'total_gain']
     portfolio_table = sort_table(portfolio_table, by='pct_gain(%)', ascending=False)
     styled_portfolio_table = style_table(portfolio_table, style.style_change, value_subset)
-    st.dataframe(styled_portfolio_table)
+    portfolio_section.dataframe(styled_portfolio_table)
 
-    col1, col2 = st.columns(2)
-    with col1:
-        st.subheader('Cash')
-        cash_table = cash_table.set_index('currency')
-        cash_table.drop(columns='id', inplace=True)
-        st.table(cash_table)
-    with col2:
-        st.subheader('Investment')
-        investment_by_country = sort_table(investment_by_country, by='total_gain', ascending=False)
-        styled_investment_by_country = style_table(investment_by_country, style.style_change, ['total_gain'])
-        st.table(styled_investment_by_country)
+    investment_section = st.container()
+    investment_section.subheader('Investment')
+    investment_by_country = sort_table(investment_by_country, by='total_gain', ascending=False)
+    styled_investment_by_country = style_table(investment_by_country, style.style_change, ['total_gain'])
+    investment_section.dataframe(styled_investment_by_country)
+
+    cash_section = st.container()
+    cash_section.subheader('Cash')
+    cash_table = cash_table.set_index('currency')
+    cash_table.drop(columns='id', inplace=True)
+    cash_section.dataframe(cash_table)
 elif selected == 'My Asset':
     st.header('My Asset')
 
