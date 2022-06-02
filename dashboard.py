@@ -158,6 +158,7 @@ elif selected == 'Portfolio':
     cash_section.dataframe(cash_table)
 elif selected == 'My Asset':
     st.header('My Asset')
+    st.subheader('Asset Ratio')
 
     # stock
     total_stock_value = pd.Series(portfolio_value['current_value'], index=['total_stock_value'], dtype=float)
@@ -168,7 +169,7 @@ elif selected == 'My Asset':
     total_asset_table = pd.concat([asset_table, total_asset]).to_frame(name='Values in KRW')
     total_asset_table.index = [idx.upper() for idx in total_asset_table.index]
 
-    asset_chart = draw_pie(asset_table, values=asset_table.array, names=asset_table.index, title='Asset Ratio')
+    asset_chart = draw_pie(asset_table, values=asset_table.array, names=asset_table.index)
     st.write(asset_chart)
     st.table(total_asset_table)
 elif selected == 'Investment History':
