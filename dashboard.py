@@ -9,6 +9,7 @@ from pyrich.asset import Asset
 from pyrich.portfolio import Portfolio
 from pyrich.dividend import Dividend
 from pyrich.cash import Cash
+from pyrich.visualization import draw_line
 from pyrich.visualization import draw_pie
 
 
@@ -56,32 +57,42 @@ if selected == 'Dashboard':
         color = '#a50e0e' # red
     elif current_yield > 0:
         color = '#137333' # green
-    
-    cur_asset = st.container()
-    cur_asset.write('Current Asset Value')
-    cur_asset_value = portfolio_value['current_value'] + total_cash.item()
-    # Update current asset in the database
-    portfolio.record_current_asset(cur_asset_value)
-    cur_asset_text = ("<span style='font-weight: bold; font-size: 28px;'>"
-                    f"{cur_asset_value:,.2f}원</span>")
-    cur_asset.markdown(cur_asset_text, unsafe_allow_html=True)
 
-    cur_investment = st.container()
-    cur_investment.write('Current Stock Value')
-    cur_investment_text = ("<span style='font-weight: bold; font-size: 28px;'>"
-                        f"{portfolio_value['current_value']:,.2f}원</span>"
-                        "<br>"
-                        f"<span style='color: {color}; font-size: 18px;'>"
-                        f"&nbsp;{portfolio_value['portfolio_gain']:,.2f}원"
-                        f"&nbsp;({current_yield:,.2%})"
-                        "</span>")
-    cur_investment.markdown(cur_investment_text, unsafe_allow_html=True)
+    col1, col2 = st.columns([1, 3])
+    with col2:
+        trace_current_asset = draw_line(
+            current_asset,
+            x='date',
+            y='amount',
+            height=300,
+            )
+        st.write(trace_current_asset)
+    with col1:
+        cur_asset = st.container()
+        cur_asset.write('Current Asset Value')
+        cur_asset_value = portfolio_value['current_value'] + total_cash.item()
+        # Update current asset in the database
+        portfolio.record_current_asset(cur_asset_value)
+        cur_asset_text = ("<span style='font-weight: bold; font-size: 28px;'>"
+                        f"{cur_asset_value:,.2f}원</span>")
+        cur_asset.markdown(cur_asset_text, unsafe_allow_html=True)
 
-    cur_cash = st.container()
-    cur_cash.write('Current Cash')
-    cur_cash_text = ("<span style='font-weight: bold; font-size: 28px;'>"
-                    f"{total_cash.item():,.2f}원</span>")
-    cur_cash.markdown(cur_cash_text, unsafe_allow_html=True)
+        cur_investment = st.container()
+        cur_investment.write('Current Stock Value')
+        cur_investment_text = ("<span style='font-weight: bold; font-size: 28px;'>"
+                            f"{portfolio_value['current_value']:,.2f}원</span>"
+                            "<br>"
+                            f"<span style='color: {color}; font-size: 18px;'>"
+                            f"&nbsp;{portfolio_value['portfolio_gain']:,.2f}원"
+                            f"&nbsp;({current_yield:,.2%})"
+                            "</span>")
+        cur_investment.markdown(cur_investment_text, unsafe_allow_html=True)
+
+        cur_cash = st.container()
+        cur_cash.write('Current Cash')
+        cur_cash_text = ("<span style='font-weight: bold; font-size: 28px;'>"
+                        f"{total_cash.item():,.2f}원</span>")
+        cur_cash.markdown(cur_cash_text, unsafe_allow_html=True)
 elif selected == 'Portfolio':
     st.header('Portfolio')
 
