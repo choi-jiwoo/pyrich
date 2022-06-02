@@ -59,12 +59,13 @@ if selected == 'Dashboard':
     elif current_yield > 0:
         color = '#137333' # green
 
-    col1, col2 = st.columns([1, 3])
+    col1, col2 = st.columns([1, 2])
     with col2:
         trace_current_asset = draw_line(
             current_asset,
             x='date',
             y='amount',
+            width=490,
             height=300,
             )
         st.write(trace_current_asset)
