@@ -11,6 +11,7 @@ from pyrich.dividend import Dividend
 from pyrich.cash import Cash
 from pyrich.visualization import draw_line
 from pyrich.visualization import draw_pie
+from pyrich.visualization import draw_treemap
 
 
 pd.set_option('styler.format.precision', 2)
@@ -98,6 +99,22 @@ if selected == 'Dashboard':
                          "<span style='font-weight: bold; font-size: 28px;'>"
                          f"{total_cash.item():,.2f}원</span>")
         cur_cash.markdown(cur_cash_text, unsafe_allow_html=True)
+
+    portfolio_map = st.container()
+    portfolio_map.subheader('Portfolio Map')
+    treemap = draw_treemap(
+        portfolio_table,
+        treemap_name='portfolio',
+        section=('country', portfolio_table.index),
+        # width=400,
+        # height=400,
+        range_color=[-3, 3],
+        values='current_value',
+        color='day_change(%)',
+        color_continuous_scale=['#a50e0e', '#393960', '#5af25a'],
+        color_continuous_midpoint=0,
+    )
+    portfolio_map.write(treemap)
 elif selected == 'Portfolio':
     st.header('Portfolio')
 
