@@ -119,7 +119,11 @@ elif selected == 'Portfolio':
     st.header('Portfolio')
 
     portfolio_w_cash = portfolio.get_portfolio_w_cash(portfolio_table, total_cash.item()).to_frame(name='Values in KRW')
-    portfolio_chart = draw_pie(portfolio_w_cash, values=portfolio_w_cash['Values in KRW'], names=portfolio_w_cash.index, title='Portfolio Item')
+    portfolio_chart = draw_pie(
+        portfolio_w_cash,
+        values=portfolio_w_cash['Values in KRW'],
+        names=portfolio_w_cash.index,
+    )
     st.write(portfolio_chart)
 
     st.subheader('Current portfolio')
