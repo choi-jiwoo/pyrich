@@ -119,6 +119,7 @@ elif selected == 'Portfolio':
     st.header('Portfolio')
 
     portfolio_section = st.container()
+    portfolio_section.subheader('Current portfolio')
     portfolio_w_cash = portfolio.get_portfolio_w_cash(portfolio_table, total_cash.item()).to_frame(name='Values in KRW')
     portfolio_chart = draw_pie(
         portfolio_w_cash,
@@ -127,7 +128,6 @@ elif selected == 'Portfolio':
     )
     portfolio_section.write(portfolio_chart)
 
-    portfolio_section.subheader('Current portfolio')
     value_subset = ['day_change(%)', 'pct_gain(%)', 'total_gain']
     portfolio_table = sort_table(portfolio_table, by='pct_gain(%)', ascending=False)
     styled_portfolio_table = style_table(portfolio_table, style.style_change, value_subset)
