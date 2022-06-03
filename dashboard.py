@@ -14,6 +14,10 @@ from pyrich.visualization import draw_pie
 from pyrich.visualization import draw_treemap
 
 
+st.set_page_config(
+    page_title='Portfolio Manager',
+    page_icon='🚀',
+)
 pd.set_option('styler.format.precision', 2)
 pd.set_option('styler.format.thousands', ',')
 
