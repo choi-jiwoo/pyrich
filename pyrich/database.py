@@ -183,6 +183,8 @@ class PostgreSQL:
 
         if warning_msg.upper() == 'Y':
             self.run_query(query, msg=msg)
+            reset_sequence_query = f"SELECT SETVAL('{table}_id_seq' ,(SELECT MAX(id) FROM {table}));"
+            self.run_query(reset_sequence_query)
         else:
             print('Deleting stopped.')
         
