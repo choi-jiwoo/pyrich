@@ -1,10 +1,11 @@
-from copy import deepcopy
-from pyrich.error import EmptySymbolError
+# TODO
+# should implement user input type validation
 
 
 class Transaction:
 
-    def __init__(self, record: dict) -> None:
+    def __init__(self, record: list, headers: list) -> None:
+        self.headers = headers
         self.record = record
 
     @property
@@ -12,29 +13,26 @@ class Transaction:
         return self._record
 
     @record.setter
-    def record(self, record: dict) -> None:
-        try:
-            record['symbol'] = record['symbol'].upper()
-            record['country'] = record['country'].upper()
-        except (AttributeError, TypeError):
-            raise EmptySymbolError('Symbol is not provided.')
-        else:
-            self._record = record
+    def record(self, record: list) -> None:
+        mapped_record = zip(self.headers, record)
+        mapped_record = {
+            header: item
+            for header, item in mapped_record
+        }
+        self._record = self._convert_items(mapped_record)
 
-    def record_dividends(self, column: list) -> dict:
-        dividend_record = dict.fromkeys(column)
-        items = self.record.items()
-        for item in items:
-            if item[0] in dividend_record:
-                dividend_record[item[0]] = item[1]
-        dividend_record['dividend'] = dividend_record.pop('price')
-        return dividend_record
+    def _convert_items(self, record: dict) -> dict:
+        uppercase_items = ['country', 'symbol', 'currency']
+        float_items = ['quantity', 'price', 'dividend']
+        for item in uppercase_items:
+            try:
+                record[item] = record[item].upper()
+            except KeyError:
+                continue
 
-    def record_transactions(self) -> dict:
-        transaction_cols = ['date', 'country', 'symbol', 'type', 'quantity', 'price']
-        transaction_record = deepcopy(self.record)
-        transaction_record = {key: transaction_record[key] for key in transaction_cols}
-        quantity = transaction_record['quantity']
-        price = transaction_record['price']
-        transaction_record['total_price_paid'] = quantity * price
-        return transaction_record
+        for item in float_items:
+            try:
+                record[item] = float(record[item])
+            except KeyError:
+                continue
+        return record

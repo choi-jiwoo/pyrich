@@ -61,13 +61,15 @@ def run():
         else:
             return
 
-    # Record transaction 
-    new_record = Transaction(options)
-
-    if new_record.record['type'] == 'dividend':
-        keys = ['date', 'symbol', 'price']
-        record = new_record.record_dividends(keys)
-        db.insert('dividend', record)
+    # Record transaction
+    if options['dividend'] is None:
+        headers = ['date', 'country', 'type', 'symbol', 'quantity', 'price']
+        transaction = Transaction(options['transaction'], headers=headers)
+        transaction_record = transaction.record
+        transaction_record['total_price_paid'] = transaction_record['quantity'] * transaction_record['price']
+        db.insert('transaction', transaction_record)
     else:
-        record = new_record.record_transactions()
-        db.insert('transaction', record)
+        headers = ['date', 'symbol', 'dividend', 'currency']
+        dividends = Transaction(options['dividend'], headers=headers)
+        dividends_record = dividends.record
+        db.insert('dividend', dividends_record)
