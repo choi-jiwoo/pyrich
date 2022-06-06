@@ -2,6 +2,7 @@ from bs4 import BeautifulSoup as bs
 from functools import lru_cache
 import pandas as pd
 import requests
+from financialdatapy.stock import Stock
 from pyrich.api import set_finnhub
 from pyrich.error import SearchError
 
@@ -102,3 +103,11 @@ def get_from_kor_market(symbol: str) -> dict:
     current_price_and_pct_change = ['c', 'dp']  # c: current price, dp: percent change
     price_data = {k: v for k, v in zip(current_price_and_pct_change, quote)}
     return price_data
+
+def get_historical_price(symbol: str, country: str) -> pd.DataFrame:
+    comp = Stock(symbol, country)
+    start_date = pd.Timestamp().today()
+    one_year = pd.Timedelta(weeks=52)
+    end_date = start_date - one_year
+    historical_price = comp.price(start_date, end_date)
+    return historical_price
