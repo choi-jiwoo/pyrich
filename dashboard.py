@@ -2,8 +2,10 @@ import numpy as np
 import pandas as pd
 import streamlit as st
 from streamlit_option_menu import option_menu
-from pyrich import style
 from pyrich.style import style_table
+from pyrich.style import style_neg_value
+from pyrich.style import style_change
+from pyrich.style import style_trade_type
 from pyrich.table import sort_table
 from pyrich.asset import Asset
 from pyrich.portfolio import Portfolio
@@ -132,7 +134,7 @@ elif selected == 'Portfolio':
 
     value_subset = ['day_change(%)', 'pct_gain(%)', 'total_gain']
     portfolio_table = sort_table(portfolio_table, by='pct_gain(%)', ascending=False)
-    styled_portfolio_table = style_table(portfolio_table, style.style_change, value_subset)
+    styled_portfolio_table = style_table(portfolio_table, style_change, value_subset)
     portfolio_section.dataframe(styled_portfolio_table)
 
     investment_section = st.container()
@@ -144,7 +146,7 @@ elif selected == 'Portfolio':
     )
     investment_section.write(investment_chart)
     investment_by_country = sort_table(investment_by_country, by='total_gain', ascending=False)
-    styled_investment_by_country = style_table(investment_by_country, style.style_change, ['total_gain'])
+    styled_investment_by_country = style_table(investment_by_country, style_change, ['total_gain'])
     investment_section.dataframe(styled_investment_by_country)
 
     cash_section = st.container()
@@ -180,7 +182,7 @@ elif selected == 'Investment History':
     realized_gain = sort_table(realized_gain, by='realized_gain', ascending=False)
 
     st.subheader('Realized Gain by Stock')
-    styled_realized_gain = style_table(realized_gain, style.style_change, ['realized_gain'])
+    styled_realized_gain = style_table(realized_gain, style_change, ['realized_gain'])
     st.table(styled_realized_gain)
 
     st.subheader('Realized Gain by Country')
@@ -188,7 +190,7 @@ elif selected == 'Investment History':
     realized_gain_by_country = realized_gain.groupby(['country', 'currency']).agg(np.sum).reset_index('currency')
     realized_gain_by_country = realized_gain_by_country[col_order]
     realized_gain_by_country = sort_table(realized_gain_by_country, by='realized_gain', ascending=False)
-    styled_realized_gain_by_country = style_table(realized_gain_by_country, style.style_change, ['realized_gain'])
+    styled_realized_gain_by_country = style_table(realized_gain_by_country, style_change, ['realized_gain'])
     st.table(styled_realized_gain_by_country)
 elif selected == 'Dividends History':
     st.header('Dividends History')
@@ -222,13 +224,13 @@ elif selected == 'Transaction History':
     st.subheader('Total Transaction Amount')
     total_traded_amount = portfolio.get_total_traded_amount()
     total_traded_amount.index = [idx.upper() for idx in total_traded_amount.index]
-    styled_total_traded_amount = style_table(total_traded_amount, style.style_neg_value , ['Values in KRW'])
+    styled_total_traded_amount = style_table(total_traded_amount, style_neg_value , ['Values in KRW'])
     st.table(styled_total_traded_amount)
 
     st.subheader('Transaction History')
     transaction_history = portfolio.record
     transaction_history.drop('id', axis=1, inplace=True)
-    styled_transaction_history = style_table(transaction_history, style.style_trade_type, ['type'])
+    styled_transaction_history = style_table(transaction_history, style_trade_type, ['type'])
     export_to_csv = transaction_history.to_csv(index=False).encode('utf-8-sig')
     st.download_button(
         'export to csv',
