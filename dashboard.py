@@ -2,6 +2,7 @@ import numpy as np
 import pandas as pd
 import streamlit as st
 from streamlit_option_menu import option_menu
+from pyrich.stock import get_historical_price
 from pyrich.style import style_table
 from pyrich.style import style_neg_value
 from pyrich.style import style_change
@@ -12,6 +13,7 @@ from pyrich.portfolio import Portfolio
 from pyrich.dividend import Dividend
 from pyrich.cash import Cash
 from pyrich.visualization import draw_line
+from pyrich.visualization import draw_stock_chart
 from pyrich.visualization import draw_pie
 from pyrich.visualization import draw_treemap
 
@@ -116,6 +118,23 @@ if selected == 'Dashboard':
         color_continuous_midpoint=0,
     )
     portfolio_map.write(treemap)
+
+    select_stock = st.container()
+    select_stock.subheader('Stock Details')
+    selected = select_stock.selectbox('Choose Stock', portfolio_table.index)
+    selected_stock_data = portfolio_table.loc[selected]
+    change_color = style_change(selected_stock_data['day_change(%)'])
+    stock_info_text = ("<p style='margin-left: 1.5em;'>"
+                       f"<span style='font-weight: bold; font-size: 26px;'>{selected_stock_data.name}</span>"
+                       f"&nbsp<span>{selected_stock_data['current_price']:,.2f}</span>"
+                       "&nbsp;<span style='"+change_color+f"'>({selected_stock_data['day_change(%)']}%)</span></p>")
+    select_stock.markdown(stock_info_text, unsafe_allow_html=True)
+    historical_price = get_historical_price(selected, selected_stock_data['country'])
+    stock_chart = draw_stock_chart(
+        close=historical_price['Close'],
+        average_price=selected_stock_data['average_price_paid'],
+    )
+    select_stock.write(stock_chart)
 elif selected == 'Portfolio':
     st.header('Portfolio')
 
