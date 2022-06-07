@@ -1,6 +1,7 @@
 import pandas as pd
 
 
+BLACK = '#ffffff'
 GREEN = '#137333'
 RED = '#a50e0e'
 
@@ -13,6 +14,7 @@ def style_neg_value(value: float) -> str:
 
 def style_change(value: float) -> str:
     color = {
+        'zero': BLACK,
         'neg': RED,
         'pos': GREEN,
     }
@@ -21,6 +23,8 @@ def style_change(value: float) -> str:
         style = f"color:{color['pos']};"
     elif value < 0:
         style = f"color:{color['neg']};"
+    else:
+        style = f"color:{color['zero']};"
     return style
 
 def style_trade_type(_type: str) -> str:
