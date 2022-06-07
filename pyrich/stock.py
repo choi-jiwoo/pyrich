@@ -111,4 +111,5 @@ def get_historical_price(symbol: str, country: str) -> pd.DataFrame:
     one_year = pd.Timedelta(weeks=52)
     end_date = start_date - one_year
     historical_price = comp.price(start_date, end_date)
+    historical_price.set_index('Date', inplace=True)
     return historical_price
