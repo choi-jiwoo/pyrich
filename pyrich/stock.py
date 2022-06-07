@@ -107,9 +107,12 @@ def get_from_kor_market(symbol: str) -> dict:
 @lru_cache
 def get_historical_price(symbol: str, country: str) -> pd.DataFrame:
     comp = Stock(symbol, country)
-    start_date = pd.Timestamp().today()
+    end_date = pd.Timestamp.today()
     one_year = pd.Timedelta(weeks=52)
-    end_date = start_date - one_year
+    start_date = end_date - one_year
+    date_format = '%Y-%m-%d'
+    start_date = start_date.strftime(date_format)
+    end_date = end_date.strftime(date_format)
     historical_price = comp.price(start_date, end_date)
     historical_price.set_index('Date', inplace=True)
     return historical_price
