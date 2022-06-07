@@ -104,6 +104,7 @@ def get_from_kor_market(symbol: str) -> dict:
     price_data = {k: v for k, v in zip(current_price_and_pct_change, quote)}
     return price_data
 
+@lru_cache
 def get_historical_price(symbol: str, country: str) -> pd.DataFrame:
     comp = Stock(symbol, country)
     start_date = pd.Timestamp().today()
