@@ -60,11 +60,7 @@ if selected == 'Dashboard':
     st.subheader('Financial Summary')
 
     current_yield = portfolio_value['portfolio_gain'] / portfolio_value['invested_amount']
-    color = '#fff'
-    if current_yield < 0:
-        color = '#a50e0e' # red
-    elif current_yield > 0:
-        color = '#137333' # green
+    gain_color = style_change(current_yield)
 
     col1, col2 = st.columns([1, 2])
     with col2:
@@ -93,7 +89,7 @@ if selected == 'Dashboard':
                                "<span style='font-weight: bold; font-size: 28px;'>"
                                f"{portfolio_value['current_value']:,.2f}원</span>"
                                "<br>"
-                               f"<span style='color: {color}; font-size: 18px;'>"
+                               "<span style='"+gain_color+" font-size: 18px;'>"
                                f"&nbsp;{portfolio_value['portfolio_gain']:,.2f}원"
                                f"&nbsp;({current_yield:,.2%})"
                                "</span>")
