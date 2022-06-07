@@ -108,6 +108,7 @@ if selected == 'Dashboard':
         portfolio_table,
         treemap_name='portfolio',
         section=('country', portfolio_table.index),
+        height=350,
         range_color=[-3, 3],
         values='current_value',
         color='day_change(%)',
