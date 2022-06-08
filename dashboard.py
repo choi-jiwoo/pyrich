@@ -65,14 +65,6 @@ if selected == 'Dashboard':
     gain_color = style_change(current_yield)
 
     col1, col2 = st.columns([1, 2])
-    with col2:
-        trace_current_asset = draw_line(
-            current_asset,
-            x='date',
-            y='amount',
-            width=490,
-            height=300,
-            )
     with col1:
         cur_asset = st.container()
         cur_asset_value = portfolio_value['current_value'] + total_cash.item()
@@ -102,6 +94,14 @@ if selected == 'Dashboard':
                          "<span style='font-weight: bold; font-size: 28px;'>"
                          f"{total_cash.item():,.2f}원</span>")
         cur_cash.markdown(cur_cash_text, unsafe_allow_html=True)
+    with col2:
+        trace_current_asset = draw_line(
+            current_asset,
+            x='date',
+            y='amount',
+            width=490,
+            height=300,
+            )
         st.plotly_chart(trace_current_asset)
 
     portfolio_map = st.container()
