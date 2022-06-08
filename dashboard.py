@@ -95,6 +95,7 @@ if selected == 'Dashboard':
                          f"{total_cash.item():,.2f}원</span>")
         cur_cash.markdown(cur_cash_text, unsafe_allow_html=True)
     with col2:
+        config = {'displayModeBar': False}
         trace_current_asset = draw_line(
             current_asset,
             x='date',
@@ -102,7 +103,7 @@ if selected == 'Dashboard':
             width=490,
             height=300,
             )
-        st.plotly_chart(trace_current_asset)
+        st.plotly_chart(trace_current_asset, config=config)
 
     portfolio_map = st.container()
     portfolio_map.subheader('Portfolio Map')
