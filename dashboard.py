@@ -73,7 +73,6 @@ if selected == 'Dashboard':
             width=490,
             height=300,
             )
-        st.write(trace_current_asset)
     with col1:
         cur_asset = st.container()
         cur_asset_value = portfolio_value['current_value'] + total_cash.item()
@@ -103,6 +102,7 @@ if selected == 'Dashboard':
                          "<span style='font-weight: bold; font-size: 28px;'>"
                          f"{total_cash.item():,.2f}원</span>")
         cur_cash.markdown(cur_cash_text, unsafe_allow_html=True)
+        st.plotly_chart(trace_current_asset)
 
     portfolio_map = st.container()
     portfolio_map.subheader('Portfolio Map')
@@ -117,7 +117,7 @@ if selected == 'Dashboard':
         color_continuous_scale=['#a50e0e', '#393960', '#5af25a'],
         color_continuous_midpoint=0,
     )
-    portfolio_map.write(treemap)
+    portfolio_map.plotly_chart(treemap)
 
     select_stock = st.container()
     select_stock.subheader('Stock Details')
@@ -134,7 +134,7 @@ if selected == 'Dashboard':
         close=historical_price['Close'],
         average_price=selected_stock_data['average_price_paid'],
     )
-    select_stock.write(stock_chart)
+    select_stock.plotly_chart(stock_chart)
 elif selected == 'Portfolio':
     st.header('Portfolio')
 
@@ -146,7 +146,7 @@ elif selected == 'Portfolio':
         values=portfolio_w_cash['Values in KRW'],
         names=portfolio_w_cash.index,
     )
-    portfolio_section.write(portfolio_chart)
+    portfolio_section.plotly_chart(portfolio_chart)
 
     value_subset = ['day_change(%)', 'pct_gain(%)', 'total_gain']
     portfolio_table = sort_table(portfolio_table, by='pct_gain(%)', ascending=False)
@@ -160,7 +160,7 @@ elif selected == 'Portfolio':
         values=investment_by_country['current_value'],
         names=investment_by_country.index,
     )
-    investment_section.write(investment_chart)
+    investment_section.plotly_chart(investment_chart)
     investment_by_country = sort_table(investment_by_country, by='total_gain', ascending=False)
     styled_investment_by_country = style_table(investment_by_country, style_change, ['total_gain'])
     investment_section.dataframe(styled_investment_by_country)
@@ -174,7 +174,7 @@ elif selected == 'Portfolio':
         values=cash_table['amount'],
         names=cash_table.index,
     )
-    cash_section.write(cash_chart)
+    cash_section.plotly_chart(cash_chart)
     cash_section.dataframe(cash_table)
 elif selected == 'My Asset':
     st.header('My Asset')
@@ -190,7 +190,7 @@ elif selected == 'My Asset':
     total_asset_table.index = [idx.upper() for idx in total_asset_table.index]
 
     asset_chart = draw_pie(asset_table, values=asset_table.array, names=asset_table.index)
-    st.write(asset_chart)
+    st.plotly_chart(asset_chart)
     st.table(total_asset_table)
 elif selected == 'Investment History':
     st.header('Investment History')
