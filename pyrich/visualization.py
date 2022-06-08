@@ -2,10 +2,12 @@ import pandas as pd
 import plotly.express as px
 
 
-def draw_line(data: pd.DataFrame, **kwargs):
+DEFAULT_MARGIN = dict(t=10, l=0, r=0, b=0)
+
+def draw_line(data: pd.DataFrame, margin: dict=DEFAULT_MARGIN, **kwargs):
     fig = px.line(data, **kwargs)
     fig.update_layout(
-        margin=dict(t=10, l=0, r=0, b=0),
+        margin=margin,
         xaxis=dict(showgrid=False, title=None),
         yaxis=dict(showgrid=False, title=None),
         plot_bgcolor='white',
@@ -16,10 +18,10 @@ def draw_line(data: pd.DataFrame, **kwargs):
     )
     return fig
 
-def draw_stock_chart(close: pd.Series, average_price: float, **kwargs):
+def draw_stock_chart(close: pd.Series, average_price: float, margin: dict=DEFAULT_MARGIN, **kwargs):
     fig = px.line(close, **kwargs)
     fig.update_layout(
-        margin=dict(t=0, l=0, r=0, b=0),
+        margin=margin,
         xaxis=dict(title=None),
         yaxis=dict(title=None),
         showlegend=False,
@@ -50,11 +52,14 @@ def draw_stock_chart(close: pd.Series, average_price: float, **kwargs):
     )
     return fig
 
-def draw_pie(data: pd.DataFrame, **kwargs):
+def draw_pie(data: pd.DataFrame, margin: dict=DEFAULT_MARGIN, **kwargs):
     fig = px.pie(data, **kwargs)
+    fig.update_layout(
+        margin=margin,
+    )
     return fig
 
-def draw_treemap(data: pd.DataFrame, treemap_name: str, section: tuple, **kwargs):
+def draw_treemap(data: pd.DataFrame, treemap_name: str, section: tuple, margin: dict=DEFAULT_MARGIN, **kwargs):
     fig = px.treemap(data, path=[px.Constant(treemap_name), *section], **kwargs)
     fig.update_traces(dict(
         texttemplate='%{label}<br>%{customdata}%',
@@ -63,7 +68,7 @@ def draw_treemap(data: pd.DataFrame, treemap_name: str, section: tuple, **kwargs
         insidetextfont=dict(family=('Trebuchet MS', 'Arial'), size=20),
     ))
     fig.update_layout(
-        margin=dict(t=0, l=40, r=40, b=0),
+        margin=margin,
         coloraxis=dict(showscale=False),
     )
     return fig

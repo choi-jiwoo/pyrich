@@ -100,6 +100,7 @@ if selected == 'Dashboard':
             current_asset,
             x='date',
             y='amount',
+            margin=dict(t=10, l=0, r=40, b=0),
             width=490,
             height=300,
             )
@@ -111,6 +112,7 @@ if selected == 'Dashboard':
         portfolio_table,
         treemap_name='portfolio',
         section=('country', portfolio_table.index),
+        margin=dict(t=0, l=40, r=40, b=0),
         height=350,
         range_color=[-3, 3],
         values='current_value',
@@ -146,6 +148,7 @@ elif selected == 'Portfolio':
         portfolio_w_cash,
         values=portfolio_w_cash['Values in KRW'],
         names=portfolio_w_cash.index,
+        margin=None,
     )
     portfolio_section.plotly_chart(portfolio_chart)
 
@@ -160,6 +163,7 @@ elif selected == 'Portfolio':
         investment_by_country,
         values=investment_by_country['current_value'],
         names=investment_by_country.index,
+        margin=None,
     )
     investment_section.plotly_chart(investment_chart)
     investment_by_country = sort_table(investment_by_country, by='total_gain', ascending=False)
@@ -174,6 +178,7 @@ elif selected == 'Portfolio':
         cash_table,
         values=cash_table['amount'],
         names=cash_table.index,
+        margin=None,
     )
     cash_section.plotly_chart(cash_chart)
     cash_section.dataframe(cash_table)
@@ -190,7 +195,12 @@ elif selected == 'My Asset':
     total_asset_table = pd.concat([asset_table, total_asset]).to_frame(name='Values in KRW')
     total_asset_table.index = [idx.upper() for idx in total_asset_table.index]
 
-    asset_chart = draw_pie(asset_table, values=asset_table.array, names=asset_table.index)
+    asset_chart = draw_pie(
+        asset_table,
+        values=asset_table.array,
+        names=asset_table.index,
+        margin=None
+    )
     st.plotly_chart(asset_chart)
     st.table(total_asset_table)
 elif selected == 'Investment History':
