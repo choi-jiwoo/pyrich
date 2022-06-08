@@ -59,11 +59,11 @@ def draw_pie(data: pd.DataFrame, margin: dict=DEFAULT_MARGIN, **kwargs):
     )
     return fig
 
-def draw_treemap(data: pd.DataFrame, treemap_name: str, section: tuple, margin: dict=DEFAULT_MARGIN, **kwargs):
+def draw_treemap(data: pd.DataFrame, treemap_name: str, section: tuple, label: str, hover_text: str, margin: dict=DEFAULT_MARGIN, **kwargs):
     fig = px.treemap(data, path=[px.Constant(treemap_name), *section], **kwargs)
     fig.update_traces(dict(
-        texttemplate='%{label}<br>%{customdata}%',
-        hovertemplate=None,
+        texttemplate=label,
+        hovertemplate=hover_text,
         textposition='middle center',
         insidetextfont=dict(family=('Trebuchet MS', 'Arial'), size=20),
     ))

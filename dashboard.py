@@ -119,6 +119,8 @@ if selected == 'Dashboard':
         color='day_change(%)',
         color_continuous_scale=['#a50e0e', '#393960', '#5af25a'],
         color_continuous_midpoint=0,
+        label='%{label}<br>%{customdata}%',
+        hover_text='<b>%{label}</b><br>day_change(%): %{color:.2f}%',
     )
     portfolio_map.plotly_chart(treemap)
 
