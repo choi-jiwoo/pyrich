@@ -37,6 +37,18 @@ def draw_stock_chart(close: pd.Series, average_price: float, margin: dict=DEFAUL
                 line_width=1,
             )
         ],
+        annotations=[
+            dict(
+                x=0.01,
+                y=average_price,
+                xref='paper',
+                yref='y',
+                showarrow=False,
+                yanchor='bottom',
+                text='Average Price Paid',
+                font=dict(color='gray')
+            )
+        ],
     )
     fig.update_xaxes(
         rangeslider_visible=True,
