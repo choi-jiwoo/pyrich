@@ -67,7 +67,6 @@ if selected == 'Dashboard':
     col1, col2 = st.columns([1, 2])
     with col1:
         cur_asset = st.container()
-        cur_asset_value = portfolio_value['current_value'] + total_cash.item()
         # Update current asset in the database
         portfolio.record_current_asset(cur_asset_value)
         cur_asset_text = ("<span>Current Asset Value</span>"
