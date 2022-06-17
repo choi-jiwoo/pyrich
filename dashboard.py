@@ -69,7 +69,7 @@ if selected == 'Dashboard':
         cur_asset = st.container()
         cur_asset_value = portfolio_value['current_value'] + total_cash.item()
         # Update current asset in the database
-        portfolio.record_current_asset(cur_asset_value)
+        asset.record_current_asset(cur_asset_value)
         cur_asset_text = ("<span>Current Asset Value</span>"
                           "<br>"
                           "<span style='font-weight: bold; font-size: 28px;'>"
