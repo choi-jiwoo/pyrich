@@ -36,6 +36,7 @@ investment_by_country = portfolio.get_investment_by_country(portfolio_table)
 cash = Cash('cash')
 cash_table = cash.record
 total_cash = cash.get_total_cash_in_krw()
+total_cash_value = total_cash.item()
 asset = Asset('current_asset')
 current_asset = asset.record
 
@@ -67,7 +68,7 @@ if selected == 'Dashboard':
     col1, col2 = st.columns([1, 2])
     with col1:
         cur_asset = st.container()
-        cur_asset_value = portfolio_value['current_value'] + total_cash.item()
+        cur_asset_value = portfolio_value['current_value'] + total_cash_value
         # Update current asset in the database
         asset.record_current_asset(cur_asset_value)
         cur_asset_text = ("<span>Current Asset Value</span>"
@@ -92,7 +93,7 @@ if selected == 'Dashboard':
         cur_cash_text = ("<span>Current Cash</span>"
                          "<br>"
                          "<span style='font-weight: bold; font-size: 28px;'>"
-                         f"{total_cash.item():,.2f}원</span>")
+                         f"{total_cash_value:,.2f}원</span>")
         cur_cash.markdown(cur_cash_text, unsafe_allow_html=True)
     with col2:
         config = {'displayModeBar': False}
@@ -145,7 +146,7 @@ elif selected == 'Portfolio':
 
     portfolio_section = st.container()
     portfolio_section.subheader('Current portfolio')
-    portfolio_w_cash = portfolio.get_portfolio_w_cash(portfolio_table, total_cash.item()).to_frame(name='Values in KRW')
+    portfolio_w_cash = portfolio.get_portfolio_w_cash(portfolio_table, total_cash_value).to_frame(name='Values in KRW')
     portfolio_chart = draw_pie(
         portfolio_w_cash,
         values=portfolio_w_cash['Values in KRW'],
