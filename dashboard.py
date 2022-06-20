@@ -31,7 +31,6 @@ pd.set_option('styler.format.thousands', ',')
 
 # Loading main page
 portfolio = Portfolio('Choi Ji Woo', 'transaction')
-st.title(f'Hello {portfolio.name} 👋🏼')
 
 # Loding portfolio data
 portfolio_table, portfolio_value = portfolio_data(portfolio)
