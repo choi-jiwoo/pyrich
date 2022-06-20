@@ -17,6 +17,10 @@ from pyrich.visualization import draw_stock_chart
 from pyrich.visualization import draw_pie
 from pyrich.visualization import draw_treemap
 
+from pyrich.summary import portfolio_data
+from pyrich.summary import cash_data
+from pyrich.summary import current_asset_data
+
 
 st.set_page_config(
     page_title='Portfolio Manager',
@@ -30,15 +34,18 @@ portfolio = Portfolio('Choi Ji Woo', 'transaction')
 st.title(f'Hello {portfolio.name} 👋🏼')
 
 # Loding portfolio data
-portfolio_table = portfolio.current_portfolio()
-portfolio_value = portfolio.get_current_portfolio_value(portfolio_table)
+portfolio_table, portfolio_value = portfolio_data(portfolio)
+
 investment_by_country = portfolio.get_investment_by_country(portfolio_table)
+
 cash = Cash('cash')
 cash_table = cash.record
-total_cash = cash.get_total_cash_in_krw()
+total_cash = cash_data(cash)
 total_cash_value = total_cash.item()
+
 asset = Asset('current_asset')
 current_asset = asset.record
+cur_asset_value = current_asset_data(portfolio_value['current_value'], total_cash_value)
 
 # Sidebar component
 with st.sidebar:
