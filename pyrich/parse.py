@@ -3,6 +3,13 @@ import argparse
 
 def set_args():
     parser = argparse.ArgumentParser(description="Hello👋🏼 I'm pyrich!")
+    # show portoflio summary
+    parser.add_argument(
+        '-s',
+        '--summary',
+        action='store_true',
+        help='Show current porfolio summary.'
+    )
     # record transaction
     parser.add_argument(
         '-t',

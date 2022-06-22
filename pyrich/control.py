@@ -3,6 +3,12 @@ from pyrich.database import PostgreSQL
 from pyrich import parse
 from pyrich.transaction import Transaction
 from pyrich.error import CurrencyError
+from pyrich.asset import Asset
+from pyrich.portfolio import Portfolio
+from pyrich.cash import Cash
+from pyrich.summary import portfolio_data
+from pyrich.summary import cash_data
+from pyrich.summary import current_asset_data
 
 
 def run():
@@ -10,6 +16,23 @@ def run():
     parser = parse.set_args()
     args = parser.parse_args()
     options = vars(args)
+
+    portfolio = Portfolio('Choi Ji Woo', 'transaction')
+    cash = Cash('cash')
+    asset = Asset('current_asset')
+    
+    portfolio_value = portfolio_data(portfolio)[1]
+    total_cash = cash_data(cash)
+    total_cash_value = total_cash.item()
+    cur_asset_value = current_asset_data(portfolio_value['current_value'], total_cash_value)
+    current_asset = asset.record
+    asset.record_current_asset(cur_asset_value)
+
+    if options['summary']:
+        print(f"{'Current Portfolio Value':<24}: {cur_asset_value:>5,.2f}원\n"
+              f"{'Current Stock Value':<24}: {portfolio_value['current_value']:>5,.2f}원\n"
+              f"{'Current Cash':<24}: {total_cash_value:>5,.2f}원\n")
+        return
 
     # Open a portfolio dashboards
     if options['web']:
