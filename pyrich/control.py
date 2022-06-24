@@ -9,6 +9,7 @@ from pyrich.cash import Cash
 from pyrich.summary import portfolio_data
 from pyrich.summary import cash_data
 from pyrich.summary import current_asset_data
+from pyrich.visualization import draw_current_asset
 
 
 def run():
@@ -32,6 +33,9 @@ def run():
         print(f"{'Current Portfolio Value':<24}: {cur_asset_value:>5,.2f}원\n"
               f"{'Current Stock Value':<24}: {portfolio_value['current_value']:>5,.2f}원\n"
               f"{'Current Cash':<24}: {total_cash_value:>5,.2f}원\n")
+        
+        fig = draw_current_asset(current_asset['date'], current_asset['amount'], title='Portfolio Summary')
+        fig.show()
         return
 
     # Open a portfolio dashboards

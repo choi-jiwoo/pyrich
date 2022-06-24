@@ -1,5 +1,6 @@
 import pandas as pd
 import plotly.express as px
+import plotext as plt
 
 
 DEFAULT_MARGIN = dict(t=10, l=0, r=0, b=0)
@@ -84,3 +85,11 @@ def draw_treemap(data: pd.DataFrame, treemap_name: str, section: tuple, label: s
         coloraxis=dict(showscale=False),
     )
     return fig
+
+def draw_current_asset(date: pd.Series, amount: pd.Series, title: str='', width: int=50, height: int=15):
+    date = plt.datetimes_to_string(date)
+    plt.plot(date, amount)
+    plt.title(title)
+    plt.plotsize(width, height)
+    plt.ylim(max(amount)*1.1, min(amount)*0.9)
+    return plt
