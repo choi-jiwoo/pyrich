@@ -86,9 +86,9 @@ def draw_treemap(data: pd.DataFrame, treemap_name: str, section: tuple, label: s
     )
     return fig
 
-def draw_current_asset(date: pd.Series, amount: pd.Series, title: str='', width: int=50, height: int=15):
+def draw_current_asset(date: pd.Series, amount: pd.Series, title: str='', width: int=50, height: int=15, color: str='black'):
     date = plt.datetimes_to_string(date)
-    plt.plot(date, amount)
+    plt.plot(date, amount, color=color)
     plt.title(title)
     plt.plotsize(width, height)
     plt.ylim(max(amount)*1.1, min(amount)*0.9)

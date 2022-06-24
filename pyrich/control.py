@@ -34,7 +34,7 @@ def run():
               f"{'Current Stock Value':<24}: {portfolio_value['current_value']:>5,.2f}원\n"
               f"{'Current Cash':<24}: {total_cash_value:>5,.2f}원\n")
         
-        fig = draw_current_asset(current_asset['date'], current_asset['amount'], title='Portfolio Summary')
+        fig = draw_current_asset(current_asset['date'], current_asset['amount'], title='Portfolio Summary', color='blue')
         fig.show()
         return
 
