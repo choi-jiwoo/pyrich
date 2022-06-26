@@ -58,7 +58,7 @@ with st.sidebar:
             'Transaction History',
             'Dividends History',
             ], 
-        icons=['house', 'stack', 'stack', 'stack', 'stack', 'stack'],  # change icon later
+        icons=['grid-fill', 'easel2-fill', 'pie-chart-fill', 'archive-fill', 'archive-fill', 'currency-exchange'],
         menu_icon='list',
         default_index=0
     )
