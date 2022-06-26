@@ -16,7 +16,6 @@ from pyrich.visualization import draw_line
 from pyrich.visualization import draw_stock_chart
 from pyrich.visualization import draw_pie
 from pyrich.visualization import draw_treemap
-
 from pyrich.summary import portfolio_data
 from pyrich.summary import cash_data
 from pyrich.summary import current_asset_data
@@ -56,8 +55,8 @@ with st.sidebar:
             'Portfolio',
             'My Asset',
             'Investment History',
-            'Dividends History',
             'Transaction History',
+            'Dividends History',
             ], 
         icons=['house', 'stack', 'stack', 'stack', 'stack', 'stack'],  # change icon later
         menu_icon='list',
@@ -228,6 +227,27 @@ elif selected == 'Investment History':
     realized_gain_by_country = sort_table(realized_gain_by_country, by='realized_gain', ascending=False)
     styled_realized_gain_by_country = style_table(realized_gain_by_country, style_change, ['realized_gain'])
     st.table(styled_realized_gain_by_country)
+elif selected == 'Transaction History':
+    st.header('Transaction History')
+
+    st.subheader('Total Transaction Amount')
+    total_traded_amount = portfolio.get_total_traded_amount()
+    total_traded_amount.index = [idx.upper() for idx in total_traded_amount.index]
+    styled_total_traded_amount = style_table(total_traded_amount, style_neg_value , ['Values in KRW'])
+    st.table(styled_total_traded_amount)
+
+    st.subheader('Transaction History')
+    transaction_history = portfolio.record
+    transaction_history.drop('id', axis=1, inplace=True)
+    styled_transaction_history = style_table(transaction_history, style_trade_type, ['type'])
+    export_to_csv = transaction_history.to_csv(index=False).encode('utf-8-sig')
+    st.download_button(
+        'export to csv',
+        export_to_csv,
+        'transaction_history.csv',
+        'text/csv',
+    )
+    st.dataframe(styled_transaction_history)
 elif selected == 'Dividends History':
     st.header('Dividends History')
     dividend = Dividend('dividend')
@@ -254,24 +274,3 @@ elif selected == 'Dividends History':
         'text/csv',
     )
     st.dataframe(dividend_history)
-elif selected == 'Transaction History':
-    st.header('Transaction History')
-
-    st.subheader('Total Transaction Amount')
-    total_traded_amount = portfolio.get_total_traded_amount()
-    total_traded_amount.index = [idx.upper() for idx in total_traded_amount.index]
-    styled_total_traded_amount = style_table(total_traded_amount, style_neg_value , ['Values in KRW'])
-    st.table(styled_total_traded_amount)
-
-    st.subheader('Transaction History')
-    transaction_history = portfolio.record
-    transaction_history.drop('id', axis=1, inplace=True)
-    styled_transaction_history = style_table(transaction_history, style_trade_type, ['type'])
-    export_to_csv = transaction_history.to_csv(index=False).encode('utf-8-sig')
-    st.download_button(
-        'export to csv',
-        export_to_csv,
-        'transaction_history.csv',
-        'text/csv',
-    )
-    st.dataframe(styled_transaction_history)
