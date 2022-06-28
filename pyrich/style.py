@@ -1,12 +1,15 @@
 import pandas as pd
+from typing import Callable
+from typing import Optional
+from pyrich.error import UnknownFormat
 
 
 BLACK = '#000000'
 GREEN = '#137333'
 RED = '#a50e0e'
 
-def style_table(table: pd.DataFrame, style: str, subset: list) -> pd.DataFrame:
-    styled_table = table.style.applymap(style, subset=subset)
+def style_table(table: pd.DataFrame, style: Callable[[float], str], subset: list, **kwargs) -> pd.DataFrame:
+    styled_table = table.style.applymap(style, subset=subset, **kwargs)
     return styled_table
 
 def style_neg_value(value: float) -> str:
