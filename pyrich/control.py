@@ -28,6 +28,7 @@ def run():
     cur_asset_value = current_asset_data(portfolio_value['current_value'], total_cash_value)
     current_asset = asset.record
     asset.record_current_asset(cur_asset_value)
+    portfolio_w_cash = portfolio.get_portfolio_w_cash(portfolio_table, total_cash_value).to_frame(name='Values in KRW')
 
     if options['summary']:
         print(f"{'Current Portfolio Value':<24}: {cur_asset_value:>5,.2f}원\n"
