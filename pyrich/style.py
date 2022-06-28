@@ -17,9 +17,18 @@ def style_neg_value(value: float) -> str:
 
 def style_change(value: float, _format: str='html') -> str:
     color = {
-        'zero': ('none', BLACK),
-        'neg': ('red', RED),
-        'pos': ('green', GREEN),
+        'zero': {
+            'html': BLACK,
+            'terminal': 'none',
+        },
+        'neg': {
+            'html': RED,
+            'terminal': 'red',
+        },
+        'pos': {
+            'html': GREEN,
+            'terminal': 'green',
+        },
     }
     if value > 0:
         style = 'pos'
@@ -29,9 +38,9 @@ def style_change(value: float, _format: str='html') -> str:
         style = 'zero'
 
     if _format == 'html':
-        return f"color:{color[style][1]};"
+        return f"color:{color[style]['html']};"
     elif _format == 'terminal':
-        return color[style][0]
+        return color[style]['terminal']
     else:
         raise UnknownFormat(f"Given format '{_format}' is not supported. Try either 'html' or 'terminal'.")
 
