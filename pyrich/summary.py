@@ -15,3 +15,6 @@ def cash_data(current_cash: Cash) -> pd.Series:
 def current_asset_data(current_stock_value: float, current_cash: float) -> float:
     cur_asset_value = current_stock_value + current_cash
     return cur_asset_value
+
+def current_yield(gain: float, invested: float):
+    return (gain / invested) * 100

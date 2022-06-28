@@ -19,6 +19,7 @@ from pyrich.visualization import draw_treemap
 from pyrich.summary import portfolio_data
 from pyrich.summary import cash_data
 from pyrich.summary import current_asset_data
+from pyrich.summary import current_yield
 
 
 st.set_page_config(
@@ -66,9 +67,10 @@ with st.sidebar:
 if selected == 'Dashboard':
     st.header(f'Hello {portfolio.name} 👋🏼')
     st.subheader('Financial Summary')
-
-    current_yield = portfolio_value['portfolio_gain'] / portfolio_value['invested_amount']
-    gain_color = style_change(current_yield)
+    gain = portfolio_value['portfolio_gain']
+    invested = portfolio_value['invested_amount']
+    _yield = current_yield(gain, invested)
+    gain_color = style_change(_yield)
 
     col1, col2 = st.columns([1, 2])
     with col1:
@@ -90,7 +92,7 @@ if selected == 'Dashboard':
                                "<br>"
                                "<span style='"+gain_color+" font-size: 18px;'>"
                                f"&nbsp;{portfolio_value['portfolio_gain']:,.2f}원"
-                               f"&nbsp;({current_yield:,.2%})"
+                               f"&nbsp;({_yield:,.2f} %)"
                                "</span>")
         cur_investment.markdown(cur_investment_text, unsafe_allow_html=True)
 
