@@ -22,7 +22,7 @@ def run():
     cash = Cash('cash')
     asset = Asset('current_asset')
     
-    portfolio_value = portfolio_data(portfolio)[1]
+    portfolio_table, portfolio_value = portfolio_data(portfolio)
     total_cash = cash_data(cash)
     total_cash_value = total_cash.item()
     cur_asset_value = current_asset_data(portfolio_value['current_value'], total_cash_value)
