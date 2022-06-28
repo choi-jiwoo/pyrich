@@ -1,7 +1,7 @@
 import pandas as pd
 
 
-BLACK = '#ffffff'
+BLACK = '#000000'
 GREEN = '#137333'
 RED = '#a50e0e'
 
