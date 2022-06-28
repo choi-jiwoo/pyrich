@@ -15,20 +15,25 @@ def style_table(table: pd.DataFrame, style: Callable[[float], str], subset: list
 def style_neg_value(value: float) -> str:
     return f'color:{RED};' if value < 0 else None
 
-def style_change(value: float) -> str:
+def style_change(value: float, _format: str='html') -> str:
     color = {
-        'zero': BLACK,
-        'neg': RED,
-        'pos': GREEN,
+        'zero': ('none', BLACK),
+        'neg': ('red', RED),
+        'pos': ('green', GREEN),
     }
-    style = None
     if value > 0:
-        style = f"color:{color['pos']};"
+        style = 'pos'
     elif value < 0:
-        style = f"color:{color['neg']};"
+        style = 'neg'
     else:
-        style = f"color:{color['zero']};"
-    return style
+        style = 'zero'
+
+    if _format == 'html':
+        return f"color:{color[style][1]};"
+    elif _format == 'terminal':
+        return color[style][0]
+    else:
+        raise UnknownFormat(f"Given format '{_format}' is not supported. Try either 'html' or 'terminal'.")
 
 def style_trade_type(_type: str) -> str:
     color = {
