@@ -1,3 +1,4 @@
+from datetime import datetime
 import os
 from pyrich.database import PostgreSQL
 from pyrich import parse
@@ -10,6 +11,9 @@ from pyrich.summary import portfolio_data
 from pyrich.summary import cash_data
 from pyrich.summary import current_asset_data
 from pyrich.visualization import draw_current_asset
+from pyrich.summary import current_yield
+from pyrich.style import style_change
+from pyrich.style import style_terminal_text
 
 
 def run():
@@ -31,9 +35,79 @@ def run():
     portfolio_w_cash = portfolio.get_portfolio_w_cash(portfolio_table, total_cash_value).to_frame(name='Values in KRW')
 
     if options['summary']:
-        print(f"{'Current Portfolio Value':<24}: {cur_asset_value:>5,.2f}원\n"
-              f"{'Current Stock Value':<24}: {portfolio_value['current_value']:>5,.2f}원\n"
-              f"{'Current Cash':<24}: {total_cash_value:>5,.2f}원\n")
+        today = datetime.today()
+        today_string = today.strftime('%Y %B %d %A, %X')
+        print(style_terminal_text(
+                text=f"\n{today_string}\n",
+                color='magenta',
+                style='bold'
+            )
+        )
+
+        portfolio_table.reset_index('symbol', inplace=True)
+        stocks = portfolio_table[['symbol', 'current_price', 'currency', 'pct_gain(%)']].values
+        gain = portfolio_value['portfolio_gain']
+        invested = portfolio_value['invested_amount']
+        _yield = current_yield(gain, invested)
+        current_value = portfolio_value['current_value']
+        print(style_terminal_text(
+            text='FINANCIAL SUMMARY',
+            style='bold',
+        ))
+        print(f"{'Current Portfolio Value':<24}: {cur_asset_value:,.2f} 원\n"
+              f"{'Current Stock Value':<24}: {current_value:,.2f} 원\n"
+              f"{'Current Cash':<24}: {total_cash_value:,.2f} 원")
+
+        print(style_terminal_text(
+            text=f'\nPORTFOLIO GAINS',
+            style='bold',
+        ))
+        print(
+            f"{invested:,.2f} 원 → {current_value:,.2f} 원",
+            style_terminal_text(
+                text=f"({_yield:,.2f} %)",
+                color=style_change(_yield, 'terminal'),
+            )
+        )
+
+        print(style_terminal_text(
+            text=f'\nSTOCK GAINS',
+            style='bold',
+        ))
+        for i in stocks:
+            pct_change = i[3]
+            print(
+                style_terminal_text(
+                    text=i[0],
+                    color='red',
+                    style='bold',
+                ),
+                f"▸ {i[1]} {i[2]}",
+                style_terminal_text(
+                    text=f"({i[3]} %)",
+                    color=style_change(pct_change, 'terminal'),
+                )
+            )
+        
+        print(style_terminal_text(
+            text=f'\nPORTFOLIO COMPONENTS',
+            style='bold',
+        ))
+        for i in range(3):
+            item = portfolio_w_cash.iloc[i].name
+            amount_krw = portfolio_w_cash.iloc[i, 0]
+            print(
+                style_terminal_text(
+                    text=f"({amount_krw/cur_asset_value:>6,.2%})",
+                    color='yellow',
+                ),
+                style_terminal_text(
+                    text=f"{item}",
+                    color='red',
+                    style='bold'
+                ),
+                f"▸ {amount_krw:,.2f} 원"
+            )
         
         fig = draw_current_asset(current_asset['date'], current_asset['amount'], title='Portfolio Summary', color='blue')
         fig.show()
