@@ -108,9 +108,9 @@ def run():
                 ),
                 f"▸ {amount_krw:,.2f} 원"
             )
-        
         fig = draw_current_asset(current_asset['date'], current_asset['amount'], title='Portfolio Summary', color='blue')
         fig.show()
+        print('') 
         return
 
     # Open a portfolio dashboards
