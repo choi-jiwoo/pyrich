@@ -52,24 +52,34 @@ def run():
             text='FINANCIAL SUMMARY',
             style='bold',
         ))
-        print(f"{'Current Portfolio Value':<24}: {cur_asset_value:,.2f} 원\n"
-              f"{'Current Stock Value':<24}: {current_value:,.2f} 원\n"
-              f"{'Current Cash':<24}: {total_cash_value:,.2f} 원")
-
         print(style_terminal_text(
-            text=f'\nPORTFOLIO GAINS',
-            style='bold',
-        ))
-        print(
-            f"{invested:,.2f} 원 → {current_value:,.2f} 원",
+                text='PORTFOLIO',
+                color='red',
+                style='bold',
+            ),
+            f"▸",
+            style_terminal_text(
+                text=f"{cur_asset_value:,.2f} 원",
+                style='bold',
+            ),
             style_terminal_text(
                 text=f"({_yield:,.2f} %)",
                 color=style_change(_yield, 'terminal'),
             )
         )
+        print(style_terminal_text(
+                text='INVESTED',
+                color='red',
+                style='bold',
+            ),
+            f" ▸",
+            style_terminal_text(
+                text=f"{invested:,.2f} 원",
+            ),
+        )
 
         print(style_terminal_text(
-            text=f'\nSTOCK GAINS',
+            text=f'\nPORTFOLIO SUMMARY',
             style='bold',
         ))
         for i in stocks:
@@ -87,10 +97,8 @@ def run():
                 )
             )
         
-        print(style_terminal_text(
-            text=f'\nPORTFOLIO COMPONENTS',
-            style='bold',
-        ))
+        print('')
+
         for i in range(3):
             item = portfolio_w_cash.iloc[i].name
             amount_krw = portfolio_w_cash.iloc[i, 0]
@@ -106,7 +114,41 @@ def run():
                 ),
                 f"▸ {amount_krw:,.2f} 원"
             )
-        print('') 
+
+        print(
+            style_terminal_text(
+                text=f'\nCURRENT ASSET COMPONENTS',
+                style='bold',
+            )
+        )
+
+        print(
+            style_terminal_text(
+                text=f"({current_value/cur_asset_value:>6,.2%})",
+                color='yellow',
+            ),
+            style_terminal_text(
+                text='STOCK',
+                color='red',
+                style='bold'
+            ),
+            f"▸ {current_value:,.2f} 원"
+        )
+
+        print(
+            style_terminal_text(
+                text=f"({total_cash_value/cur_asset_value:>6,.2%})",
+                color='yellow',
+            ),
+            style_terminal_text(
+                text=f"{'CASH':>5}",
+                color='red',
+                style='bold'
+            ),
+            f"▸ {total_cash_value:,.2f} 원"
+        )
+
+        print('')
         return
 
     # Open a portfolio dashboards
