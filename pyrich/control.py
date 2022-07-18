@@ -10,7 +10,6 @@ from pyrich.cash import Cash
 from pyrich.summary import portfolio_data
 from pyrich.summary import cash_data
 from pyrich.summary import current_asset_data
-from pyrich.visualization import draw_current_asset
 from pyrich.summary import current_yield
 from pyrich.style import style_change
 from pyrich.style import style_terminal_text
@@ -30,7 +29,6 @@ def run():
     total_cash = cash_data(cash)
     total_cash_value = total_cash.item()
     cur_asset_value = current_asset_data(portfolio_value['current_value'], total_cash_value)
-    current_asset = asset.record
     asset.record_current_asset(cur_asset_value)
     portfolio_w_cash = portfolio.get_portfolio_w_cash(portfolio_table, total_cash_value).to_frame(name='Values in KRW')
 
@@ -108,8 +106,6 @@ def run():
                 ),
                 f"▸ {amount_krw:,.2f} 원"
             )
-        fig = draw_current_asset(current_asset['date'], current_asset['amount'], title='Portfolio Summary', color='blue')
-        fig.show()
         print('') 
         return
 
