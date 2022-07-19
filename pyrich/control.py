@@ -3,6 +3,7 @@ import os
 from pyrich.database import PostgreSQL
 from pyrich import parse
 from pyrich.transaction import Transaction
+from pyrich.forex import get_usd_to_krw
 from pyrich.error import CurrencyError
 from pyrich.asset import Asset
 from pyrich.portfolio import Portfolio
@@ -207,6 +208,11 @@ def run():
         transaction = Transaction(options['transaction'], headers=headers)
         transaction_record = transaction.record
         transaction_record['total_price_paid'] = transaction_record['quantity'] * transaction_record['price']
+        if transaction_record['country'] == 'USA':
+            usd_to_krw = get_usd_to_krw()
+            transaction_record['total_price_paid_in_krw'] = transaction_record['total_price_paid'] * usd_to_krw
+        else:
+            transaction_record['total_price_paid_in_krw'] = transaction_record['total_price_paid']
         db.insert('transaction', transaction_record)
     else:
         headers = ['date', 'symbol', 'dividend', 'currency']
