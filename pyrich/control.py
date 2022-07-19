@@ -141,11 +141,11 @@ def run():
                 color='yellow',
             ),
             style_terminal_text(
-                text=f"{'CASH':>5}",
+                text='CASH',
                 color='red',
                 style='bold'
             ),
-            f"▸ {total_cash_value:,.2f} 원"
+            f" ▸ {total_cash_value:,.2f} 원"
         )
 
         print('')
