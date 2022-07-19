@@ -97,7 +97,8 @@ class PostgreSQL:
                  'type VARCHAR(5) NOT NULL,'
                  'quantity REAL NOT NULL,'
                  'price REAL NOT NULL,'
-                 'total_price_paid REAL NOT NULL);')
+                 'total_price_paid REAL NOT NULL,'
+                 'total_price_paid_in_krw REAL NOT NULL);')
         self.run_query(query)
 
     def _create_dividend_table(self) -> None:
@@ -183,7 +184,7 @@ class PostgreSQL:
 
         if warning_msg.upper() == 'Y':
             self.run_query(query, msg=msg)
-            reset_sequence_query = f"SELECT SETVAL('{table}_id_seq' ,(SELECT MAX(id) FROM {table}));"
+            reset_sequence_query = f"SELECT SETVAL('{table}_id_seq' ,(SELECT MAX(id) FROM {table}));"  # deleteall때는?
             self.run_query(reset_sequence_query)
         else:
             print('Deleting stopped.')
