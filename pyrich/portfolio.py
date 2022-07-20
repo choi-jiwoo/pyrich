@@ -14,9 +14,10 @@ class Portfolio(Record):
         'USA': 'USD',
     }
 
-    def __init__(self, name: str, table: str) -> None:
+    def __init__(self, name: str, table: str, display_krw: bool = True) -> None:
         super().__init__(table)
         self.name = name
+        self.display_krw = display_krw
 
     def _get_pivot_table(self, column: str, remove_na: bool=False) -> pd.DataFrame:
         record_pivot_table = pd.pivot_table(
@@ -39,6 +40,17 @@ class Portfolio(Record):
     @lru_cache
     def _get_trades(self) -> pd.DataFrame:
         trades = self._get_pivot_table('total_price_paid')
+        if self.display_krw:
+            total_price_paid_in_krw = 'total_price_paid_in_krw'
+            us_transaction = self.record[self.record['country']=='USA']
+            us_record_pivot_table = pd.pivot_table(
+                us_transaction,
+                values=total_price_paid_in_krw,
+                index=['country','symbol'],
+                columns='type',
+                aggfunc=np.sum
+            )
+            trades.loc['USA'] = us_record_pivot_table
         return trades
     
     def _get_average_price_paid(self, symbol: str) -> float:
@@ -61,6 +73,8 @@ class Portfolio(Record):
         except Exception:
             average_price_paid = 0
         finally:
+            if self.display_krw:
+                average_price_paid *= self.forex_usd_to_won
             return average_price_paid
 
     def _get_portfolio_average_price(self, portfolio: pd.DataFrame) -> pd.Series:
@@ -74,7 +88,6 @@ class Portfolio(Record):
             name='average_price_paid'
         )
         return average_price_paid
-
 
     def _get_stock_quote(self, portfolio: pd.DataFrame) -> pd.DataFrame:
         portfolio_stock_price = []
@@ -103,6 +116,8 @@ class Portfolio(Record):
     def _get_current_stock_value(self, current_portfolio: pd.DataFrame) -> pd.Series:
         investment = current_portfolio[['quantity', 'current_price']]
         current_stock_value = investment.agg(np.prod, axis=1)
+        if self.display_krw:
+            current_stock_value *= self.forex_usd_to_won
         return current_stock_value
 
     def current_portfolio(self) -> pd.DataFrame:
