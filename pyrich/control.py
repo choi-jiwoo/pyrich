@@ -22,17 +22,18 @@ def run():
     args = parser.parse_args()
     options = vars(args)
 
-    portfolio = Portfolio('Choi Ji Woo', 'transaction')
-    cash = Cash('cash')
-    asset = Asset('current_asset')
-    
-    portfolio_table, portfolio_value = portfolio_data(portfolio)
-    total_cash = cash_data(cash)
-    total_cash_value = total_cash.item()
-    cur_asset_value = current_asset_data(portfolio_value['current_value'], total_cash_value)
-    asset.record_current_asset(cur_asset_value)
-
     if options['summary']:
+        portfolio = Portfolio('Choi Ji Woo', 'transaction')
+        cash = Cash('cash')
+        asset = Asset('current_asset')
+        
+        portfolio_table, portfolio_value = portfolio_data(portfolio)
+        total_cash = cash_data(cash)
+        total_cash_value = total_cash.item()
+        cur_asset_value = current_asset_data(portfolio_value['current_value'], total_cash_value)
+        asset.record_current_asset(cur_asset_value)
+        usd_to_krw = portfolio.forex_usd_to_won
+
         today = datetime.today()
         today_string = today.strftime('%Y %B %d %A, %X')
         print(style_terminal_text(
