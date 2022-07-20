@@ -44,112 +44,139 @@ def run():
         )
 
         portfolio_table.reset_index('symbol', inplace=True)
-        stocks = portfolio_table[['symbol', 'current_price', 'currency', 'pct_gain(%)']].values
+        stocks = portfolio_table[['symbol', 'current_value', 'invested_amount']].values
         gain = portfolio_value['portfolio_gain']
         invested = portfolio_value['invested_amount']
         _yield = current_yield(gain, invested)
         current_value = portfolio_value['current_value']
+
+        # Financial Summary Section
         print(style_terminal_text(
             text='FINANCIAL SUMMARY',
             style='bold',
         ))
-        print(style_terminal_text(
-                text='PORTFOLIO',
-                color='red',
+
+        print(
+            style_terminal_text(
+                text=f"{'TOTAL ASSET':<14}",
+                color='green',
                 style='bold',
             ),
-            f"▸",
+            "▸",
             style_terminal_text(
                 text=f"{cur_asset_value:,.2f} 원",
+                style='bold'
+            ),
+        )
+
+        print(
+            style_terminal_text(
+                text=f"{'TOTAL CASH':<14}",
+                color='green',
+                style='bold'
+            ),
+            "▸",
+            f"{total_cash_value:,.2f} 원"
+        )
+
+        print(
+            style_terminal_text(
+                text=f"{'STOCK VALUE':<14}",
+                color='green',
                 style='bold',
+            ),
+            "▸",
+            style_terminal_text(
+                text=f"{current_value:,.2f} 원",
             ),
             style_terminal_text(
                 text=f"({_yield:,.2f} %)",
                 color=style_change(_yield, 'terminal'),
             )
         )
+
         print(style_terminal_text(
-                text='INVESTED',
-                color='red',
+                text=f"{'TOTAL INVESTED':<14}",
+                color='green',
                 style='bold',
             ),
-            f" ▸",
+            "▸",
             style_terminal_text(
                 text=f"{invested:,.2f} 원",
             ),
         )
 
-        print(style_terminal_text(
-            text=f'\nPORTFOLIO SUMMARY',
-            style='bold',
-        ))
+        print('')
+
+        # Portfolio Components Section
+        print(
+            style_terminal_text(
+                text='PORTFOLIO COMPONENTS',
+                style='bold',
+            ),
+        )
+
         for i in stocks:
-            pct_change = i[3]
+            name = i[0]
+            current_stock_value = i[1]
+            invested = i[2]
+            # current_stock_value = i[1] * usd_to_krw
+            # invested = i[2] * usd_to_krw
+            gain = current_stock_value - invested
+            stock_yield = current_yield(gain, invested)
             print(
                 style_terminal_text(
-                    text=i[0],
-                    color='red',
-                    style='bold',
+                    text=f"({current_stock_value/current_value:>6,.2%})",
                 ),
-                f"▸ {i[1]} {i[2]}",
                 style_terminal_text(
-                    text=f"({i[3]} %)",
-                    color=style_change(pct_change, 'terminal'),
+                    text=name,
+                    color='green',
+                    style='bold'
+                ),
+                "▸",
+                f"{current_stock_value:,.2f} 원",
+                style_terminal_text(
+                    text=f"({stock_yield:,.2f} %)",
+                    color=style_change(stock_yield, 'terminal'),
                 )
             )
         
         print('')
 
-        for i in range(3):
-            item = portfolio_w_cash.iloc[i].name
-            amount_krw = portfolio_w_cash.iloc[i, 0]
-            print(
-                style_terminal_text(
-                    text=f"({amount_krw/cur_asset_value:>6,.2%})",
-                    color='yellow',
-                ),
-                style_terminal_text(
-                    text=f"{item}",
-                    color='red',
-                    style='bold'
-                ),
-                f"▸ {amount_krw:,.2f} 원"
-            )
-
+        # Asset Components Section
         print(
             style_terminal_text(
-                text=f'\nCURRENT ASSET COMPONENTS',
+                text='ASSET COMPONENTS',
                 style='bold',
-            )
+            ),
         )
 
         print(
-            style_terminal_text(
-                text=f"({current_value/cur_asset_value:>6,.2%})",
-                color='yellow',
-            ),
             style_terminal_text(
                 text='STOCK',
-                color='red',
+                color='green',
                 style='bold'
             ),
-            f"▸ {current_value:,.2f} 원"
+            "▸",
+            style_terminal_text(
+                text=f"{current_value/cur_asset_value:,.2%}",
+            ),
         )
 
         print(
             style_terminal_text(
-                text=f"({total_cash_value/cur_asset_value:>6,.2%})",
-                color='yellow',
-            ),
-            style_terminal_text(
-                text='CASH',
-                color='red',
+                text=f"{'CASH':<5}",
+                color='green',
                 style='bold'
             ),
-            f" ▸ {total_cash_value:,.2f} 원"
+            "▸",
+            style_terminal_text(
+                text=f"{total_cash_value/cur_asset_value:,.2%}",
+            ),
         )
 
         print('')
+
         return
 
     # Open a portfolio dashboards
