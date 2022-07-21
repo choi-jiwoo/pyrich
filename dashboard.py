@@ -144,10 +144,7 @@ if selected == 'Dashboard':
                        "&nbsp;<span style='"+change_color+f"'>({selected_stock_data['day_change(%)']}%)</span></p>")
     select_stock.markdown(stock_info_text, unsafe_allow_html=True)
     historical_price = get_historical_price(selected, selected_stock_data['country'])
-    if display_in_krw_currency and selected_stock_data['country'] == 'USA':
-        avg_price_paid = selected_stock_data['average_price_paid'] / portfolio.forex_usd_to_won
-    else:
-        avg_price_paid = selected_stock_data['average_price_paid']
+    avg_price_paid = selected_stock_data['average_price_paid']
     stock_chart = draw_stock_chart(
         close=historical_price['Close'],
         average_price=avg_price_paid,
