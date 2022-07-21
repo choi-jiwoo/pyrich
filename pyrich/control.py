@@ -79,18 +79,28 @@ def run():
             f"{total_cash_value:,.2f} 원"
         )
 
-        print(
+        stock_value_label = (
             style_terminal_text(
-                text=f"{'STOCK VALUE':<14}",
+                text=f"{'STOCK VALUE':<15}",
                 color='green',
                 style='bold',
-            ),
-            "▸",
+            ) +
+            "▸"
+        )
+        
+        ANSI_STYLE_CODE_LEN = 12
+        stock_value_label_len = len(stock_value_label) - ANSI_STYLE_CODE_LEN
+        print(
+            stock_value_label,
             style_terminal_text(
                 text=f"{current_value:,.2f} 원",
-            ),
+            )
+        )
+        total_gain_text = f"{gain:,.2f} ({_yield:,.2f} %)"
+        right_align_width = stock_value_label_len + len(total_gain_text)
+        print(
             style_terminal_text(
-                text=f"({_yield:,.2f} %)",
+                text=f"{total_gain_text:>{right_align_width}}",
                 color=style_change(_yield, 'terminal'),
             )
         )
@@ -124,19 +134,24 @@ def run():
             # invested = i[2] * usd_to_krw
             gain = current_stock_value - invested
             stock_yield = current_yield(gain, invested)
-            print(
-                style_terminal_text(
-                    text=f"({current_stock_value/current_value:>6,.2%})",
-                ),
+
+            symbol_label = (
+                f"({current_stock_value/current_value:,.2%})" +
+                " " +
                 style_terminal_text(
                     text=name,
                     color='green',
                     style='bold'
-                ),
-                "▸",
-                f"{current_stock_value:,.2f} 원",
+                ) +
+                " ▸"
+            )
+            symbol_label_len = len(symbol_label) - ANSI_STYLE_CODE_LEN
+            print(symbol_label, f"{current_stock_value:,.2f} 원")
+            stock_gain_text = f"{gain:,.2f} ({stock_yield:,.2f} %)"
+            right_align_width = symbol_label_len + len(stock_gain_text)
+            print(
                 style_terminal_text(
-                    text=f"({stock_yield:,.2f} %)",
+                    text=f"{stock_gain_text:>{right_align_width}}",
                     color=style_change(stock_yield, 'terminal'),
                 )
             )
