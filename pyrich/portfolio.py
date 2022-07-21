@@ -73,8 +73,6 @@ class Portfolio(Record):
         except Exception:
             average_price_paid = 0
         finally:
-            if self.display_krw:
-                average_price_paid *= self.forex_usd_to_won
             return average_price_paid
 
     def _get_portfolio_average_price(self, portfolio: pd.DataFrame) -> pd.Series:
@@ -135,6 +133,12 @@ class Portfolio(Record):
         portfolio_average_price = self._get_portfolio_average_price(portfolio)
         portfolio = portfolio.join(portfolio_average_price)
         portfolio['currency'] = [
+
+        if self.display_krw:
+            avg_price_paid_krw = portfolio_average_price * self.forex_usd_to_won
+            avg_price_paid_krw.rename('average_price_paid_in_krw', inplace=True)
+            portfolio = portfolio.join(avg_price_paid_krw)
+        
             Portfolio.currency_mapping[country]
             for country
             in portfolio['country']
@@ -153,6 +157,7 @@ class Portfolio(Record):
             'day_change(%)',
             'current_price',
             'average_price_paid',
+            'average_price_paid_in_krw',
             'pct_gain(%)',
             'current_value',
             'invested_amount',
