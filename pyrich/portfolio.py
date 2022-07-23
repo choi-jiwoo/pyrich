@@ -142,11 +142,6 @@ class Portfolio(Record):
         portfolio.reset_index('country', inplace=True)
         portfolio_average_price = self._get_portfolio_average_price(portfolio)
         portfolio = portfolio.join(portfolio_average_price)
-        if self.display_krw:
-            avg_price_paid_krw = portfolio_average_price * self.forex_usd_to_won
-            avg_price_paid_krw.rename('average_price_paid_in_krw', inplace=True)
-            portfolio = portfolio.join(avg_price_paid_krw)
-        
         portfolio['currency'] = self._map_currency(portfolio['country'])
 
         current_portfolio = self._get_stock_quote(portfolio)
@@ -162,7 +157,6 @@ class Portfolio(Record):
             'day_change(%)',
             'current_price',
             'average_price_paid',
-            'average_price_paid_in_krw',
             'pct_gain(%)',
             'current_value',
             'invested_amount',
