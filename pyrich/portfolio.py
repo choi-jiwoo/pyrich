@@ -176,9 +176,10 @@ class Portfolio(Record):
     def get_current_portfolio_value(self, current_portfolio: pd.DataFrame) -> pd.Series:
         portfolio_copy = current_portfolio.copy(deep=True)
         currency_group = portfolio_copy.groupby('currency')
-        usd_group_stock = currency_group.groups['USD']
-        cols_in_usd = ['current_price', 'average_price_paid', 'current_value', 'invested_amount', 'total_gain']
-        portfolio_copy.loc[usd_group_stock, cols_in_usd] *= self.forex_usd_to_won
+        if not self.display_krw:
+            usd_group_stock = currency_group.groups['USD']
+            cols_in_usd = ['current_price', 'average_price_paid', 'current_value', 'invested_amount', 'total_gain']
+            portfolio_copy.loc[usd_group_stock, cols_in_usd] *= self.forex_usd_to_won
         portfolio_copy.loc[:, 'currency'] = 'KRW'
         portfolio_value = portfolio_copy.agg({'current_value': np.sum, 'invested_amount': np.sum})
         portfolio_value['portfolio_gain'] = portfolio_value.agg(lambda x: np.subtract(x[0], x[1]))
@@ -197,7 +198,8 @@ class Portfolio(Record):
     def get_total_traded_amount(self) -> pd.DataFrame:
         trades = self._get_trades()
         trades_sum = trades.groupby('country').agg(np.sum)
-        trades_sum.loc['USA'] *= self.forex_usd_to_won
+        if not self.display_krw:
+            trades_sum.loc['USA'] *= self.forex_usd_to_won
         trades_sum = trades_sum.sum()
         trades_sum['net'] = trades_sum['sell'] - trades_sum['buy']
         trades_sum = trades_sum.to_frame(name='Values in KRW')
@@ -209,7 +211,8 @@ class Portfolio(Record):
         try:
             us_stock = portfolio_component.groupby('currency').get_group('USD')
             stock_list = us_stock['current_value']
-            stock_list *= self.forex_usd_to_won
+            if not self.display_krw:
+                stock_list *= self.forex_usd_to_won
         except KeyError:
             stock_list = portfolio_component['current_value']
         finally:
