@@ -115,24 +115,6 @@ if selected == 'Dashboard':
             )
         st.plotly_chart(trace_current_asset, config=config)
 
-    portfolio_map = st.container()
-    portfolio_map.subheader('Portfolio Map')
-    treemap = draw_treemap(
-        portfolio_table,
-        treemap_name='portfolio',
-        section=('country', portfolio_table.index),
-        margin=dict(t=0, l=40, r=40, b=0),
-        height=350,
-        range_color=[-3, 3],
-        values='current_value',
-        color='day_change(%)',
-        color_continuous_scale=['#a50e0e', '#393960', '#5af25a'],
-        color_continuous_midpoint=0,
-        label='%{label}<br>%{customdata}%',
-        hover_text='<b>%{label}</b><br>day_change(%): %{color:.2f}%',
-    )
-    portfolio_map.plotly_chart(treemap)
-
     select_stock = st.container()
     select_stock.subheader('Stock Details')
     selected = select_stock.selectbox('Choose Stock', portfolio_table.index)
