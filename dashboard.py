@@ -161,6 +161,7 @@ elif selected == 'Portfolio':
     current_investment_summary = sort_table(current_investment_summary, by='total_gain', ascending=False)
     styled_current_investment_summary = style_table(current_investment_summary, style_change, ['total_gain'])
     investment_section.dataframe(styled_current_investment_summary)
+    investment_section.markdown('#### Investment by Country')
     investment_chart = draw_pie(
         investment_by_country,
         values=investment_by_country['current_value'],
