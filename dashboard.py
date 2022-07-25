@@ -15,7 +15,6 @@ from pyrich.cash import Cash
 from pyrich.visualization import draw_line
 from pyrich.visualization import draw_stock_chart
 from pyrich.visualization import draw_pie
-from pyrich.visualization import draw_treemap
 from pyrich.summary import portfolio_data
 from pyrich.summary import cash_data
 from pyrich.summary import current_asset_data
