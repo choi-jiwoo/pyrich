@@ -16,6 +16,7 @@ from pyrich.visualization import draw_line
 from pyrich.visualization import draw_stock_chart
 from pyrich.visualization import draw_pie
 from pyrich.summary import portfolio_data
+from pyrich.summary import current_portfolio
 from pyrich.summary import total_realized_gain_in_krw
 from pyrich.summary import cash_data
 from pyrich.summary import current_asset_data
@@ -146,10 +147,11 @@ elif selected == 'Portfolio':
     )
     portfolio_section.plotly_chart(portfolio_chart)
 
-    value_subset = ['day_change(%)', 'pct_gain(%)', 'total_gain']
-    portfolio_table = sort_table(portfolio_table, by='pct_gain(%)', ascending=False)
-    styled_portfolio_table = style_table(portfolio_table, style_change, value_subset)
-    portfolio_section.dataframe(styled_portfolio_table)
+    current_portfolio = current_portfolio(portfolio_table, display_in_krw_currency)
+    value_subset = ['day_change(%)', 'pct_gain(%)']
+    current_portfolio = sort_table(current_portfolio, by='pct_gain(%)', ascending=False)
+    styled_current_portfolio = style_table(current_portfolio, style_change, value_subset)
+    portfolio_section.dataframe(styled_current_portfolio)
 
     investment_section = st.container()
     investment_section.subheader('Investment')

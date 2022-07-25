@@ -2,6 +2,7 @@ from copy import deepcopy
 import pandas as pd
 from pyrich.portfolio import Portfolio
 from pyrich.cash import Cash
+from pyrich.record import Record
 from pyrich.forex import get_usd_to_krw
 
 
@@ -9,6 +10,13 @@ def portfolio_data(portfolio: Portfolio) -> tuple[pd.DataFrame, pd.Series]:
     portfolio_table = portfolio.current_portfolio()
     portfolio_value = portfolio.get_current_portfolio_value(portfolio_table)
     return portfolio_table, portfolio_value
+
+def current_portfolio(portfolio_table: pd.DataFrame, display_krw: bool) -> pd.DataFrame:
+    drop_col = ['current_value', 'invested_amount', 'total_gain']
+    current_portfolio = portfolio_table.drop(drop_col, axis=1)
+    if display_krw:
+        current_portfolio['currency'] = Record.map_currency(current_portfolio['country'])
+    return current_portfolio
 
 def total_realized_gain_in_krw(realized_gain_table: pd.DataFrame) -> pd.DataFrame:
     usd_to_krw = get_usd_to_krw()
