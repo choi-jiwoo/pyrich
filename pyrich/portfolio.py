@@ -126,7 +126,7 @@ class Portfolio(Record):
         portfolio.reset_index('country', inplace=True)
         portfolio_average_price = self._get_portfolio_average_price(portfolio)
         portfolio = portfolio.join(portfolio_average_price)
-        portfolio['currency'] = self._map_currency(portfolio['country'])
+        portfolio['currency'] = Record.map_currency(portfolio['country'], self.display_krw)
 
         current_portfolio = self._get_stock_quote(portfolio)
         current_stock_value = self._get_current_stock_value(current_portfolio)
@@ -154,7 +154,7 @@ class Portfolio(Record):
         investment_table = current_portfolio[['country', 'invested_amount', 'current_value', 'total_gain']]
         country_group = investment_table.groupby('country')
         investment_by_country = country_group.agg(np.sum)
-        investment_by_country['currency'] = self._map_currency(investment_by_country.index)
+        investment_by_country['currency'] = Record.map_currency(investment_by_country.index, self.display_krw)
         return investment_by_country
 
     def get_current_portfolio_value(self, current_portfolio: pd.DataFrame) -> pd.Series:
@@ -176,7 +176,7 @@ class Portfolio(Record):
         trades = self._get_trades()
         trades = trades.reset_index('country').loc[past_owned]
         trades['realized_gain'] = trades['sell'] - trades['buy']
-        trades['currency'] = self._map_currency(trades['country'])
+        trades['currency'] = Record.map_currency(trades['country'], self.display_krw)
         return trades
 
     def get_total_traded_amount(self) -> pd.DataFrame:
