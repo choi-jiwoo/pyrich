@@ -16,6 +16,7 @@ from pyrich.visualization import draw_line
 from pyrich.visualization import draw_stock_chart
 from pyrich.visualization import draw_pie
 from pyrich.summary import portfolio_data
+from pyrich.summary import total_realized_gain_in_krw
 from pyrich.summary import cash_data
 from pyrich.summary import current_asset_data
 from pyrich.summary import current_yield
@@ -200,6 +201,11 @@ elif selected == 'Investment History':
     st.header('Investment History')
     realized_gain = portfolio.get_realized_gain()
     realized_gain = sort_table(realized_gain, by='realized_gain', ascending=False)
+
+    st.subheader('Total Realized Gain')
+    total_realized_gain = total_realized_gain_in_krw(realized_gain)
+    styled_realized_gain = style_table(total_realized_gain, style_change, ['realized_gain'])
+    st.table(styled_realized_gain)
 
     st.subheader('Realized Gain by Stock')
     styled_realized_gain = style_table(realized_gain, style_change, ['realized_gain'])
