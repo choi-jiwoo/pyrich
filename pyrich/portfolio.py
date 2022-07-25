@@ -112,22 +112,6 @@ class Portfolio(Record):
             current_stock_value *= self.forex_usd_to_won
         return current_stock_value
 
-    def _map_currency(self, currency_indicator: pd.Series) -> list:
-        currency_mapping = {
-            'CRYPTO': 'KRW',
-            'KOR': 'KRW',
-            'USA': 'USD',
-        }
-        if self.display_krw:
-            currency_mapping['USA'] = 'KRW'
-
-        currency_map = [
-            currency_mapping[country]
-            for country
-            in currency_indicator
-        ]
-        return currency_map
-
     def current_portfolio(self) -> pd.DataFrame:
         quantity = self._get_current_stock()
         trades = self._get_trades()
