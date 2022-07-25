@@ -115,24 +115,6 @@ if selected == 'Dashboard':
             height=300,
             )
         st.plotly_chart(trace_current_asset, config=config)
-
-    select_stock = st.container()
-    select_stock.subheader('Stock Details')
-    selected = select_stock.selectbox('Choose Stock', portfolio_table.index)
-    selected_stock_data = portfolio_table.loc[selected]
-    change_color = style_change(selected_stock_data['day_change(%)'])
-    stock_info_text = ("<p style='margin-left: 1.5em;'>"
-                       f"<span style='font-weight: bold; font-size: 26px;'>{selected_stock_data.name}</span>"
-                       f"&nbsp<span>{selected_stock_data['current_price']:,.2f}</span>"
-                       "&nbsp;<span style='"+change_color+f"'>({selected_stock_data['day_change(%)']}%)</span></p>")
-    select_stock.markdown(stock_info_text, unsafe_allow_html=True)
-    historical_price = get_historical_price(selected, selected_stock_data['country'])
-    avg_price_paid = selected_stock_data['average_price_paid']
-    stock_chart = draw_stock_chart(
-        close=historical_price['Close'],
-        average_price=avg_price_paid,
-    )
-    select_stock.plotly_chart(stock_chart)
 elif selected == 'Portfolio':
     st.header('Portfolio')
 
@@ -161,6 +143,23 @@ elif selected == 'Portfolio':
     current_investment_summary = sort_table(current_investment_summary, by='total_gain', ascending=False)
     styled_current_investment_summary = style_table(current_investment_summary, style_change, ['total_gain'])
     investment_section.dataframe(styled_current_investment_summary)
+
+    selected = investment_section.selectbox('Choose Stock', portfolio_table.index)
+    selected_stock_data = portfolio_table.loc[selected]
+    change_color = style_change(selected_stock_data['day_change(%)'])
+    stock_info_text = ("<p style='margin-left: 1.5em;'>"
+                       f"<span style='font-weight: bold; font-size: 26px;'>{selected_stock_data.name}</span>"
+                       f"&nbsp<span>{selected_stock_data['current_price']:,.2f}</span>"
+                       "&nbsp;<span style='"+change_color+f"'>({selected_stock_data['day_change(%)']}%)</span></p>")
+    investment_section.markdown(stock_info_text, unsafe_allow_html=True)
+    historical_price = get_historical_price(selected, selected_stock_data['country'])
+    avg_price_paid = selected_stock_data['average_price_paid']
+    stock_chart = draw_stock_chart(
+        close=historical_price['Close'],
+        average_price=avg_price_paid,
+    )
+    investment_section.plotly_chart(stock_chart)
+
     investment_section.markdown('#### Investment by Country')
     investment_chart = draw_pie(
         investment_by_country,
