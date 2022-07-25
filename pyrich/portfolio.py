@@ -149,6 +149,11 @@ class Portfolio(Record):
         ]
         current_portfolio = current_portfolio[col_order]
         return current_portfolio
+    
+    def get_current_investment_summary(self, current_portfolio: pd.DataFrame) -> pd.DataFrame:
+        use_col = ['country', 'invested_amount', 'current_value', 'total_gain', 'currency']
+        current_investment_summary = current_portfolio[use_col]
+        return current_investment_summary
 
     def get_investment_by_country(self, current_portfolio: pd.DataFrame) -> pd.DataFrame:
         investment_table = current_portfolio[['country', 'invested_amount', 'current_value', 'total_gain']]

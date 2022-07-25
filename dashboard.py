@@ -155,6 +155,12 @@ elif selected == 'Portfolio':
 
     investment_section = st.container()
     investment_section.subheader('Investment')
+    investment_section.markdown('#### Investment by Stock')
+
+    current_investment_summary = portfolio.get_current_investment_summary(portfolio_table)
+    current_investment_summary = sort_table(current_investment_summary, by='total_gain', ascending=False)
+    styled_current_investment_summary = style_table(current_investment_summary, style_change, ['total_gain'])
+    investment_section.dataframe(styled_current_investment_summary)
     investment_chart = draw_pie(
         investment_by_country,
         values=investment_by_country['current_value'],
