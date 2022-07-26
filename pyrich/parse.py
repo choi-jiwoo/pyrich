@@ -38,7 +38,7 @@ def set_args():
     parser.add_argument(
         '--csv',
         type=str,
-        metavar='CSV FILENAME',
+        metavar='CSV_FILENAME',
         help=('Csv filename to copy data from. Filename should match with '
               'database table name. The file should be located '
               'in the root directory of the package')
@@ -47,26 +47,26 @@ def set_args():
     parser.add_argument(
         '--show',
         type=str,
-        metavar='TABLE NAME',
+        metavar='TABLE_NAME',
         help='Table name to display'
     )
     # delete last row of the table
     parser.add_argument(
         '--deletelast',
         type=str,
-        metavar='TABLE NAME',
+        metavar='TABLE_NAME',
         help='Table name to delete the last row. Defaults to None'
     )
     # delete all rows in the table
     parser.add_argument(
         '--deleteall',
         type=str,
-        metavar='TABLE NAME',
+        metavar='TABLE_NAME',
         help='Table name to delete all rows. Defaults to None'
     )
     parser.add_argument(
         '--cash',
-        metavar=('CURRENT CASH', 'CURRENCY'),
+        metavar=('CURRENT_CASH', 'CURRENCY'),
         nargs=2,
         help='Update current cash'
     )
