@@ -2,7 +2,13 @@ import argparse
 
 
 def set_args():
-    parser = argparse.ArgumentParser(description="Hello👋🏼 I'm pyrich!")
+    description = ("Hello👋🏼 I'm pyrich!\n\n"
+                   "Here are some guidelines to inputting specific arguments.\n"
+                   "DATE: YYYY-MM-DD\n"
+                   "COUNTRY: Three letter country code. Alpha-3 code (ISO 3166) (e.g. USA, KOR)\n"
+                   "TYPE: Either 'buy' or 'sell'")
+
+    parser = argparse.ArgumentParser(description=description, formatter_class=argparse.RawDescriptionHelpFormatter)
     # show portoflio summary
     parser.add_argument(
         '-s',
