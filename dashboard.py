@@ -87,6 +87,10 @@ if selected == 'Dashboard':
         cur_asset.markdown(cur_asset_text, unsafe_allow_html=True)
 
         cur_investment = st.container()
+        currency_conversion_applied = {
+            True: '',
+            False: '\ncurrency conversion not applied',
+        }
         cur_investment_text = ("<span>Current Stock Value</span>"
                                "<br>"
                                "<span style='font-weight: bold; font-size: 28px;'>"
@@ -95,6 +99,8 @@ if selected == 'Dashboard':
                                "<span style='"+gain_color+" font-size: 18px;'>"
                                f"&nbsp;{portfolio_value['portfolio_gain']:,.2f}원"
                                f"&nbsp;({_yield:,.2f} %)"
+                               f"<span style='font-size: 12px; color: gray; font-style: italic;'>"
+                               f"{currency_conversion_applied[display_in_krw_currency]}</span>"
                                "</span>")
         cur_investment.markdown(cur_investment_text, unsafe_allow_html=True)
 
