@@ -250,11 +250,10 @@ def run():
         transaction = Transaction(options['transaction'], headers=headers)
         transaction_record = transaction.record
         transaction_record['total_price_paid'] = transaction_record['quantity'] * transaction_record['price']
+        transaction_record['total_price_paid_in_krw'] = transaction_record['total_price_paid']
         if transaction_record['country'] == 'USA':
             usd_to_krw = get_usd_to_krw()
-            transaction_record['total_price_paid_in_krw'] = transaction_record['total_price_paid'] * usd_to_krw
-        else:
-            transaction_record['total_price_paid_in_krw'] = transaction_record['total_price_paid']
+            transaction_record['total_price_paid_in_krw'] *= usd_to_krw
         db.insert('transaction', transaction_record)
     else:
         headers = ['date', 'symbol', 'dividend', 'currency']
