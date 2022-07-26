@@ -75,8 +75,6 @@ def search_kor_company_symbol(company_name: str) -> tuple:
     except Exception:
         res.raise_for_status()
 
-
-
 def scrape_from_naver_finance(symbol: str) -> list:
     url = f'https://finance.naver.com/item/main.nhn?code={symbol}'
     res = requests.get(url, headers=HEADERS)
