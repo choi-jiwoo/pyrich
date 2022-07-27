@@ -5,7 +5,7 @@ from pyrich.database import PostgreSQL
 from pyrich import forex
 
 
-class Record:
+class TransactionRecord:
 
     def __init__(self, table: str) -> None:
         self.table = table

@@ -1,9 +1,9 @@
 from datetime import date
 import pandas as pd
-from pyrich.record import Record
+from pyrich.record import TransactionRecord
 
 
-class Asset(Record):
+class Asset(TransactionRecord):
 
     def __init__(self, table: str) -> None:
         super().__init__(table)

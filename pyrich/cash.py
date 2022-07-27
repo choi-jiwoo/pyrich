@@ -1,9 +1,9 @@
 import pandas as pd
 import numpy as np
-from pyrich.record import Record
+from pyrich.record import TransactionRecord
 
 
-class Cash(Record):
+class Cash(TransactionRecord):
 
     def __init__(self, table: str) -> None:
         super().__init__(table)
