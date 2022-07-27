@@ -1,4 +1,3 @@
-from datetime import date
 import pandas as pd
 from functools import cached_property
 from pyrich.database import PostgreSQL
