@@ -253,6 +253,20 @@ elif selected == 'Transaction History':
         'text/csv',
     )
     st.dataframe(styled_transaction_history)
+
+    st.subheader('Transaction History by Market')
+    st.markdown('#### South Korea')
+    kor_market = transaction_history[transaction_history['country']=='KOR']
+    styled_kor_market = style_table(kor_market, style_trade_type, ['type'])
+    st.dataframe(styled_kor_market)
+    st.markdown('#### United States')
+    us_market = transaction_history[transaction_history['country']=='USA']
+    styled_us_market = style_table(us_market, style_trade_type, ['type'])
+    st.dataframe(styled_us_market)
+    st.markdown('#### Cryptocurrency')
+    crypto = transaction_history[transaction_history['country']=='CRYPTO']
+    styled_crypto = style_table(crypto, style_trade_type, ['type'])
+    st.dataframe(styled_crypto)
 elif selected == 'Dividends History':
     st.header('Dividends History')
     dividend = Dividend('dividend')
