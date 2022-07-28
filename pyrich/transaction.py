@@ -22,17 +22,17 @@ class Transaction:
         self._record = self._convert_items(mapped_record)
 
     def _convert_items(self, record: dict) -> dict:
-        uppercase_items = ['country', 'symbol', 'currency']
-        float_items = ['quantity', 'price', 'dividend']
-        for item in uppercase_items:
-            try:
-                record[item] = record[item].upper()
-            except KeyError:
-                continue
-
-        for item in float_items:
-            try:
-                record[item] = float(record[item])
-            except KeyError:
-                continue
+        items = {
+            'uppercase': ['country', 'symbol', 'currency'],
+            'float': ['quantity', 'price', 'dividend'],
+        }
+        for key in items:
+            for item in items[key]:
+                try:
+                    if key == 'uppercase':
+                        record[item] = record[item].upper()
+                    else:
+                        record[item] = float(record[item])
+                except KeyError:
+                    continue
         return record
