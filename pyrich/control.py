@@ -17,6 +17,11 @@ from pyrich.style import style_terminal_text
 from pyrich import stock
 
 
+SIGN_COLOR = {
+    'green': '+',
+    'red': '',
+}
+
 def run():
     # Load arguments
     parser = parse.set_args()
@@ -97,12 +102,13 @@ def run():
                 text=f"{current_value:,.2f} 원",
             )
         )
-        total_gain_text = f"{gain:,.2f} ({_yield:,.2f} %)"
+        yield_change_color = style_change(_yield, 'terminal')
+        total_gain_text = f"{gain:,.2f} ({SIGN_COLOR[yield_change_color]}{_yield:,.2f} %)"
         right_align_width = stock_value_label_len + len(total_gain_text)
         print(
             style_terminal_text(
                 text=f"{total_gain_text:>{right_align_width}}",
-                color=style_change(_yield, 'terminal'),
+                color=yield_change_color,
             )
         )
 
@@ -134,7 +140,7 @@ def run():
             # current_stock_value = i[1] * usd_to_krw
             # invested = i[2] * usd_to_krw
             gain = current_stock_value - invested
-            stock_yield = current_yield(gain, invested)
+            stock_gain = current_yield(gain, invested)
 
             symbol_label = (
                 f"({current_stock_value/current_value:,.2%})" +
@@ -148,12 +154,13 @@ def run():
             )
             symbol_label_len = len(symbol_label) - ANSI_STYLE_CODE_LEN
             print(symbol_label, f"{current_stock_value:,.2f} 원")
-            stock_gain_text = f"{gain:,.2f} ({stock_yield:,.2f} %)"
+            stock_gain_color = style_change(stock_gain, 'terminal')
+            stock_gain_text = f"{gain:,.2f} ({SIGN_COLOR[stock_gain_color]}{stock_gain:,.2f} %)"
             right_align_width = symbol_label_len + len(stock_gain_text)
             print(
                 style_terminal_text(
                     text=f"{stock_gain_text:>{right_align_width}}",
-                    color=style_change(stock_yield, 'terminal'),
+                    color=stock_gain_color,
                 )
             )
         
@@ -253,6 +260,7 @@ def run():
         stock_ = price_record[0]
         current_price = price_info['c']
         day_change = price_info['dp']
+        day_change_color = style_change(day_change, 'terminal')
         print(
             style_terminal_text(
                 text=stock_,
@@ -262,8 +270,8 @@ def run():
             "▸",
             f"{current_price}",
             style_terminal_text(
-                text=f"({day_change:,.2f} %)",
-                color=style_change(day_change, 'terminal'),
+                text=f"({SIGN_COLOR[day_change_color]}{day_change:,.2f} %)",
+                color=day_change_color,
             )
         )
         return
