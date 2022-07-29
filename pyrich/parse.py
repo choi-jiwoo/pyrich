@@ -77,4 +77,12 @@ def set_args():
         action='store_true',
         help='Open dashboard in a web browser. Defaults to False'
     )
+    parser.add_argument(
+        '-p',
+        '--price',
+        type=str,
+        metavar=('SYMBOL', 'COUNTRY'),
+        nargs=2,
+        help='Get current price of a stock'
+    )
     return parser

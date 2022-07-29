@@ -14,6 +14,7 @@ from pyrich.summary import current_asset_data
 from pyrich.summary import current_yield
 from pyrich.style import style_change
 from pyrich.style import style_terminal_text
+from pyrich import stock
 
 
 def run():
@@ -243,6 +244,29 @@ def run():
             raise CurrencyError('Currency should be either USD or KRW.')
         else:
             return
+
+    # Search price
+    if options['price']:
+        price_record = options['price']
+        price_record = [item.upper() for item in price_record]
+        price_info = stock.get_current_price(*price_record)
+        stock_ = price_record[0]
+        current_price = price_info['c']
+        day_change = price_info['dp']
+        print(
+            style_terminal_text(
+                text=stock_,
+                color='green',
+                style='bold'
+            ),
+            "▸",
+            f"{current_price}",
+            style_terminal_text(
+                text=f"({day_change:,.2f} %)",
+                color=style_change(day_change, 'terminal'),
+            )
+        )
+        return
 
     # Record transaction
     if options['dividend'] is None:
