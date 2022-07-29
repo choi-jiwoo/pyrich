@@ -1,29 +1,22 @@
 class EmptySymbolError(Exception):
-
-    def __init__(self, msg: str, *args, **kwargs) -> None:
-        super().__init__(msg, *args, **kwargs)
+    pass
 
 
 class ArrayLengthDoesNotMatchError(Exception):
-
-    def __init__(self, msg: str, *args, **kwargs) -> None:
-        super().__init__(msg, *args, **kwargs)
+    pass
 
 
 class SearchError(Exception):
-
-    def __init__(self, msg: str, *args, **kwargs) -> None:
-        super().__init__(msg, *args, **kwargs)
+    pass
 
 
 class CurrencyError(Exception):
+    pass
 
-    def __init__(self, msg: str, *args, **kwargs) -> None:
-        super().__init__(msg, *args, **kwargs)
 
 class UnknownFormat(Exception):
+    pass
 
-    def __init__(self, msg: str, *args, **kwargs) -> None:
-        super().__init__(msg, *args, **kwargs)
+
 class InvalidDateFormatError(Exception):
     pass
